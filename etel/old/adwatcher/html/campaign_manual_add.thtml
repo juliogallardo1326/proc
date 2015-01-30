@@ -1,0 +1,71 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Manually Add Action or Sale</div><br />
+			You can manually record a sale or an action for any of your campaigns. This is useful if somebody finds you through your online ad, but makes the purchase or sign up over the phone or via email.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Add Action or Sale</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=manual_as" method="post">				
+					<tr>
+						<td nowrap class="Title">Campaign To Add To:</td>
+						<td style="width:500px;">{campaign}</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Tracking Type:</td>
+						<td><select name="svar[type]" size="1" onchange="changeSA(); return false;">
+							<option value="s">Sale</option>
+							<option value="a">Action</option>
+						</select></td>
+					</tr>
+					
+
+					<tr>
+						<td colspan="2" style="padding:0px;margin:0px;">
+							<div id="sale">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%">
+								<tr>
+									<td nowrap class="Title nul">Sale Amount:</td>
+									<td style="width:500px;" class="nul"><input type="text" name="svar[sale]" value="0.00" size="5" maxlength="15" /></td>
+								</tr>
+							</table>
+							</div>
+							
+							<div id="action" style="display:none;">
+							<table cellspacing="0" cellpadding="0" border="0" width="100%">
+								<tr>
+									<td nowrap class="Title nul">Action Type:</td>
+									<td style="width:500px;" class="nul">{action_type}</td>
+								</tr>
+							</table>
+							</div>							
+						</td>
+					</tr>
+											
+					
+									
+					<tr>
+						<td nowrap class="Title">Optional Value 1:</td>
+						<td><input type="text" name="svar[opt1]" value="" style="width:250px;" maxlength="100" /></td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Optional Value 2:</td>
+						<td><input type="text" name="svar[opt2]" value="" style="width:250px;" maxlength="100" /></td>
+					</tr>										
+															
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Add Action / Sale" class="csubmit" /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+			
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

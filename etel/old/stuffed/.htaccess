@@ -1,0 +1,9 @@
+Options FollowSymLinks
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule track/([^/]+)/([^\.]+)$ index.php?%{QUERY_STRING}&sc=track&action=$1&RequestParam=$2 [L,NC]
+RewriteRule ([^\?]+\.html)$  index.php?%{QUERY_STRING}&RequestPath=$1 [L,NC]
+</IfModule>
+
+DirectoryIndex index.php

@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Page Unavailable</title>
+</head>
+
+<body>
+&nbsp;
+<table border="0" cellpadding="0"  height="100" width="100%">
+  <tr>
+    <td align="center"  height="30" colspan="2" bgcolor="#4874B5" class="whitehd">Page Not Available </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" valign="center" bgcolor="#F8FAFC"><p><font size="1" face="verdana">You do not have access to this page. </font></p>
+    <p><font size="1" face="verdana">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-Support</font></p></td>
+  </tr>
+
+  <tr align="center" >
+    <td height="30" colspan="2" valign="middle"><a href="javascript:window.history.back();"><img src="/images/back.jpg" width="43" height="20" border="0"></a></td>
+  </tr>
+</table>
+</body>
+</html>
+

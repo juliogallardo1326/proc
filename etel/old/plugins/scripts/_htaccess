@@ -1,0 +1,8 @@
+AuthName "{#sitename#} Members Section"
+AuthType Basic
+AuthUserFile {#htpassdir#}
+AuthGroupFile {#htgroupdir#}
+
+<limit GET POST PUT>
+require {#requireinfo#}
+</limit>

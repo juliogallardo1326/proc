@@ -1,0 +1,56 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Fraud Settings</div><br />
+			In this area, you may modify the fraud settings for your AdWatcher application.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Fraud Settings</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=fraud_settings" method="post">
+	
+					<tr>
+						<td style="width:30%;text-align:left;" class="Title">Clicks before Fraud Activity is suspected:</td>
+						<td>{message_count}</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Total number of clicks within a 24-hour period before recording fraudulent activity. The default is 5 clicks.<br /><br /></td>
+					</tr>
+					
+					<tr>
+						<td style="width:30%;text-align:left;" class="Title">Show Suspicious Activity Alert:</td>
+						<td>
+							<select name="svar[message_show]" size="1">
+								<option value="1" {message_show_yes}>Yes</option>
+								<option value="0" {message_show_no}>No</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Suspicious activity alert is shown to users that click through an advertisement a set number of times within a 24-hour period.<br /><br /></td>
+					</tr>
+											
+					<tr>
+						<td style="width:30%;text-align:left;" class="Title">Custom Suspicious Activity Alert:</td>
+						<td><textarea name="svar[message]" style="width:400px;height:200px;">{message}</textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>You may enter a custom suspicious activity alert message in the box above. Leave blank if you wish to use the default message. HTML is not allowed.<br /><br /></td>
+					</tr>
+					
+																									
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Update Settings " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

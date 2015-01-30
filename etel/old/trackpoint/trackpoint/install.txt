@@ -1,0 +1,9 @@
+To install TrackPoint, follow the quick steps below:
+
+1. Upload the entire contents of the TrackPoint zip file to a folder on your web server in or below the root directory, such as /trackpoint
+2. Go to http://www.yoursite.com/trackpoint/ in your web browser. Replace "www.yoursite.com" with the domain name of your web site
+3. The installation wizard will start
+4. Complete each step in the installation wizard
+
+For a complete installation and customization guide, please go to http://www.interspire.com/trackpoint/html/installguide/
+

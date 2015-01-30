@@ -1,0 +1,226 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">
+				<table width="100%" cellspacing="0" cellpadding="0" border="0">
+					<form action="?action=reports" method="post" name="oForm">
+					<input type="hidden" name="svar[xstart]" value="{xstart}" />
+					<input type="hidden" name="svar[xend]" value="{xend}" />
+					{hidden_select}
+					<tr>
+						<td nowrap>Reports - Overview</td>
+						<td width="100%" style="text-align:right;"><input type="submit" name="svar[export_overview]" value=" Export To CSV " class="csubmit" style="margin-bottom:3px;" /></td>
+						<td>&#160;</td>
+						<td><input type="button" name="print" value=" Print This Page " class="csubmit" onclick="javascript:doPrint();" style="margin-bottom:3px;" /></td>
+					</tr>
+				</table></div><br />
+			Here is an overview of all of your campaigns. Click on any campaign name to view more options. You can view the campaign statistics by groups, compare and contrast specific campaigns side-by-side, or even export them to a spreadsheet or print them for offline viewing. To change the timeframe of the statistics shown, please scroll down. 
+			
+			<br /><br />
+			<b>TIP:</b> Want to sort the campaigns in a different way? Click on any variable (e.g. C, Cost, ROI, etc.) to sort by that variable descending. Click again to switch the order.
+
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';" style="width:712px;cursor:pointer !important;"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Campaign Reports - Overview</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="innerTable">
+					<thead>
+					<tr>
+						<td class="title">&#160;</td>
+						<td class="sp">&#160;</td>
+						<td class="title">ID</td>						
+						<td class="sp">&#160;</td>
+						<td class="ctitle"><input type="checkbox" name="allbox" value="Check All" title="Select/Deselect All" onClick="CheckAll();" class="sm_check" /></td>
+						<td class="sp">&#160;</td>														
+						<td width="90%" class="title" style="text-align:left !important;">Campaign</td>						
+						<td class="sp">&#160;</td>
+						<td class="title">C</td>
+						<td class="sp">&#160;</td>
+						<td class="title">A</td>
+						<td class="sp">&#160;</td>
+						<td class="title">S</td>
+						<td class="sp">&#160;</td>
+						<td class="title">Rev</td>
+						<td class="sp">&#160;</td>
+						<td class="title">Cost</td>
+						<td class="sp">&#160;</td>
+						<td class="title">Profit</td>						
+						<td class="sp">&#160;</td>
+						<td class="title">CPA</td>
+						<td class="sp">&#160;</td>
+						<td class="title">CPS</td>
+						<td class="sp">&#160;</td>
+						<td class="title">CPC</td>
+						<td class="sp">&#160;</td>
+						<td nowrap class="title">ROI</td> 
+						<td class="sp">&#160;</td>
+						<td nowrap class="title">C2A</td>
+						<td class="sp">&#160;</td>
+						<td nowrap class="title">C2S</td>
+						<td class="sp">&#160;</td>
+						<td nowrap class="title">A2S</td>
+					</tr>
+					</thead>
+					<tbody>
+					{clist}
+					</tbody>
+					<tr id="cTotal">
+						<td class="tLeft" colspan="5">Summary:</td>
+						<td></td>
+						<td class="ce"></td>
+						<td></td>						
+						<td class="ce" nowrap>{total_clicks}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_actions}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_sales}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_revenue}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_cost}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_profit}</td> 
+						<td></td>
+						<td class="ce" nowrap>{total_cpa}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_cps}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_cpc}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_roi}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_c2a}</td>
+						<td></td>
+						<td class="ce" nowrap>{total_c2s}</td>
+						<td></td>
+						<td class="ce tRight" nowrap>{total_a2s}</td>																		
+					</tr>
+				</table>
+				<script type="text/javascript">
+				var st1 = new SortableTable(document.getElementById("innerTable"),
+				["None", "None", "Number", "None", "None", "None", "CaseInsensitiveString", "None", "Number", "None", "Number", "None", "Number", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Percent", "None", "Percent", "None", "Percent", "None", "Percent"]);
+				</script>
+			</div>
+			<div class="space clear">&#160;</div>
+
+			<div class="leftBox extended" id="Box2" style="width:712px;">
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				</tr>
+					<td align="left" width="100%">
+						<table cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td>View By Group:</td>
+								<td>&#160;{groups}&#160;</td>
+								<td><input type="submit" name="submit" value=" View Group " class="csubmit" onclick="oForm.target='_self';" /></td>
+							</tr>
+						</table>
+					</td>
+					<td><input type="submit" name="svar[selected]" value=" Show Only Selected Campaigns " class="csubmit" style="width:160px;" onclick="oForm.target='_self';" /></td>
+					{showall}
+				</tr>
+			</table>
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Overview Options</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0">
+							</tr>
+								<td align="left" class="nul">
+									<table cellspacing="0" cellpadding="0" border="0">
+										<tr>
+											<td colspan="5" style="padding-left:10px;" class="nul">Show above statistics by:</td>
+										</tr>
+										<tr>
+											<td class="nul"><input checked type="radio" name="svar[stat_type]" {t_checked} value="t" class="noborder" style="margin-left:10px;margin-right:10px;" onclick="changeTimeDate('over0','over1');" /></td>
+											<td class="nul">Timeframe</td>
+											<td class="nul" style="width:15px;">&#160;</td>
+											<td class="nul"><input type="radio" name="svar[stat_type]" {d_checked} value="d" class="noborder" style="margin-left:10px;margin-right:10px;" onclick="changeTimeDate('over1','over0');" /></td>
+											<td class="nul" nowrap>Date Range</td>
+										</tr>
+									</table>
+								</td>
+								<td align="left" class="nul" style="padding-left:10px;">
+													<table cellspacing="0" cellpadding="0" border="0" id="over0" style="{t_display}">
+														<tr>
+															<td style="text-align:right;" class="nul">Timeframe:</td>
+															<td class="nul">&#160;</td>
+															<td class="nul" >{time_select}</td>
+														</tr>
+													</table>
+												
+													<table cellspacing="0" cellpadding="0" border="0" id="over1" style="{d_display}">
+														<tr>
+															<td class="nul">From:</td>
+															<td class="nul">{select_mstart}</td>
+															<td class="nul">{select_dstart}</td>
+															<td class="nul">{select_ystart}</td>
+															<td class="nul" style="padding-left:12px;">To:</td>
+															<td class="nul">{select_mend}</td>
+															<td class="nul">{select_dend}</td>
+															<td class="nul">{select_yend}</td>
+														</tr>
+													</table>					
+			
+								</td>
+								<td style="padding-left:15px;" class="nul">&#160;</td>
+								<td class="nul"><input type="submit" name="svar[dt]" value=" Show Statistics " class="csubmit" style="width:140px;" onclick="oForm.target='_self';" /></td>
+								<td width="100%" class="nul" align="right"></td>
+							</tr>
+						</table>
+					</td>				
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div>
+	
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Overview Key</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="2" border="0">
+							<tr>
+								<td nowrap class="keyr">C : </td><td>Number of Unique Clicks</td>
+								<td nowrap class="keyr">A : </td><td>Number of Actions</td>
+								<td nowrap class="keyr">S : </td><td>Number of Sales</td>
+								<td nowrap class="keyr">Rev : </td><td>Total Revenue of Sales</td>
+							</tr>
+							<tr>
+								<td nowrap class="keyr">Cost : </td><td>Total Cost of Campaign</td>
+								<td nowrap class="keyr">Profit : </td><td>Total Profit of Campaign</td>
+								<td nowrap class="keyr">CPA : </td><td>Cost Per Action</td>
+								<td nowrap class="keyr">CPS : </td><td>Cost Per Sale</td>
+							</tr>
+							<tr>
+								<td nowrap class="keyr">CPC : </td><td>Cost Per Click</td>
+								<td nowrap class="keyr">ROI : </td><td>Return On Investment</td>
+								<td nowrap class="keyr">C2A : </td><td>Percentage of Click to Actions</td>
+								<td nowrap class="keyr">C2S : </td><td>Percentage of Click to Sales</td>
+							</tr>
+							<tr>
+								<td nowrap class="keyr">A2S : </td><td colspan="7">Percentage of Actions to Sales</td>
+							</tr>														
+						</table>
+					</td>				
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div>	
+	<div class="clear">&#160;</div>
+	<div style="display:none;"><iframe name="oframe" style="width:1px;height:1px;" src="{export_overview}"></iframe></div>

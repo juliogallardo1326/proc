@@ -1,0 +1,2 @@
+This file contains Guides, Plugins, and Example Code related to the Etelegate.com Payment Gateway.
+http://www.etelegate.com

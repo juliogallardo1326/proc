@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>AdWatcher.com</title>
+<meta http-equiv="MSThemeCompatible" content="Yes">
+<link rel="stylesheet" type="text/css" media="screen" href="{site_path}/inf/style.css">
+<link rel="stylesheet" type="text/css" media="print" href="{site_path}/inf/print.css">
+<script language="javascript" src="{site_path}/inf/global.js"></script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="mHeader">
+		<div id="mLogo"></div>
+		<a href="#" id="mLiveSupport">&#160;</a>
+		<a href="#" id="mEmailUs">&#160;</a>
+		<div id="mPhoneUs">&#160;</div>
+	</div>

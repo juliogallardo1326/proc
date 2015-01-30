@@ -1,0 +1,14 @@
+
+
+
+
+
+
+AuthType Basic
+
+AuthName "Cron"
+
+AuthUserFile "/home/etel/.htpasswds/cron/passwd"
+
+
+require valid-user

@@ -1,0 +1,77 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='AFFILIATE PROGRAM INFORMATION';
+$data['PageFile']='affdetails';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+	header("Location:{$data['Host']}/index.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+if(!$data['ReferralPays']){
+	header("Location:{$data['Members']}/index.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+if(is_info_empty($uid)){
+	header("Location:{$data['Members']}/profile.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+$post['username']=get_member_username($uid);
+$post['Example'][0]['members']=10;
+$post['Example'][0]['spends']=2000;
+$post['Example'][0]['fees']=($post['Example'][0]['spends']*$data['PaymentPercent']/100)+$data['PaymentFees'];
+$post['Example'][0]['commission']=$post['Example'][0]['fees']*$data['ReferralPercent']/100;
+$post['ExampleTotal']['members']=$post['Example'][0]['members'];
+$post['ExampleTotal']['spends']=$post['Example'][0]['spends'];
+$post['ExampleTotal']['commission']=$post['Example'][0]['commission'];
+$post['Commissions']=array();
+$post['Commissions'][0]=$data['ReferralPercent'];
+for($i=1; $i<$data['ReferralLevels']; $i++){
+	$post['Commissions'][$i]=$data['ReferralPercent'];
+	$post['Example'][$i]['members']=$post['Example'][$i-1]['members']*($data['ReferralLevels']);
+	$post['ExampleTotal']['members']=$post['ExampleTotal']['members']+$post['Example'][$i]['members'];
+	$post['Example'][$i]['spends']=$post['Example'][$i-1]['spends']*($data['ReferralLevels']);
+	$post['ExampleTotal']['spends']=$post['ExampleTotal']['spends']+$post['Example'][$i]['spends'];
+	$post['Example'][$i]['fees']=($post['Example'][$i]['spends']*$data['PaymentPercent']/100)+$data['PaymentFees'];
+	$post['Example'][$i]['commission']=$post['Example'][$i]['fees']*$data['ReferralPercent']/100;
+	$post['ExampleTotal']['commission']=$post['ExampleTotal']['commission']+$post['Example'][$i]['commission'];
+}
+$post['ExampleTotal']['members']=$post['ExampleTotal']['members'];
+###############################################################################
+display('members');
+###############################################################################
+?>

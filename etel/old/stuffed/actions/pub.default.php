@@ -1,0 +1,3 @@
+<?
+$nsProduct->Redir("login", "",  "admin");
+?>

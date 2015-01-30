@@ -1,0 +1,5 @@
+<tr class="{bg}">
+	<td class="blk" style="text-align:center;font-weight:bold;">{num}</td>
+	<td class="blk" nowrap>{action_type}</td>
+	<td class="blk" nowrap>{actions}</td>
+</tr>

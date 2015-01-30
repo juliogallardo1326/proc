@@ -1,0 +1,21 @@
+	<div id="mainTitle" style="width:670px !important;margin-top:10px;">
+		<div class="bTitle" style="width:670px;">
+			<div style="float:left;font-size:11px;padding-left:10px;padding-bottom:8px;padding-top:3px;">Logged Reports - {campaign_name}</div>
+			{dl_cvs}
+			<div style="float:right;font-size:11px;padding-right:10px;padding-bottom:8px;padding-top:3px;">Showing Statistics From: {date_start} - {date_end}</div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="leftBox" style="width:660px;float:left;">
+			<table width="660" cellspacing="1" cellpadding="2" border="0" class="smallTable">
+					<tr>
+						<th>&#160;</th>
+						<th>Date & Time</th>
+						<th>IP Address</th>
+						<th>User Browser</th>
+						<th>Type</th>
+					</tr>
+					{log_list}
+			</table>
+			<div style="display:none;"><iframe style="border:0px;width:0px;height:0px;" frameborder="0" width="0" height="0" name="_del" marginwidth="0" marginheight="0" scrolling="no"></iframe></div>
+		</div>
+	</div>

@@ -1,0 +1,109 @@
+--------------------------------
+ Changelog for Trackpoint NX 0.1
+--------------------------------
+** Security Fix **
+Fix XSS issue with login page
+	functions/login.php
+	includes/templates/login.tpl
+	includes/templates/forgotpassword.tpl
+	language/language.php
+
+----------------------------
+ Changelog for Trackpoint NX
+----------------------------
+Fix tracking issues
+	t.php
+	tp.php
+	functions/init.php
+	functions/api/tputil.php
+
+Fix exporting / printing of campaign costs
+	functions/export.php
+	functions/printreport.php
+
+Make landing pages for search engines clickable
+	functions/landingpages_engines.php
+	functions/landingpages_search.php
+	functions/viewall_engines.php
+	functions/viewall_search.php
+
+
+Added new features:
+	Server Timezone Setting
+	Log Traffic History option
+	Bulk Create PPC links
+	Ignore keywords, referrers, ip addresses, domain names, set timezone per user
+	Switch between users (if admin)
+	Option to create tracking/conversion code for another user (if admin)
+	Option to create campaign links for another user (if admin)
+	New graphs (visits/conversions/revenue)
+
+	All Files affected
+		index.php
+		functions/*.php
+		functions/api/*.php
+		includes/templates/*.tpl
+		language/language.php
+
+
+-----------------------------------
+ Changelog for Trackpoint 2005.0.3
+-----------------------------------
+Fix problems with trackpoint and php 4.4.0:
+	functions/campaigns.php
+	functions/createcampaign.php
+	functions/createppc.php
+	functions/engines.php
+	functions/export.php
+	functions/index.php
+	functions/install.php
+	functions/landingpages_engines.php
+	functions/landingpages_referrers.php
+	functions/landingpages_search.php
+	functions/logout.php
+	functions/manageaccount.php
+	functions/ppc.php
+	functions/printreport.php
+	functions/referrers.php
+	functions/search.php
+	functions/tpchart.php
+	functions/trackpoint_functions.php
+	functions/users.php
+	functions/view_conversions.php
+	functions/viewall_campaigns.php
+	functions/viewall_engines.php
+	functions/viewall_ppcs.php
+	functions/viewall_referrers.php
+	functions/viewall_search.php
+	functions/api/user.php
+
+Add new "Last 24 hours" option to calendar:
+	language/language.php
+	functions/trackpoint_functions.php
+
+Fix a wrapping problem with IE (when date set to "Custom"):
+	includes/templates/calendar_index.tpl
+
+Fix "empty delimiter" errors with some php versions:
+	t.php
+
+-----------------------------------
+ Changelog for Trackpoint 2005.0.2
+-----------------------------------
+Fixed a security issue when remembering login details.
+	index.php
+	functions/login.php
+
+Fixed a problem with changing the currency symbol in the language pack.
+	functions/campaigns.php
+	functions/engines.php
+	functions/ppc.php
+	functions/referrers.php
+	functions/search.php
+	includes/templates/header.tpl
+
+Fixed a problem with printing/exporting always adding footers (when results
+were empty)
+	functions/export.php
+	functions/printreport.php
+

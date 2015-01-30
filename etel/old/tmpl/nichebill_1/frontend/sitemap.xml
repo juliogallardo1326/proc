@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="../../sitemap.xsl" type="text/xsl" media="all"?>
+<site>
+<page file="index.html" text="NicheBill" title="NicheBill">
+<page file="services.html" text="Services" title="NicheBill"/>
+<page file="default.html" text="Apply Now" title="NicheBill"/>
+<page file="faq.html" text="FAQ" title="NicheBill"/>
+<page file="contactus.html" text="Contact Us" title="NicheBill"/>
+<page file="creditprocessing.html" text="Credit Card Processing" title="NicheBill"/>
+<page file="high_approval.html" text="High Approval Rates" title="NicheBill"/>
+<page file="achcheck.html" text="ACH(check) &amp; E-Check Processing" title="NicheBill"/>
+<page file="custom_reporting.html" text="Custom Reporting &amp; Controls" title="NicheBill"/>
+<page file="cutting_edge_fraud.html" text="Cutting Edge Fraud Screening" title="NicheBill"/>
+<page file="fast_set_up.html" text="Fast Set Up &amp; Integration" title="NicheBill"/>
+<page file="call_centre.html" text="24Hour Call Centre &amp; Support" title="NicheBill"/>
+</page>
+</site>

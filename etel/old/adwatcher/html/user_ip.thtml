@@ -1,0 +1,39 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">IP Lookup</div><br />
+			The tool below will allow you to lookup the city, region, and country that a IP address belongs to. Please note that due to the fact that IP addresses change location frequently, the information provided is deemed acurate but not guaranteed.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />IP Lookup</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=ip_check" method="post">
+					<tr>
+						<td nowrap class="Title nul" style="text-align:right;width:50%;padding-right:5px;">IP Address:</td>
+						<td class="nul"><input type="text" name="svar[ip]" value="{ip}" style="width:150px;" maxlength="15" /></td>
+						<td class="nul" style="width:50%;"><input type="submit" name="svar[submit]" value=" Search " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+		</div>
+		
+		{ip_start}
+		<div class="space"></div>					
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;">IP Information</div>					
+			<div class="leftBox extended">
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+					<tr>
+						{ip_output}
+					</tr>																							
+				</table>
+			</div>
+		</div>
+			{ip_end}			
+
+	</div>
+	<div class="clear">&#160;</div>

@@ -1,0 +1,126 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle">
+			<div class="bTitle">Welcome To The AdWatcher Ad Management Application.</div><br />
+			Welcome {first_name}. <br />
+			<div style="border-bottom:1px solid orange;line-height:7px;font-size:1px;height:7px;margin-bottom:7px;width:490px;">&#160;</div>
+			
+			Today you have received: 
+			{last_clicks} clicks, {last_actions} actions, and {last_sales} sales.<br />
+			<div style="border-bottom:1px solid orange;line-height:7px;font-size:1px;height:7px;margin-bottom:7px;width:490px;">&#160;</div>
+		</div>
+	
+		<div class="rightContainer">
+			<div class="rightTitle">General Information</div>
+			<div class="rightBox">
+				<div class="label">Total Campaigns:</div>
+				<div class="value">[ {total_campaigns} ]</div>
+				<div class="space">&#160;</div>
+
+				<div class="space">&#160;</div>
+				<div class="label"><b>{month} Statistics:</b></div>
+
+				<div class="space">&#160;</div>
+				<div class="label">Clicks:</div>
+				<div class="value">[ {month_clicks} ]</div>
+				<div class="space">&#160;</div>
+				
+				<div class="label">Actions:</div>
+				<div class="value">[ {month_actions} ]</div>
+				<div class="space">&#160;</div>
+								
+				<div class="label">Sales:</div>
+				<div class="value">[ {month_sales} ]</div>
+				<div class="space">&#160;</div>
+				
+				<div class="label">Cost:</div>
+				<div class="value">[ {month_cost} ]</div>
+				<div class="space">&#160;</div>
+								
+				<div class="label">Revenue:</div>
+				<div class="value">[ {month_revenue} ]</div>
+				<div class="space">&#160;</div>
+												
+				<div class="label">Profit:</div>
+				<div class="value">[ {month_profit} ]</div>
+				<div class="space">&#160;</div>
+																
+				<div class="label">ROI:</div>
+				<div class="value">[ {month_roi} ]</div>
+				<div class="clear"></div>
+			</div>
+			
+			<div class="space">&#160;</div>
+			<div class="clear">&#160;</div>
+			<div class="rightTitle">New to AdWatcher?</div>
+			<div class="rightBox">
+				<div style="position:relative;left:15px;line-height:18px;">
+				 <li><a href="?action=guide">View Our Quick Start Guide</a></li>
+				 <li><a href="?action=features">Explore Advanced Features</a></li>
+				</div>
+
+				<div class="clear"></div>
+			</div>
+						
+			<div class="space">&#160;</div>
+			<div class="clear">&#160;</div>
+			<div class="rightTitle">Recent News</div>
+			<div class="rightBox">
+				{rss}
+				<div class="clear"></div>
+			</div>			
+		</div>
+		
+		<div class="leftContainer">
+			<div class="camOut" style="width:492px; !important" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />5 Campaigns Needing Improvement (Lowest ROI)</div>
+			<div class="leftBox" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="innerTable">
+					<tr>
+						<th>&#160;</th>
+						<th class="sp"></th>								
+						<th width="90%">Campaign</th>
+						<th class="sp"></th>
+						<th>C</th>
+						<th class="sp"></th>
+						<th>A</th>
+						<th class="sp"></th>
+						<th>S</th>
+						<th class="sp"></th>
+						<th>Cost</th>
+						<th class="sp"></th>
+						<th>Revenue</th>
+						<th class="sp"></th>
+						<th>Profit</th>
+						<th class="sp"></th>
+						<th>ROI</th> 
+					</tr>
+					{clist}
+				</table>
+			</div>
+		</div>
+		
+		<div class="leftContainer leftBox">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th class="b">Fraud Alerts</th>
+				</tr>
+				<tr>
+					<td>You have {fraud_num} new fraud alerts today. <a href="?action=fraud_reports">Click Here</a> to view your fraud reports.</td>
+				</tr>
+			</table>
+		</div>		
+		
+		<div class="leftContainer leftBox">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th class="b">Want To Improve AdWatcher?</th>
+				</tr>
+				<tr>
+					<td>Have ideas on how to improve AdWatcher? Want to see a new feature? Send your ideas to us via our <a href="?action=new_ticket">helpdesk</a> and if we implement one, you'll receive a $20.00 cash reward.</td>
+				</tr>
+			</table>
+		</div>
+		
+	</div>
+	<div class="clear">&#160;</div>

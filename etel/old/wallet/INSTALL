@@ -1,0 +1,24 @@
+SYSTEM REQUIREMENTS:
+====================
+1. PHP 4.0.0 or better;
+2. MySQL 3.23 or better.
+
+SCRIPT INSTALLATION:
+====================
+1. Unzip archive to local folder;
+2. Open file 'config.htm' in text editor;
+3. Enter database connection information;
+	3.1. Hostname;
+	3.2. Username;
+	3.3. Password;
+	3.4. Database;
+   Do not change anything else there!
+4. Enter local folder if you will not place script into root directory;
+5. Launch 'phpMyAdmin' or anything else from server;
+6. Open script 'doswarepay.sql' there;
+7. Copy all scripts to your server via FTP;
+8. Change mode (0755) for file 'config.htm';
+9. Configure cron script from script 'cron/rcharge.php';
+10. Open admin area and use standard username/password: admin/admin;
+11. Change configuration and save it;
+12. Enjoy.

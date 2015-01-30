@@ -1,0 +1,46 @@
+					<tr>
+						<td id="c{num}-ttd" class="ctd2" colspan="31">&#160;</td>
+					</tr>
+					<tr id="c{num}-ul" onClick="toggleTable('c{num}'); return false;" onfocus="tdis.blur();">
+						<td id="c{num}-tLeft" style="border-left:1px solid #F3F3F3;"><img src="images/trans.gif" border="0" width="13" height="13" class="max" id="c{num}-img" /></td>
+						<td class="sp"></td>								
+						<td id="c{num}-options"><a href="#">{c_name}</a></td>
+						<td class="sp"></td>
+						<td class="ce">{clicks}</td>
+						<td class="sp"></td>
+						<td class="ce">{actions}</td>
+						<td class="sp"></td>
+						<td class="ce">{sales}</td>
+						<td class="sp"></td>
+						<td class="ce">{revenue}</td>
+						<td class="sp"></td>
+						<td class="ce">{cost}</td>
+						<td class="sp"></td>
+						<td class="ce">{profit}</td>					
+						<td class="sp"></td>
+						<td class="ce">{cpa}</td>
+						<td class="sp"></td>
+						<td class="ce">{cps}</td>
+						<td class="sp"></td>
+						<td class="ce">{cpc}</td>
+						<td class="sp"></td>
+						<td class="ce">{roi}</td>
+						<td class="sp"></td>
+						<td class="ce">{c2a}</td>
+						<td class="sp"></td>
+						<td class="ce">{c2s}</td>
+						<td class="sp"></td>						
+						<td id="c{num}-tRight" class="ce">{a2s}</td> 
+					</tr>
+					<tr id="c{num}-tr">
+						<td colspan="31" nowrap class="hidden">
+						<div class="campaignOptions" id="c{num}">
+						Options:
+						<a href="?action=view_stats&cid={cid}">stats</a>
+						<a href="?action=edit_campaign&cid={cid}">edit</a>
+						<a href="?action=delete_campaign&cid={cid}">del</a>
+						<a href="?action=reset_campaign&cid={cid}">reset</a>
+						<a href="?action=disable_campaign&cid={cid}">disable</a>
+						</div>
+						</td>
+					</tr>

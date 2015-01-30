@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="Copy of cp_header.tpl" server="nichebill.com/public_html/" local="128653173216569426" remote="128783884200000000" />
+<file name="Copy of cp_table.tpl" server="nichebill.com/public_html/" local="128653172898306964" remote="128783884200000000" />
+<file name="ProcessOrder.tpl" server="nichebill.com/public_html/" local="128783846962096563" remote="128783884200000000" />
+<file name="admin.html" server="nichebill.com/public_html/" local="128783846944899297" remote="128783884200000000" />
+<file name="main_header.tpl" server="nichebill.com/public_html/" local="128784174406237188" remote="128784210600000000" />
+<file name="main.tpl" server="nichebill.com/public_html/" local="128653194290166688" remote="128783884200000000" />
+<file name="main_footer.tpl" server="nichebill.com/public_html/" local="128660890115202830" remote="128783884200000000" />
+<file name="main_services.tpl" server="nichebill.com/public_html/" local="128653235807539274" remote="128783884200000000" />
+<file name="main_contactus.tpl" server="nichebill.com/public_html/" local="128661065048052745" remote="128783884200000000" />
+<file name="main_applynow.tpl" server="nichebill.com/public_html/" local="128660888553613325" remote="128783884200000000" />
+<file name="main_applynow_form.tpl" server="nichebill.com/public_html/" local="128536440600000000" remote="128783884200000000" />
+<file name="main_faqs.tpl" server="nichebill.com/public_html/" local="128660890859393480" remote="128783884200000000" />
+<file name="main_demo.tpl" server="nichebill.com/public_html/" local="128776512600000000" remote="128783884200000000" />
+<file name="cp_header.tpl" server="nichebill.com/public_html/" local="128783846945485235" remote="128783884200000000" />
+<file name="cp_footer.tpl" server="nichebill.com/public_html/" local="128661099930907990" remote="128783884200000000" />
+<file name="cp_calendar.tpl" server="nichebill.com/public_html/" local="128275309200000000" remote="128783884200000000" />
+<file name="cp_header2.tpl" server="nichebill.com/public_html/" local="128783846946110235" remote="128783884200000000" />
+<file name="cp_profitreport.tpl" server="nichebill.com/public_html/" local="128275309200000000" remote="128783884200000000" />
+<file name="cp_table.tpl" server="nichebill.com/public_html/" local="128275309200000000" remote="128783884200000000" />
+<file name="ewallet.tpl" server="nichebill.com/public_html/" local="128275309200000000" remote="128783884200000000" />
+<file name="ewallet_header.tpl" server="nichebill.com/public_html/" local="128275309200000000" remote="128783884200000000" />
+<file name="index.html" server="nichebill.com/public_html/" local="128783846946852422" remote="128783884200000000" />
+<file name="int_account.tpl" server="nichebill.com/public_html/" local="128783846948600469" remote="128783884200000000" />
+<file name="int_check.tpl" server="nichebill.com/public_html/" local="128783846949118047" remote="128783884200000000" />
+<file name="int_create_account.tpl" server="nichebill.com/public_html/" local="128783846950465704" remote="128783884200000000" />
+<file name="int_creditcard.tpl" server="nichebill.com/public_html/" local="128783846951832891" remote="128783884200000000" />
+<file name="int_entry.tpl" server="nichebill.com/public_html/" local="128783846952565313" remote="128783884200000000" />
+<file name="int_final.tpl" server="nichebill.com/public_html/" local="128783846952975469" remote="128783884200000000" />
+<file name="int_footer.tpl" server="nichebill.com/public_html/" local="128653172985226092" remote="128783884200000000" />
+<file name="int_gkard.tpl" server="nichebill.com/public_html/" local="128653172985191918" remote="128783884200000000" />
+<file name="int_header.tpl" server="nichebill.com/public_html/" local="128783846953541875" remote="128783884200000000" />
+<file name="int_order_creditcard.tpl" server="nichebill.com/public_html/" local="128783846954420782" remote="128783884200000000" />
+<file name="int_order_header.tpl" server="nichebill.com/public_html/" local="128783846954967657" remote="128783884200000000" />
+<file name="int_orderapproval.tpl" server="nichebill.com/public_html/" local="128653173001380630" remote="128783884200000000" />
+<file name="int_orderhead.tpl" server="nichebill.com/public_html/" local="128653173001175586" remote="128783884200000000" />
+<file name="int_orderprocess.tpl" server="nichebill.com/public_html/" local="128653173004592986" remote="128783884200000000" />
+<file name="int_subinfo.tpl" server="nichebill.com/public_html/" local="128653173008620636" remote="128783884200000000" />
+<file name="int_web900.tpl" server="nichebill.com/public_html/" local="128783846955866094" remote="128783884200000000" />
+<file name="legal_privacy.tpl" server="nichebill.com/public_html/" local="128653173024999746" remote="128783884200000000" />
+<file name="legal_terms.tpl" server="nichebill.com/public_html/" local="128653173051557826" remote="128783884200000000" />
+<file name="main_ach.tpl" server="nichebill.com/public_html/" local="128653173029608354" remote="128783884200000000" />
+<file name="main_creditprocessing.tpl" server="nichebill.com/public_html/" local="128653173043502526" remote="128783884200000000" />
+<file name="main_etel900.tpl" server="nichebill.com/public_html/" local="128783846958327032" remote="128783884200000000" />
+<file name="main_gateway.tpl" server="nichebill.com/public_html/" local="128783846959762579" remote="128783884200000000" />
+<file name="main_passwordmanagemn.tpl" server="nichebill.com/public_html/" local="128653173077808340" remote="128783884200000000" />
+<file name="main_rates.tpl" server="nichebill.com/public_html/" local="128653173069308778" remote="128783884200000000" />
+<file name="main_resellers.tpl" server="nichebill.com/public_html/" local="128783846960563360" remote="128783884200000000" />
+<file name="main_resources.tpl" server="nichebill.com/public_html/" local="128653173083735088" remote="128783884200000000" />
+<file name="main_sitemap.tpl" server="nichebill.com/public_html/" local="128653173089002766" remote="128783884200000000" />
+<file name="nbflash.swf" server="nichebill.com/public_html/" local="128653173097199644" remote="128783884200000000" />
+<file name="orderprocessing.tpl" server="nichebill.com/public_html/" local="128783846961286016" remote="128783884200000000" />
+</dwsync>

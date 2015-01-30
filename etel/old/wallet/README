@@ -1,0 +1,9 @@
+Dopays Script - The Online Universal Payment System
+
+WHAT'S NEW IN VERSION 2.8 [03/25/2006]?
+
+- Multiple member emails: you can now choose the amount of emails the member can use his account with.
+- Back after logout disabled (security feature).
+- CSV file upload for mass payments: you can use a CSV file for mass payments and upload it. 
+- Send money to unregistered members: now you can send money to unregistered members. If the member is not present in the system, an email will be sent to him, inviting him to open an account and as soon as the account is confirmed, the money is transferred into his account. In account overview, you can see pending payments to unregistered members.
+- FAQ: edit your FAQ questions and answers from the admin back-end. 

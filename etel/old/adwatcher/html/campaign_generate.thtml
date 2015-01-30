@@ -1,0 +1,117 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Generate Tracking Code</div><br />
+			In order for AdWatcher to track sales and actions of visitors to your website, you need to place a tracking 
+			code on your "Thank You" page that will identify new customers and leads for the statistical portion of the 
+			program. A "Thank You" page is the final page your customers are redirected to after making a purchase or 
+			performing an action such as signing up for your newsletter.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Generate Tracking Code</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=generate_code" method="post" target="_output">				
+					<tr>
+						<td nowrap class="Title">Tracking Type:</td>
+						<td>
+							<table width="100%" cellspacing="0" cellpadding="0" border="0" height="0" style="padding:0px;margin:0px;">
+								<tr>
+									<td style="border:0px;"><select name="svar[type]" size="1" onchange="changeAction(); return false;"><option value="s" selected>Sale</option><option value="a">Action</option></select></td>
+									<td style="border:0px;"><div id="actionType" style="display:none;">
+										<table width="100%" cellspacing="0" cellpadding="0" border="0" style="padding:0px;margin:0px;">
+											<tr>
+												<td nowrap style="border:0px;">Action Type:</td>
+												<td style="border:0px;">{action_type}</td>
+												<td style="border:0px;" width="100%"> <a href="?action=add_action">Add Action Type</a> </td>																		
+											</tr>
+										</table>
+									</div>
+									</td>
+								</tr>
+							</table>						
+						</td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Select what you want to track – sales or actions. If "Sale" is selected, you will need to input 
+						a tracking amount below. If "Action" is selected, you may select the type of action from the 
+						drop-down menu or add a new one if your specific action is not in the list provided.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Tracking Amount:</td>
+						<td><input type="text" name="svar[cost]" value="0.00" size="10" id="cost" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						The Tracking Amount is necessary for calculating revenue, profits, and other statistics. 
+						If you know what your average sale is, enter the exact value. If you’re using a shopping cart 
+						and your total sale value varies from order to order, you can enter a "variable" that will 
+						automatically be substituted with the actual sale amount. Consult with your shopping cart 
+						provider for more information.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Optional Field 1:</td>
+						<td><input type="text" name="svar[opt1]" value="" maxlength="100" style="width:250px;" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						The Optional field allows you to capture further information, such as the email address or 
+						the name of the customer through the use of variables. Consult with your shopping cart provider 
+						for more information.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Optional Field 2:</td>
+						<td><input type="text" name="svar[opt2]" value="" maxlength="100" style="width:250px;" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						You may capture a second piece of identifying information using this field.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Generate Tracking Code " class="csubmit" onclick="showBox('Box2', 'tBox2');window.location.href='#generate';" /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+			
+			<div style="clear:both;">&#160;</div>
+
+			<a name="generate"></a>
+			<div class="camOut" style="width:712px;" onclick="showHide('Box2', 'tBox2');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox2" class="max" style="margin-bottom:-1px;padding-bottom:-1px;" />Tracking Code Output</div>
+			<div class="leftBox extended" id="Box2" style="display:none;">
+				<iframe width="700" height="190" name="_output" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes" id="output"></iframe>
+			</div>			
+			
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

@@ -1,0 +1,323 @@
+/* ***************************************************************
+* Orca Knowledgebase v2.1b
+*  A small and efficient knowledgebase system
+* Copyright (C) 2004 GreyWyvern
+*
+* This program may be distributed under the terms of the GPL
+*   - http://www.gnu.org/licenses/gpl.txt
+* 
+* See the readme.txt file for installation instructions.
+*************************************************************** */
+
+/* ************************************************************ */
+/* ***** User GUI ********************************************* */
+/* ************************************************************ */
+#okb_main {
+  width:99%;
+  text-align:center;
+}
+#okb_main h1 {
+  text-align:left;
+  margin:3px;
+}
+#okb_main form {
+  margin:0px;
+}
+#okb_main input, select {
+  vertical-align:middle;
+  margin:1px;
+}
+
+/* ***** Control Panel **************************************** */
+#okb_controls {
+  text-align:left;
+  margin:0px auto;
+  border:2px outset #aaaaaa;
+  background-color:#aaaaaa;
+  font-size:100%;
+}
+#okb_controls tr td {
+  white-space:nowrap;
+  vertical-align:top;
+  padding:2px;
+}
+#okb_controls tr td#okb_search {
+  text-align:left;
+  padding-right:2em;
+}
+#okb_controls tr td#okb_catego {
+  text-align:right;
+  padding-left:2em;
+}
+#okb_controls tr td h4 {
+  display:inline;
+  margin:0px;
+}
+#okb_controls tr td input, select {
+  font-size:75%;
+}
+
+/* ***** Full Question/Answer Display ************************* */
+#okb_question {
+  margin:10px 0px;
+  width:99%;
+  text-align:center;
+}
+#okb_display {
+  width:95%;
+  margin:0px auto;
+  border-top:2px solid #999999;
+  border-bottom:2px solid #999999;
+}
+#okb_qid {
+  vertical-align:top;
+  padding:3px 8px;
+  background-color:#cccccc;
+  color:#000000;
+  text-align:center;
+  font-size:200%;
+  font-weight:bold;
+  border-right:2px solid #999999;
+}
+#okb_title {
+  padding:2px 5px;
+  background-color:#dddddd;
+  color:#000000;
+  text-align:left;
+  font-size:125%;
+  font-weight:bold;
+  border-bottom:2px solid #999999;
+}
+#okb_answer {
+  padding:5px;
+  font-size:85%;
+  text-align:left;
+}
+#okb_answer span {
+  float:right;
+  white-space:nowrap;
+}
+#okb_answer h3 {
+  text-align:left;
+  margin:3px;
+  border-bottom:1px solid #000000;
+}
+#okb_answer div {
+  margin:10px 2%;
+}
+#okb_inform {
+  font-size:90%;
+  padding:0px 5%;
+  text-align:left;
+}
+#okb_inform span {
+  float:right;
+  white-space:nowrap;
+}
+
+/* ***** Question List **************************************** */
+#okb_list {
+  padding:5px 2%;
+  font-size:90%;
+}
+#okb_list h3 {
+  margin:0px;
+  text-align:left;
+  padding:0px 4%;
+}
+#okb_list h3 span {
+  float:right;
+  white-space:nowrap;
+}
+#okb_listbox {
+  padding:0px;
+  margin:3px auto;
+  list-style-type:none;
+  border-top:2px solid #999999;
+  border-left:2px solid #999999;
+}
+.okb_list_row0 {
+  padding:3px;
+  text-align:left;
+  background-color:#eeeeee;
+}
+.okb_list_row1 {
+  padding:3px;
+  text-align:left;
+}
+#okb_list li span {
+  float:right;
+  white-space:nowrap;
+  font-size:80%;
+  margin-left:1em;
+}
+
+/* ***** Footer Items ***************************************** */
+#okb_pagin {
+  margin:10px 15%;
+  font-size:90%;
+  text-align:center;
+}
+#okb_pagin_prev {
+  float:left;
+  text-align:right;
+  white-space:nowrap;
+  width:15%;
+}
+#okb_pagin_page {
+  margin:0px auto;
+  width:60%;
+  text-align:center;
+}
+#okb_pagin_next {
+  float:right;
+  text-align:left;
+  white-space:nowrap;
+  width:15%:
+}
+#okb_mail {
+  font-size:90%;
+  margin:20px 5%;
+  text-align:center;
+}
+#okb_mail h3 {
+  margin:2px;
+}
+
+
+/* ************************************************************ */
+/* ***** Control Panel **************************************** */
+/* ************************************************************ */
+#okbc_body {
+  font:normal 100% Arial,Geneva,sans-serif;
+  background-color:#ffffff;
+  text-align:center;
+  padding:0px 5%;
+}
+.okbc_form {
+  margin:0px;
+}
+.okbc_warn {
+  color:#ff0000;
+}
+.okbc_box {
+  border:1px solid #000000;
+  margin:10px 5%;
+}
+.okbc_box h3 {
+  font-weight:normal;
+  background-color:#cecece;
+  color:#000000;
+  padding:1px;
+  text-align:center;
+  margin:0px;
+}
+.okbc_box h3.okbc_on {
+  cursor:pointer;
+  cursor:hand;
+  color:#0000cc;
+}
+.okbc_block {}
+.okbc_block form {
+  margin:0px;
+}
+.okbc_row {
+  text-align:right;
+  white-space:nowrap;
+  padding:2px;
+  border-top:1px solid #000000;
+}
+.okbc_row span {
+  float:left;
+  white-space:nowrap;
+  text-align:left;
+}
+.okbc_row input {
+  vertical-align:middle;
+  font-size:85%;
+}
+.okbc_row select {
+  vertical-align:middle;
+  font-size:85%;
+}
+.okbc_row textarea {
+  vertical-align:middle;
+  font-size:85%;
+}
+.okbc_row ul {}
+#okbc_table {
+  width:100%;
+  font-size:80%;
+}
+#okbc_table th {
+  white-space:nowrap;
+}
+#okbc_table form {
+  margin:0px;
+}
+#okbc_table input {
+  font-size:80%;
+}
+.okbc_td1 {
+  text-align:left;
+  border-top:1px solid #808080;
+}
+.okbc_td2 {
+  text-align:center;
+  border-top:1px solid #808080;
+}
+.okbc_td3 {
+  text-align:right;
+  border-top:1px solid #808080;
+}
+
+/* ***** File Upload Manager ********************************** */
+#okbf_table {
+  margin:0px auto;
+  border:2px solid #808080;
+}
+#okbf_table tr th {
+  background-color:#dbdbdb;
+  padding:3px;
+  font-weight:normal;
+}
+#okbf_table tr th strong {
+  font-size:120%;
+  font-style:italic;
+}
+#okbf_table tr th span {
+  font-size:90%;
+}
+#okbf_table tbody {
+  font-size:85%;
+}
+.okbf_table_td1 {
+  text-align:left;
+  font-weight:bold;
+}
+.okbf_table_td2 {
+  text-align:center;
+}
+.okbf_table_td3 {
+  text-align:right;
+}
+#okbf_files {
+  margin:10px auto;
+  border:2px solid #808080;
+  font-size:85%;
+}
+#okbf_files tr th {
+  background-color:#dbdbdb;
+  text-align:center;
+  padding:1px 4px;
+}
+#okbf_files tr th#okbf_col1 {
+  text-align:left;
+  width:50%;
+}
+#okbf_files tr.okbf_line {
+  background-color:#ececec;
+}
+#okbf_refresh {
+  text-align:center;
+}

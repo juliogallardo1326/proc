@@ -1,0 +1,59 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='VERIFICATION OF YOUR ACCOUNT';
+$data['PageFile']='verify';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+        header("Location:{$data['Host']}/index.htm");
+        echo('ACCESS DENIED.');
+        exit;
+}
+###############################################################################
+if(is_info_empty($uid)){
+        header("Location:{$data['Host']}/members/profile.htm");
+        echo('ACCESS DENIED.');
+        exit;
+}
+###############################################################################
+###############################################################################
+$post=select_info($uid, $post);
+if(!$post['step'])$post['step']=1;
+###############################################################################
+
+### CONTENT
+
+###############################################################################
+display('members');
+###############################################################################
+?>

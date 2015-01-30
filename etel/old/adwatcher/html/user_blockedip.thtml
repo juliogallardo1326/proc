@@ -1,0 +1,37 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Blocked IP's</div><br />
+			This feature allows you to block IPs from being recorded in your statistics. Once a IP address is blocked, 
+			all clicks, actions and sales will not be recorded for the IP addresses specified. This is useful if you 
+			want to conduct some tests without adding unnecessary clicks or sales to your reports. 
+			
+			<br /><br />
+			Keep in mind that by blocking the IP, you only prevent it from appearing in your AdWatcher reports. It will 
+			still be recorded by your advertising source.			
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Blocked IP's</div>
+			<div class="leftBox extended" id="Box1">
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=blocked_ips" method="post">
+					<tr>
+						<td nowrap class="Title" style="text-align:right;width:50%;border:0px;vertical-align:middle;padding-right:10px;">Block IP Address:</td>
+						<td style="text-align:left;border:0px;padding-right:10px;"><input type="text" name="svar[toblock]" style="width:150px;" value="{toblock}" maxlength="15" /></td>
+						<td style="text-align:left;padding:10px 25px 10px 0px;width:50%;border:0px;"><input type="submit" name="svar[block]" value="  Block IP Address  " class="csubmit" style="width:150px;" /></td>
+					</tr>
+					<tr>
+					</tr>
+					<tr>
+						<td nowrap class="Title" style="text-align:right;width:50%;border:0px;vertical-align:middle;padding-right:10px;">Unblock IP Address:</td>
+						<td style="text-align:left;border:0px;padding-right:10px;">{select}</td>
+						<td style="text-align:left;padding:10px 25px 10px 0px;width:50%;border:0px;"><input type="submit" name="svar[unblock]" value="  Unblock IP Address  " class="csubmit" style="width:150px;" /></td>						
+					</tr>
+				  </form>								
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

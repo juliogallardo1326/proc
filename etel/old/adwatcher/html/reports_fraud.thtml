@@ -1,0 +1,115 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<form action="?action=fraud_reports" method="post" name="oForm">
+				<input type="hidden" name="svar[ex_m]" value="{ex_m}" />
+				<input type="hidden" name="svar[ex_y]" value="{ex_y}" />
+				<input type="hidden" name="svar[ex_g]" value="{ex_g}" />
+					<tr>
+						<td nowrap>Reports - Fraud Reports</td>
+						<td width="100%" style="text-align:right;"><input type="submit" name="svar[export_fraud]" value=" Export To CSV " class="csubmit" style="margin-bottom:3px;" /></td>
+						<td>&#160;</td>						
+						<td style="text-align:right;"><input type="button" name="print" value=" Print This Page " class="csubmit" onclick="javascript:doPrint();" style="margin-bottom:3px;" /></td>
+					</tr>
+				</table></div><br />
+	AdWatcher monitors all of your campaigns for fraudulent activity. Any suspicious behavior is recorded here for your reference. If we detect any potential fraud, please take note of the information listed below to file a claim for investigation with your advertising source.
+	
+	<br /><br />	
+	<b>TIP:</b> Want to file a complaint with the search engine regarding your fraudulent clicks? Check the appropriate records and click on "Generate Refund Request" at the bottom of the page to create a formal eMail to send to them.
+		</div>
+		<div class="leftContainer extended">
+			<div class="camOut" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';" style="width:712px;cursor:pointer !important;"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Campaign Reports - Fraud Reports for {current_month} {current_year}</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="2" border="0" id="innerTable">
+					<thead>
+					<tr>
+						<td class="ctitle"><input type="checkbox" name="allbox" value="Check All" title="Select/Deselect All" onClick="CheckAll();" class="sm_check" /></td>																			
+						<td width="20%" class="title" style="text-align:left !important;">Campaign</td>
+						<td class="sp">&#160;</td>						
+						<td nowrap class="title" style="text-align:left !important;">Total Clicks</td>
+						<td class="sp">&#160;</td>
+						<td nowrap class="title" style="text-align:left !important;">Keyword</td>
+						<td class="sp">&#160;</td>						
+						<td nowrap class="title" style="text-align:left !important;">IP Address</td>
+						<td class="sp">&#160;</td>
+						<td nowrap class="title" style="text-align:left !important;">Referrer</td>												
+						<td class="sp">&#160;</td>
+						<td nowrap class="title" style="text-align:left !important;">First Click</td>												
+						<td class="sp">&#160;</td>
+						<td nowrap class="title" style="text-align:left !important;">Last Click</td>																		
+					</tr>
+					</thead>
+					<tbody>
+					{clist}
+					</tbody>
+				</table>
+				<script type="text/javascript">
+				var st1 = new SortableTable(document.getElementById("innerTable"),
+				["None", "CaseInsensitiveString", "None", "Number", "None", "None", "None", "None", "None", "None", "None", "None", "None", "None"]);
+				</script>				
+			</div>
+			<div class="space clear">&#160;</div>
+		</div>
+		
+		<div class="leftBox extended">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0">
+				<tr>
+					<td align="right" width="100%"> Show Fraud Reports For: </td>				
+					<td>{group_select}</td>
+					<td>{month_select}</td>
+					<td>{year_select}</td>
+					<td><input type="submit" name="svar[fraud]" value=" Display Fraud Reports " class="csubmit" onclick="oForm.target='_self';" style="width:200px;" / ></td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<table cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td align="right" width="100%" style="padding-right:4px;">With Selected Campaigns:</td>
+								<td><input type="submit" name="svar[genemail]" value=" Generate Refund Request " class="csubmit" onclick="oForm.target='oframe';" style="width:200px;" / ></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				</form>
+			</table>	
+		</div>
+	</div>
+	<div class="clear">&#160;</div>
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Fraud Report Key</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="2" border="0">
+							<tr>
+								<td nowrap class="keyr" width="15%" valign="top">Campaign : </td><td valign="top" width="35%">Which campaign has incurred suspicious activity.</td>
+								<td nowrap class="keyr" width="15%" valign="top">Total Clicks : </td><td valign="top" width="35%">Total number of suspicious clicks within a 24-hour period from the same IP address.</td>
+								
+							</tr>
+							<tr>
+								<td nowrap class="keyr" width="15%" valign="top">Keyword : </td><td valign="top" width="35%">Shows the last keyword that was accessed by a suspicious user. (Note: this only applies if you're tracking keywords in a Pay Per Click campaign)</td>
+								<td nowrap class="keyr" width="15%" valign="top">IP Address : </td><td valign="top" width="35%">IP information of the suspicious user.</td>
+
+							</tr>
+							<tr>
+								<td nowrap class="keyr" width="15%" valign="top">First Click Through : </td><td valign="top" width="35%">The date and time when the suspect activity began. </td>
+								<td nowrap class="keyr" width="15%" valign="top">Last Click Through : </td><td valign="top" width="35%">The date and time when the suspect activity ended.</td>						
+							</tr>
+							<tr>
+								<td nowrap class="keyr" width="15%" valign="top">Referrer : </td><td valign="top" width="35%">Indicates the page the visitor came from.</td>
+								<td nowrap class="keyr" width="15%" valign="top"></td><td valign="top" width="35%"></td>						
+							</tr>																					
+						</table>
+					</td>				
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div><div class="space clear">&#160;</div>
+	<div style="display:none;"><iframe name="oframe" style="width:1px;height:1px;" src="{export_fraud}"></iframe></div>		

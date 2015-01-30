@@ -1,0 +1,27 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Add Action Type</div><br />
+			This area will allow you to add a action type to the system. An action type will allow you to break down your campaign reports and view each action by its name.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Add Action Type</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=add_action" method="post">				
+					<tr>
+						<td nowrap class="Title" style="text-align:right;padding-right:10px;width:45%;">Action Name:</td>
+						<td style="width:55%;"><input type="text" name="svar[action]" value="" maxlength="75" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Add Action Type " class="csubmit" /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+			
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

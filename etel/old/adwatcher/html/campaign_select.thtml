@@ -1,0 +1,26 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">{lang_task} Campaign</div><br />
+			{lang_description}
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />{lang_task} Campaign</div>
+			<div class="leftBox extended" id="Box1">
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form name="Campaign" action="{action}" method="post">
+					<tr>
+						<td nowrap class="Title" style="text-align:right;width:50%;border:0px;vertical-align:middle;padding-right:10px;">Campaign to {lang_task}:</td>
+						<td style="text-align:left;width:50%;border:0px;">{select}</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align:center;padding:10px 25px 10px 0px;border:0px;"><input type="submit" name="delete" value="{lang_submit}" class="csubmit" style="width:150px;" {confirm} /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

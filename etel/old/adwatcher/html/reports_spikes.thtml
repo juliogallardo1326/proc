@@ -1,0 +1,95 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">
+				<table width="100%" cellspacing="0" cellpadding="0" border="0">
+					<form action="?action=spikes_analysis" method="post" name="oForm">
+						{hidden}
+					<tr>
+						<td nowrap>Reports - Spikes Analysis</td>
+						<td width="100%" style="text-align:right;"><input type="submit" name="svar[export_spikes]" value=" Export To CSV " class="csubmit" style="margin-bottom:3px;" onclick="oForm.target='oframe';" /></td>
+						<td>&#160;</td>
+						<td><input type="button" name="print" value=" Print This Page " class="csubmit" onclick="javascript:doPrint();" style="margin-bottom:3px;" /></td>
+					</tr>
+				</table></div><br />
+				Below is a general analysis of spike percentages for all campaigns. You may change the time frame in which the spike percentages are calculated from below.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';" style="width:712px;cursor:pointer !important;"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Campaign Reports - Spikes Analysis</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="innerTable">
+					<thead>
+						<tr>
+							<td class="title" width="1%">ID</td>
+							<td class="sp">&#160;</td>														
+							<td width="50%" class="title" style="text-align:left !important;" nowrap>Campaign</td>						
+							<td class="sp">&#160;</td>
+							<td class="title" nowrap>Avg. Clicks/Day</td>
+							<td class="sp">&#160;</td>
+							<td class="title" nowrap>Spike Date</td>
+							<td class="sp">&#160;</td>							
+							<td class="title" nowrap>Total Clicks</td>
+							<td class="sp">&#160;</td>
+							<td class="title" nowrap>Spike %</td>
+						</tr>
+					</thead>
+					<tbody>
+						{clist}
+					</tbody>
+				</table>
+				<script type="text/javascript">
+					{js}
+				</script>
+			</div>
+			<div class="space clear">&#160;</div>
+		</div>
+	</div>
+	
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Analysis Options</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0">
+							</tr>
+								<td align="left" class="nul" nowrap>View Spiked Percentages from:</td>
+								<td align="left" class="nul" style="padding-left:10px;">
+									<select name="svar[spike]" size="1">
+										<option value="7">Last 7 Days</option>
+										<option value="14">Last 14 Days</option>
+										<option value="30">Last 30 Days</option>
+									</select>			
+								</td>
+								<td style="padding-left:15px;" class="nul">&#160;</td>
+								<td align="left" class="nul" nowrap>Spike Factor:</td>
+								<td align="left" class="nul" style="padding-left:10px;">
+									<select name="svar[factor]" size="1">
+										<option value="3">3x</option>
+										<option value="4">4x</option>
+										<option value="5">5x</option>
+										<option value="6">6x</option>
+										<option value="7">7x</option>
+										<option value="8">8x</option>
+										<option value="9">9x</option>
+										<option value="10">10x</option>
+									</select>			
+								</td>
+								<td style="padding-left:15px;" class="nul">&#160;</td>								
+								<td class="nul"><input type="submit" name="svar[dt]" value=" Analyze Campaigns " class="csubmit" style="width:140px;" onclick="oForm.target='_self';" /></td>
+								<td width="100%" class="nul" align="right"></td>
+							</tr>
+						</table>
+					</td>				
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div>
+		
+	<div class="clear">&#160;</div>
+	<div style="display:none;"><iframe name="oframe" style="width:500px;height:100px;" src="_blank"></iframe></div>

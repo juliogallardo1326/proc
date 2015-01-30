@@ -1,0 +1,18 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Keyword Generators</div><br />
+			Below are a list of keyword generators that will allow you to generate a list of keywords based off words you supply.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Keyword Generators</div>
+			<div class="leftBox extended" id="Box1">
+				<ul>
+					<li><a href="http://inventory.overture.com/d/searchinventory/suggestion/" target="_blank">Yahoo Keyword Generator</a></li>
+					<li><a href="https://adwords.google.com/select/main?cmd=KeywordSandbox" target="_blank">AdWords Keyword Generator</a></li>
+				</ul>					
+			</div>		
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

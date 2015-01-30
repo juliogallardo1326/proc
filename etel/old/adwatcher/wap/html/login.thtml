@@ -1,0 +1,9 @@
+<card id="Main" title="AdWatcher Login">
+	{msg}
+	<p>
+		<b>AdWatcher Mobile</b><br />
+		Username:<br /><input title="Username" name="username" /><br />
+		Password:<br /><input title="Password" name="password" type="password" /><br />
+		<anchor>SUBMIT<go href="{login_url}" method="post"><postfield name="loginname" value="$username"/><postfield name="passwd" value="$password"/></go></anchor>
+	</p>
+</card>

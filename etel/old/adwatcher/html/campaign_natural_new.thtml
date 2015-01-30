@@ -1,0 +1,41 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">{lang_task} Campaign</div><br />
+			A Natural Campaign will allow you to track all new natural traffic to a specific website. Natural traffic is considered all traffic that does not come from paid advertisements.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />{lang_task} Campaign</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="{action}" method="post" name="newCampaign">
+				  <input type="hidden" name="svar[uid]" value="{uid}" />
+				  {hidden_cid}
+				  {hidden_edit}
+					<tr>
+						<td nowrap class="Title">Site/Domain Name:</td>
+						<td><input type="text" name="svar[c_name]" value="{c_name}" style="width:250px;" maxlength="16" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Enter the website name or domain name that you would like to track natural traffic for. The name is 
+						limited in length to 16 characters and numbers.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value="{lang_submit}" class="csubmit" /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+			
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

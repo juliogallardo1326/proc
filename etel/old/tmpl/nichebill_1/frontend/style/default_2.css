@@ -1,0 +1,149 @@
+
+/* ::::: file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/index_2.css ::::: */
+
+* { margin: 0px; padding: 0px; }
+* { font-size: 1em; }
+body { font-size: 69%; }
+img { border: medium none ; }
+body { padding: 8px 12px; }
+#content {  }
+* { background: transparent none no-repeat scroll left top; }
+h1 { font-size: 1.1em; }
+h2 { font-size: 1.05em; }
+h3 { font-size: 1.03em; }
+h4 { font-size: 1.01em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; }
+a { text-decoration: none; color: rgb(0, 0, 128); }
+a:hover { text-decoration: underline; color: rgb(0, 0, 128); }
+a:not([href]) { cursor: default; }
+a:hover:not([href]) { cursor: default; }
+a:not([href]) img { cursor: default; }
+blockquote { padding: 5px 10px; font-style: italic; color: rgb(51, 51, 51); }
+p { margin-bottom: 5px; }
+pre { white-space: normal; }
+li { margin: 0px 0px 0px 20px; }
+input.interclue-button { border: 1px solid rgb(221, 221, 221); margin: 2px; background: rgb(255, 255, 255) url('../img/') repeat-x scroll 0% 0%; color: rgb(0, 0, 0); }
+input.interclue-button:hover { border: 1px solid rgb(136, 136, 255); color: rgb(0, 0, 136); }
+.interclue-highlight { font-weight: bold; background-color: rgb(255, 255, 187); }
+#interclue-unsafeWordList { color: rgb(255, 0, 0); font-weight: bold; margin-bottom: 1em; }
+#interclue-loading { position: absolute; top: 50%; left: 50%; margin-top: -10px; margin-left: -10px; }
+.linkscent-icon { display: none; }
+.interclue-info { border: 1px solid rgb(0, 0, 221); padding: 3px 3px 3px 22px; background: rgb(238, 238, 255) url('../img/') no-repeat scroll 3px 3px; color: rgb(0, 0, 221); }
+.interclue-question { border: 1px solid rgb(0, 0, 221); padding: 3px 3px 3px 22px; background: rgb(238, 238, 255) url('../img/') no-repeat scroll 3px 3px; color: rgb(0, 0, 221); }
+.interclue-warning { border: 1px solid rgb(201, 121, 14); padding: 3px 3px 3px 22px; background: rgb(255, 255, 238) url('../img/') no-repeat scroll 3px 3px; color: rgb(201, 121, 14); }
+#imagepreview-image { border: 1px solid rgb(221, 221, 221); margin: 5px; padding: 5px; height: 80%; }
+.imagepreview-box { text-align: center; }
+.imagepreview-imagebox { overflow: visible; min-height: 130px; height: 130px; width: 100%; text-align: center; }
+.imagepreview-imagestats, .imagepreview-message { text-align: center; color: rgb(0, 136, 0); }
+.interclue-clue-error { background: transparent url('../img/') no-repeat scroll center center; width: 100%; height: 100%; }
+.interclue-clue-loading { background: transparent url('../img/') no-repeat scroll center center; width: 100%; height: 100%; text-align: center; }
+#interclue-content-floater { border-style: solid; border-color: rgb(238, 238, 238) rgb(102, 102, 102) rgb(102, 102, 102) rgb(238, 238, 238); border-width: 1px; margin: 5px 0pt 5px 5px; padding: 2px; background: rgb(255, 255, 221) none repeat scroll 0% 0%; overflow: hidden; font-size: 0.85em; width: 126px; float: right; text-align: center; z-index: 10; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; }
+.interclue-delicious-tagcloud { overflow: hidden; width: 126px; }
+table.interclue-delicious-tags-list { margin: 3px; width: 120px; }
+table.interclue-delicious-tags-list .odd td { background: rgb(238, 238, 238) none repeat scroll 0% 0%; }
+table.interclue-delicious-tags-list .itemcount { text-align: center; }
+table .textcell { text-align: left; }
+table .intcell { text-align: right; }
+.interclue-content-linktypes { margin-top: 4px; text-align: left; }
+.interclue-content-linktypes img { vertical-align: top; margin-top: -2px; }
+#ajaxsummariser-floater-right { position: relative; float: right; text-align: center; width: 138px; }
+#interclue-thumbnail-image { background: rgb(255, 255, 255) none repeat scroll 0% 0%; width: 120px; height: 90px; }
+#interclue-thumbnail-attribution { text-align: center; }
+#interclue-header { overflow: hidden; }
+#interclue-header a { font-weight: bold; }
+.interclue-clue-infoblock { border: 1px solid rgb(0, 136, 0); margin: 0pt 0pt 2px; padding: 3px; background: rgb(238, 255, 238) none repeat scroll 0% 0%; list-style-type: none; color: rgb(0, 136, 0); -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; }
+.interclue-clue-infoblock li { margin: 0pt; padding: 0pt; }
+.interclue-clue-infoblock img { border: medium none ; margin: -3px 5px 0pt 3px; vertical-align: bottom; }
+.interclue-clue-infoblock a { text-decoration: underline; }
+#interclue-pagestats { overflow: hidden; }
+#interclue-content-text-stats, #interclue-content-resource-stats, #interclue-content-link-stats { margin: 3px 3px 1px; width: 120px; height: 10px; display: block; }
+.interclue-bargraph-bar { height: 10px; font-size: 10px; clear: both; position: relative; }
+.interclue-bargraph-bar-overlay { padding: 0pt 0pt 0pt 5px; position: absolute; height: 11px; width: 114px; font-weight: bold; text-align: right; top: -1px; }
+.interclue-bargraph-bar-section { height: 10px; float: left; }
+.interclue-bargraph-bar-section-summaryWordCount { background-color: rgb(102, 187, 102); }
+.interclue-bargraph-bar-section-contentWordCount { background-color: rgb(153, 221, 153); }
+.interclue-bargraph-bar-section-navWordCount { background-color: rgb(204, 255, 204); }
+.interclue-bargraph-bar-section-linksInternal { background-color: rgb(102, 102, 187); }
+.interclue-bargraph-bar-section-linksExternal { background-color: rgb(153, 153, 221); }
+.interclue-bargraph-bar-section-linksOther { background-color: rgb(204, 204, 255); }
+.interclue-bargraph-bar-section-images { background-color: rgb(187, 102, 187); }
+.interclue-bargraph-bar-section-stylesheets { background-color: rgb(221, 153, 221); }
+.interclue-bargraph-bar-section-scripts { background-color: rgb(255, 204, 255); }
+.interclue-bargraph-bar-section-documents { background-color: rgb(187, 102, 0); }
+.interclue-bargraph-bar-section-media { background-color: rgb(221, 153, 0); }
+#interclue-tooltip-box { border: 1px solid rgb(0, 0, 0); padding: 3px; display: none; position: absolute; top: 0px; left: 0px; color: infotext; background-color: infobackground; width: 150px; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; }
+.interclue-content-linktype-image { margin: 1px 2px; }
+.interclue-summary-buttons { border: 1px solid rgb(0, 0, 136); margin: 5px 0pt 0pt; padding: 2px; background: rgb(238, 238, 255) none repeat scroll 0% 0%; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; }
+.interclue-summary-button { display: inline; position: relative; }
+.interclue-summary-buttons .interclue-button-image { display: inline; position: relative; width: 40px; text-align: center; }
+.interclue-summary-buttons img { margin: 0pt 4px; vertical-align: bottom; }
+.interclue-summary-button { height: 20px; white-space: nowrap; }
+.interclue-footnote { font-size: 0.9em; color: rgb(51, 51, 51); }
+#interclue-textsummary { border: 1px solid rgb(187, 187, 187); padding: 5px; overflow: auto; background-color: rgb(248, 248, 248); }
+#interclue-textsummary pre { white-space: pre; font-family: monospace; font-size: 1.1em; }
+#ajaxsummariser-framesetwarning { border: 1px solid rgb(0, 136, 0); margin: 0pt 0pt 2px; padding: 3px; background: rgb(238, 255, 238) none repeat scroll 0% 0%; color: rgb(0, 136, 0); -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; }
+#interclue-content-published-date { white-space: nowrap; text-align: center; }
+.interclue-metadata-published-days { color: rgb(0, 153, 0); }
+.interclue-metadata-published-weeks { color: rgb(102, 153, 0); }
+.interclue-metadata-published-months { color: rgb(153, 153, 0); }
+.interclue-metadata-published-years { color: rgb(153, 102, 0); }
+.metadata-block-3rd-party .metadata-title { font-style: italic; }
+.metadata-block-destination .metadata-title, .metadata-block-destination .metadata-content { background-color: rgb(255, 221, 153); }
+.metadata-block-disabled .metadata-title, .metadata-block-disabled .metadata-content { background-color: transparent; }
+.metadata-title h3 { white-space: nowrap; }
+.interclue-content-linktypes h4 { margin: 0pt 0pt 3px; }
+#metadata-feeds-block { text-align: left; }
+#interclue-thumbnail-tooltip-heading { text-align: center; }
+#imagepreview-filesize { font-size: 1.1em; }
+.metadata-block { background: transparent url('../img/') no-repeat scroll 0% 0%; margin-bottom: 4px; }
+.metadata-block h3 { padding: 3px 0pt 1px; height: 18px; font-size: 1.1em; text-align: left; }
+.metadata-block h3 img { margin: 0pt 1px; vertical-align: bottom; }
+.metadata-block .toggle, .metadata-block .metadata-close-button { margin: 0pt 1px; padding: 0pt; float: right; }
+.metadata-block { text-align: left; }
+.metadata-block-disabled { opacity: 0.4; }
+.metadata-block-disabled h3 { padding: 3px 0pt 1px; height: 14px; font-size: 0.9em; }
+#metadata-delicious-block { text-align: center; }
+#metadata-digg-block { text-align: center; }
+#metadata-downloadablefiles-list { width: 100%; }
+#metadata-downloadablefiles-list td { padding: 0pt 1px; }
+#metadata-downloadablefiles-list a { overflow: hidden; display: block; }
+.metadata-footer, .metadata-footer a { text-align: center; color: rgb(136, 136, 255); }
+#metadata-more { padding: 3px 0pt 0pt; line-height: 18px; text-align: center; }
+#interclue-footer { clear: both; }
+.interclue-faviconlink, .interclue-faviconlink img { border: 0px none ; margin: 0pt 5px 0pt 0pt; width: 16px; height: 16px; vertical-align: middle; }
+#interclue-qfs-block { margin-top: 15px; }
+#interclue-mp3-summary { text-align: center; }
+img.summary-image { margin: 2px 0pt; }
+img.summary-image-thumbnail, a img.summary-image-thumbnail { margin: 2px 0pt; cursor: -moz-zoom-in; }
+img.summary-image-known-size { background: transparent url('../img/') no-repeat scroll center center; }
+div [name="flashContentDiv"] { display: none; }
+@media print {
+  .interclue-clue-infoblock, .metadata-title .toggle, #metadata-more { display: none; }
+}
+div.summary-image-block { overflow: auto; }
+div.summary-image-block img { margin: 2px; display: inline; }
+img.interclue-placeholder { display: none; }
+.interclue-message-block { border: 1px solid rgb(0, 0, 136); padding: 6px; background: rgb(232, 232, 255) none repeat scroll 0% 0%; margin-top: 10px; -moz-border-radius-topleft: 8px; -moz-border-radius-topright: 8px; -moz-border-radius-bottomright: 8px; -moz-border-radius-bottomleft: 8px; }
+.interclue-message-block a { text-decoration: underline; }
+.unsafeurl-buttons-block { text-align: center; }
+.unsafeurl-buttons-block .interclue-button { margin: 5px 0pt; display: block; width: 250px; text-align: center; }
+#interclue-thumbnail-image-box { border: 1px solid rgb(221, 221, 255); margin: 2px; background-color: rgb(255, 255, 255); width: 120px; height: 90px; text-align: center; line-height: 90px; }
+#interclue-thumbnail-image-box img { vertical-align: middle; }
+iframe#ajaxsummariser-whole-page { background: rgb(255, 255, 255) none no-repeat scroll center center; }
+#ajaxsummariser-whole-page-div li { display: inline; }
+.ajaxsummariser-paragraph-break { height: 20px; visibility: hidden; }
+#unsafe-form { margin: 20px; }
+#unsafe-form .radio, #unsafe-form .checkbox { margin: 0px 5px; }
+#unsafe-form label { font-weight: bold; margin-right: 10px; }
+.unsafe-footnote { color: rgb(102, 102, 102); }
+#unsafe-domain { font-weight: bold; color: rgb(221, 0, 0); }
+.interclue-form-field { margin-top: 5px; margin-bottom: 10px; }
+#unsafe-form .interclue-button { min-width: 200px; }
+#unsafe-form .interclue-button-description { color: rgb(102, 102, 102); }
+#unsafe-form .disclaimer { font-size: 85%; color: rgb(102, 102, 102); }
+.unsafe-querystring { color: rgb(0, 0, 221); font-weight: bold; }
+#unsafe-url { padding: 10px; font-weight: bold; }
+.unsafeurl-highlight-unsafe-word { color: rgb(255, 0, 0); font-weight: bold; }
+#interclue-textsummary { text-align: left; }
+* { font-family: "Arial",sans-serif; }

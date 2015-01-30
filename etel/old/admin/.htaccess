@@ -1,0 +1,3 @@
+<Files  *.php>
+ 	LimitRequestBody 20000000
+</Files>   

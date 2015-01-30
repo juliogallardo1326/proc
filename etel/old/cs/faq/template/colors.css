@@ -1,0 +1,179 @@
+/**
+* $Id: colors.css,v 1.1.2.3 2006/01/02 12:47:16 thorstenr Exp $
+*
+* In this CSS file you'll find all color defintions for phpMyFAQ
+*
+* @author		Jens Grochtdreis <jens@grochtdreis.de>
+* @author		Thorsten Rinne <thorsten@rinne.info>
+* @since		2005-03-12
+* @copyright	(c) 2005-2006 phpMyFAQ Team
+* 
+* The contents of this file are subject to the Mozilla Public License
+* Version 1.1 (the "License"); you may not use this file except in
+* compliance with the License. You may obtain a copy of the License at
+* http://www.mozilla.org/MPL/
+* 
+* Software distributed under the License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific language governing rights and limitations
+* under the License.
+*/
+
+/**
+* Main body
+*/
+html, body {
+   background: #ffffff;
+   color: #000000;
+}
+
+/**
+* the header with the title
+*/
+#header {
+   background: #0D487A;
+   color: #ffffff;
+}
+#header h1 a {
+   color: #E48428;
+} 
+#header ul a {
+   color: #ffffff;
+}
+
+/**
+* Categories
+*/
+#categories {
+    background-color: #EDF2F2;
+    border-color: #D0D9D9;
+}
+#categories li {
+    border-color: #0D487A;
+}
+#categories li a {
+    border-color: #D0D9D9;
+    background-color: #EDF2F2;
+    color: #000000;
+}
+#categories li a:hover {
+    background-color: #D0D9D9;
+    color: #000000;
+}
+
+#categories .active {
+	background-color: #D0D9D9;
+}
+#categories .subcat a {
+	background-color: #F2ECEC;
+}
+#categories .subcat .active {
+	background-color: #ECF2ED;
+} 
+/**
+* Search box and language selection box
+*/
+#search, #langform {
+   border-color: #D0D9D9;
+   background-color: #EDF2F2;
+}
+#search input, input[type=text] {
+   background: #ffffff;
+   border-color: #000000;
+}
+#search input[type=text]:focus {
+   background: #f5f5f5;
+}
+
+/**
+* Top 10 and Latest areticles
+*/
+#topten h3, #latest h3 {
+   border-color: #a9a9a9;
+}
+#topten ol, #latest ol {
+   
+}
+#topten li, #latest li {
+   
+}
+
+/**
+* Main content
+*/
+.main-content h2, .main-content h3 {
+  color: #000000;
+  border-color: #a9a9a9;
+}
+
+/**
+* Table definitions in the main content column
+*/
+.main-content table {
+   border-color: #a9a9a9;
+}
+td, th, .main-content td {
+   border-color: #a9a9a9;
+}
+.main-content th {
+   border-bottom-color: transparent;
+}
+
+/**
+* Fieldset definitions in the main content column
+*/
+.main-content fieldset {
+   border-color: #e7e7e7;
+}
+
+/**
+* Form definitions in the main content column
+*/
+.main-content form textarea, .main-content form .inputfield {
+   color: #333333;
+   background-color: #ffffff;
+   border-color: #e7e7e7;
+   border-top-color: #999999;
+   border-left-color: #999999;
+}
+.main-content form textarea:focus, .main-content form input[type=text]:focus {
+   background: #f5f5f5;
+}
+.main-content form input[type=radio], .main-content form input[type=checkbox] {
+   background-color: transparent;
+}
+select {
+   background-color: #ffffff;
+   color: inherit;
+}
+
+/**
+* Submit button definitions
+*/
+input[type=submit] {
+	color: Black;
+	background: #EDF2F2;
+	border-color: #ffffff;
+	border-bottom-color: #dddddd;
+	border-right-color: #dddddd;
+}
+
+/**
+* Highlighted search result
+*/
+.highlight {
+	background-color: #F8F8FF;
+	font-weight: bold;
+	border: 1px dotted #FF6347;
+}
+
+/**
+* Footer definitions
+*/
+#footer {
+   color: #666666;
+   border-color: #666666;
+}
+#footer, #footer a, #footer a:visited {
+   color: #666666;
+}

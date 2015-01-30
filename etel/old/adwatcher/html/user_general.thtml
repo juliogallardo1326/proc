@@ -1,0 +1,30 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">General Settings</div><br />
+			In this area, you may modify general settings to your AdWatcher application.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />General Settings</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=general_settings" method="post">
+					<tr>
+						<td style="width:30%;text-align:left;" class="Title">Default Landing Page:</td>
+						<td><input type="text" name="svar[default_landing]" value="{default_landing}" style="width:200px;" /></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>The Default Landing Page allows you to specify the landing page you want your visitors to go to if they try to access an invalid or a nonexisting tracking link.<br /><br /></td>
+					</tr>																									
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Update Settings " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

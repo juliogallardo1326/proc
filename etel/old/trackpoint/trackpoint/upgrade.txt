@@ -1,0 +1,32 @@
+---------------------------
+UPGRADE INSTRUCTIONS NX 0.1
+---------------------------
+1. Backup your existing trackpoint files - especially the includes/config.php and includes/se.ini files.
+If you have made changes to the language file (language/language.php) back it up as well.
+
+If you have modified the language file (language/language.php) search for "Trackpoint NX 0.1 Update" in the new file and everything underneath is new.
+
+2. Upload the new trackpoint files - these are listed in the changelog.txt file.
+
+Done!
+
+----------------------
+UPGRADE INSTRUCTIONS
+----------------------
+1. Backup your existing trackpoint files - especially the includes/config.php and includes/se.ini files.
+If you have made changes to the language file (language/language.php) back it up as well.
+
+If you have modified the language file (language/language.php) search for "Trackpoint NX Update" in the new file and everything underneath is new.
+
+2. Upload the new trackpoint files.
+
+3. Restore the includes/config.php and includes/se.ini files from your backup (and language file if appropriate).
+
+4. Log in to trackpoint as an admin user.
+
+5. Follow the upgrade wizard.
+
+This will create a backup of your database in the trackpoint/temp folder which you can download.
+When that has completed successfully, the database will be updated.
+
+New options are available on the "Settings" page and also for each user that has been created in trackpoint.

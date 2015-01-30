@@ -1,0 +1,111 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='SIGN UP FOR YOUR FREE ACCOUNT TODAY';
+$data['PageFile']='signup';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if($post['action']=='go')optimize('common');
+if($post['send']){
+	if(!$post['newuser']){
+		$data['Error']='Your username can not be empty.';
+	}elseif(verify_username($post['newuser'])){
+		$data['Error']='For your username you can use only next letters [A..Z, a..z, 0..9].';
+	}elseif(!$post['newpass']){
+		$data['Error']='Your password can not be empty.';
+	}elseif(strlen($post['newpass'])<$data['PassLen']){
+		$data['Error']="Your password must be at least {$data['PassLen']} characters long.";
+	}elseif($post['newpass']!=$post['cfmpass']){
+		$data['Error']='Your password and confirm should be not different.';
+	}elseif($post['newuser']==$post['newpass']){
+		$data['Error']='Your password can not be same as your username.';
+	}elseif(!$post['newques']){
+		$data['Error']='Please enter a valid security question.';
+	}elseif(!$post['newansw']){
+		$data['Error']='Please enter a valid security answer.';
+	}elseif(!$post['newmail']||verify_email($post['newmail'])){
+		$data['Error']='Please enter your valid e-mail address.';
+   }elseif($data['UseExtRegForm']&&!$post['newfname']){
+		$data['Error']='Please enter your first name.';
+   }elseif($data['UseExtRegForm']&&!$post['newlname']){
+		$data['Error']='Please enter your last name.';
+   }elseif($data['UseExtRegForm']&&!$post['newaddress']){
+		$data['Error']='Please enter your address.';
+   }elseif($data['UseExtRegForm']&&!$post['newcity']){
+		$data['Error']='Please enter your city.';
+   }elseif($data['UseExtRegForm']&&!$post['newcountry']){
+		$data['Error']='Please enter your country.';
+   }elseif($data['UseExtRegForm']&&!$post['newzip']){
+      $data['Error']='Please enter your postal code.';
+   }elseif($data['UseExtRegForm']&&!$post['newphone']){
+      $data['Error']='Please enter your telephone number.';
+	}elseif($data['UseTuringNumber']&&
+		(!$post['turing']||strtoupper($post['turing'])!=$_SESSION['turing'])
+	){
+		$data['Error']='Please enter valid turing number.';
+	}elseif($post['terms']!='on'){
+		$data['Error']='Please read our Terms and Conditions before signup.';
+	}elseif(!is_user_available($post['newuser'])){
+		$data['Error']='Sorry but this username already taken.';
+	}elseif(!is_mail_available($post['newmail'])){
+		$data['Error']='Sorry but this e-mail address already taken.';
+	}else{
+		create_confirmation(
+			$post['newuser'],
+			$post['newpass'],
+			$post['newques'],
+			$post['newansw'],
+			$post['newmail'],
+			$post['newfname'],
+			$post['newlname'],
+			$post['newcompany'],
+			$post['newregnum'],
+			$post['newdrvnum'],
+			$post['newaddress'],
+			$post['newcity'],
+			$post['newcountry'],
+			$post['newstate'],
+			$post['newzip'],
+			$post['newphone'],
+			$post['newfax'],
+			get_member_id($_SESSION['sponsor'])
+		);
+		unset($_SESSION['turing']);
+		$data['PostSent']=true;
+	}
+}else{
+	if($data['UseTuringNumber'])$_SESSION['turing']=gencode();
+}
+###############################################################################
+display('members');
+###############################################################################
+?>

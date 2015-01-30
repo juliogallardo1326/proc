@@ -1,0 +1,228 @@
+<HTML>
+<HEAD>
+<TITLE>Credit Card Purchase</TITLE>
+<script language=javascript>
+<!--
+function IsEmpty(textField,msg){
+	var strValue=textField.value;
+	for (var i = 0; i < strValue.length; i++)
+	{
+	var c = strValue.charAt(i);
+	if ((c != ' ') && (c != '\n') && (c != '\t'))
+	return false;
+	}
+	alert (msg);
+	textField.focus();
+	textField.select();
+	return true;
+}
+function IsNotMaxLength(textField,maxlen,msg) {
+  var strValue=textField.value;
+  if (strValue.length < maxlen) {
+    alert (msg);
+    textField.focus();
+	textField.select();
+    return true;
+  }
+  return false;
+}
+function IsNotSelected(textField,msg) {
+  if (textField.options[0].selected) {
+    alert (msg);
+    textField.focus();
+    return true;
+  }
+  return false;
+}
+function IsNotNumber(textField,msg) {
+  var digits = "0123456789";
+  for (i=0; i<=textField.size; i++) {
+     if (digits.indexOf(textField.value.charAt(i))== -1) {
+       alert (msg);
+       textField.focus();
+       textField.select(); 
+       return true;
+     } 
+  } 
+  return false;
+}
+function IsNotValidAmount(textField,msg){
+   var numValue=textField.value;
+	if(isNaN(numValue))
+	{
+		alert (msg);
+	    textField.focus();
+	    textField.select(); 
+	    return true;
+	}
+    return false;
+}
+function fixDecimal(DecimalNum) {
+ strNum = "" + DecimalNum;
+ if (strNum.indexOf('.') == -1)
+  return strNum + '.00';
+ seperation = strNum.length - strNum.indexOf('.');
+ if (seperation > 3)
+  return strNum.substring(0,strNum.length-seperation+3);
+ else if (seperation == 2)
+  return strNum + '0';
+ return strNum;
+}
+function fixAmount()
+{
+if (!isNaN(document.frmCCP.pg_total_amount.value))
+   document.frmCCP.pg_total_amount.value=fixDecimal(document.frmCCP.pg_total_amount.value)
+}
+//validate the fields in the form before submitting the data
+function ValidatefrmCCP() {
+if(IsEmpty(document.frmCCP.pg_total_amount,"Please enter the transaction amount"))
+	return false;
+if(IsNotValidAmount(document.frmCCP.pg_total_amount,"Invalid transaction amount"))
+	return false;
+if(IsEmpty(document.frmCCP.ecom_billto_postal_name_first,"Please enter your first name"))
+	return false;
+if(IsEmpty(document.frmCCP.ecom_billto_postal_name_last,"Please enter your last name"))
+	return false;
+if(IsEmpty(document.frmCCP.ecom_billto_postal_postalcode,"Please enter your zip code"))
+	return false;
+if(IsNotNumber(document.frmCCP.ecom_billto_postal_postalcode,"Please enter only digits for the zip code"))
+	return false;
+if(IsNotMaxLength(document.frmCCP.ecom_billto_postal_postalcode,5,"The zip code should be 5 digits long"))
+	return false;
+if(IsEmpty(document.frmCCP.ecom_payment_card_name,"Please enter the card holder name"))
+	return false;
+if(IsNotSelected(document.frmCCP.ecom_payment_card_type,"Please select the card type"))
+	return false;
+if(IsEmpty(document.frmCCP.ecom_payment_card_number,"Please enter the credit card number"))
+	return false;
+if(IsNotNumber(document.frmCCP.ecom_payment_card_number,"Please enter only digits for the credit card number"))
+	return false;
+
+if(IsNotSelected(document.frmCCP.ecom_payment_card_expdate_month,"Please select the month of the expiration date"))
+	return false;
+if(IsNotSelected(document.frmCCP.ecom_payment_card_expdate_year,"Please select the year of the expiration date"))
+	return false;
+	
+//check to see if the expiration date is valid
+todayDate=new Date()
+dteYear=parseInt(document.frmCCP.ecom_payment_card_expdate_year.value,10)
+dteMonth=parseInt(document.frmCCP.ecom_payment_card_expdate_month.value,10)-1
+if((dteYear<todayDate.getFullYear())||((dteYear==todayDate.getFullYear())&&(dteMonth<todayDate.getMonth())))
+{
+	alert("Your credit card has already expired")
+	return false;
+}
+return true;
+}
+//-->
+</script>
+</HEAD>
+<BODY>
+<form name="" action="" method="post" onsubmit="return ValidatefrmCCP()">
+  <P align=center><b>This example is to illustrate the 
+credit card purchase.</b></P>
+  <P align=center>
+  <TABLE border=0 cellPadding=1 cellSpacing=1 width="450">
+    <TR> 
+      <TD align=right>Total Amount:</TD>
+      <TD>
+        <INPUT name=pg_total_amount maxlength=20 onblur="return fixAmount()">
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>First Name:</TD>
+      <TD>
+        <INPUT name=ecom_billto_postal_name_first maxlength=20>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Last Name:</TD>
+      <TD>
+        <INPUT name=ecom_billto_postal_name_last maxlength=20>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Zip Code:</TD>
+      <TD>
+        <INPUT name=ecom_billto_postal_postalcode maxlength=5>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Card Holder Name:</TD>
+      <TD> 
+        <input name=ecom_payment_card_name>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Card Type:</TD>
+      <TD>
+        <SELECT name=ecom_payment_card_type>
+          <OPTION selected>-Select-</OPTION>
+          <OPTION value="AMER">American Express</OPTION>
+          <OPTION value="DISC">Discover</OPTION>
+          <OPTION value="MAST">MasterCard</OPTION>
+          <OPTION value="VISA">Visa</OPTION>
+        </SELECT>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Card Number:</TD>
+      <TD>
+        <INPUT name=ecom_payment_card_number maxlength=16>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right> 
+        <P align=right>Expiration Date:<br>
+          <FONT 
+      size=2>(month/year) </FONT></P>
+      </TD>
+      <TD>
+        <SELECT name=ecom_payment_card_expdate_month>
+          <OPTION selected>-Select-</OPTION>
+          <OPTION value="01">01</OPTION>
+          <OPTION value="02">02</OPTION>
+          <OPTION value="03">03</OPTION>
+          <OPTION value="04">04</OPTION>
+          <OPTION value="05">05</OPTION>
+          <OPTION value="06">06</OPTION>
+          <OPTION value="07">07</OPTION>
+          <OPTION value="08">08</OPTION>
+          <OPTION value="09">09</OPTION>
+          <OPTION value="10">10</OPTION>
+          <OPTION value="11">11</OPTION>
+          <OPTION value="12">12</OPTION>
+        </SELECT>
+        / 
+        <SELECT name=ecom_payment_card_expdate_year>
+          <OPTION selected>-Select-</OPTION>
+          <OPTION value="2001">2001</OPTION>
+          <OPTION value="2002">2002</OPTION>
+          <OPTION value="2003">2003</OPTION>
+          <OPTION value="2004">2004</OPTION>
+          <OPTION value="2005">2005</OPTION>
+          <OPTION value="2006">2006</OPTION>
+          <OPTION value="2007">2007</OPTION>
+          <OPTION value="2008">2008</OPTION>
+          <OPTION value="2009">2009</OPTION>
+          <OPTION value="2010">2010</OPTION>
+        </SELECT>
+      </TD>
+    </TR>
+    <TR> 
+      <TD colspan=2>&nbsp;</TD>
+    </TR>
+    <TR> 
+      <TD></TD>
+      <TD>
+        <input type=submit value="submit">
+		<input type="hidden" name="pg_merchant_id" value="">
+		<input type="hidden" name="pg_password" value="">
+        <input type="hidden" name="pg_transaction_type" value="">
+      </TD>
+    </TR>
+  </TABLE>
+<p></P>
+</form>
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+include('config.htm');
+$text=$_SESSION['turing'];
+if(!$text)$text='DENIED';
+###############################################################################
+$bgpath=$data['TuringBackground'];
+$image=imagecreatefromjpeg($bgpath);
+$sizes=getimagesize($bgpath);
+$iw=$sizes[0];
+$ih=$sizes[1];
+
+srand(time());
+
+$font=5;
+$fw=imagefontwidth($font)*strlen($text);
+$fh=imagefontheight($font);
+
+$x=($iw-$fw)/2;
+$y=($ih-$fh)/2;
+
+$tc=imagecolorallocate($image, 0, 50, 0);
+$lc=imagecolorallocate($image, 70, 70, 70);
+$step=8;
+for($i=1; $i<=$iw/$step; $i++) imageline($image, $i*$step, 0, $i*$step, $ih, $lc);
+$step=5;
+for($i=1; $i<=$ih/$step; $i++) imageline($image, 0, $i*$step, $iw, $i*$step, $lc);
+$step=3;
+for($i=0; $i<strlen($text); $i++){
+	imagestring(
+		$image, $font,
+		$x-($step/2)+rand(2, $step)+$i*imagefontwidth($font),
+		$y-($step/2)+rand(0, $step),
+		$text[$i], $tc
+	);
+}
+
+header('Content-type: image/jpeg');
+imagejpeg($image, '', $data['TuringQuality']);
+imagedestroy($image);
+###############################################################################
+?>

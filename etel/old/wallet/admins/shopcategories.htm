@@ -1,0 +1,110 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='SHOP MANAGEMENT';
+$data['PageFile']='categories';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['adm_login']){
+	header("Location:{$data['Admins']}/login.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+if(!$post['action'])$post['action']='view';
+###############################################################################
+if ($post['action']=='delete' && is_numeric($post['updateid'])) {
+  delete_category($post['updateid']);
+  $post['action']='view';
+}
+###############################################################################
+if ($post['action']=='update' && !empty($post['categoryname']) && is_numeric($post['cid'])) {
+  if (!$post['updateid']) insert_category($post['cid'], $post);
+  else update_category($post['updateid'], $post['cid'], $post);
+  $post['action']='view';
+} elseif ($post['action']=='update' && is_numeric($post['updateid'])) {
+  $post['categorytoupdate']=get_category($post['updateid']);
+}
+###############################################################################
+if ($post['action']=='deleteitem' && is_numeric($post['itemid'])) {
+  delete_shop_item($post['itemid']);
+  $post['action']='viewitems';
+}
+###############################################################################
+if ($post['action']=='updateitem' && !empty($post['shopname']) &&!empty($post['shopurl']) && is_numeric($post['cid'])) {
+  if (!$post['updateid']) insert_shop_item($post['cid'], $post['shopname'], $post['shopurl'], $post['shopdescription']);
+  else update_shop_item($post['updateid'], $post['shopname'], $post['shopurl'], $post['shopdescription']);
+  $post['action']='viewitems';
+} elseif ($post['action']=='updateitem' && is_numeric($post['updateid'])) {
+  $post['itemtoupdate']=get_shop_item($post['updateid']);
+}
+###############################################################################
+if ($post['action']=='viewitems') {
+  $data['PageName']='VIEW CATEGORY ITEMS';
+  if (!$post["cid"]) $post["cid"] = 0;
+  $data['ItemsCount']=get_shop_items_count($post["cid"]);
+	for($i=0; $i<$data['ItemsCount']; $i+=$data['MaxRowsByPage'])$data['Pages'][]=$i;
+	$data['ItemsList']=get_shop_items_list($post["cid"]);
+}
+###############################################################################
+if ($post['action']=='view') {
+  if (!$post["cid"]) $post["cid"] = 0;
+  $data['CategoriesCount']=get_shop_categories_count($post["cid"]);
+	for($i=0; $i<$data['CategoriesCount']; $i+=$data['MaxRowsByPage'])$data['Pages'][]=$i;
+	$data['CategoriesList']=get_shop_categories_list($post["cid"]);
+}
+###############################################################################
+if ($post['action']=='search') {
+  $data['PageName']='SEARCH SHOP';
+}
+###############################################################################
+if ($post['action']=='searchcategory' && $post['keyword']) {
+  $data['PageName']='SEARCH FOR CATEGORIES';
+  $where_pred = " UPPER(`name`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`description`) LIKE '%".strtoupper(addslashes($post['keyword']))."%' ";
+  $data['CategoriesCount']=get_shop_categories_count_where_pred($where_pred);
+	for($i=0; $i<$data['CategoriesCount']; $i+=$data['MaxRowsByPage'])$data['Pages'][]=$i;
+	$data['CategoriesList']=get_shop_categories_list_where_pred($where_pred);
+} elseif ($post['action']=='searchcategory') $post['action']=='search';
+###############################################################################
+if ($post['action']=='searchitem' && $post['keyword']) {
+  $data['PageName']='SEARCH FOR ITEMS';
+  $where_pred = " UPPER(`name`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`url`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`description`) LIKE '%".strtoupper(addslashes($post['keyword']))."%' ";
+  $data['ItemsCount']=get_shop_items_count_where_pred($where_pred);
+	for($i=0; $i<$data['ItemsCount']; $i+=$data['MaxRowsByPage'])$data['Pages'][]=$i;
+	$data['ItemsList']=get_shop_items_list_where_pred($where_pred);
+} elseif ($post['action']=='searchitem') $post['action']=='search';
+###############################################################################
+$data['SystemBalance']=select_balance(-1);
+###############################################################################
+display('admins');
+###############################################################################
+?>

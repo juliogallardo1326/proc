@@ -1,0 +1,3 @@
+	{msg}
+		<div class="bTitle" style="width:712px;">AdWatcher Resources</div>
+		<div style="display:block;"><iframe style="width:712px;height:600px;border:0px;margin:0px;" frameborder="0" height="600" src="http://www.adwatcher.com/res/{path}"></iframe></div>

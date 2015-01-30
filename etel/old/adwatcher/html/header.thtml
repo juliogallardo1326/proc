@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>AdWatcher Advertising Manager</title>
+<meta http-equiv="MSThemeCompatible" content="Yes">
+<link rel="stylesheet" type="text/css" media="screen" href="{site_path}/inf/style.css">
+<link rel="stylesheet" type="text/css" media="screen" href="{site_path}/inf/transmenu.css">
+<link rel="stylesheet" type="text/css" media="print" href="{site_path}/inf/print.css">
+<script type="text/javascript" src="{site_path}/inf/sortabletable.js"></script>
+<script language="javascript" src="{site_path}/inf/global.js"></script>
+<script language="javascript" src="{site_path}/inf/transmenuC.js"></script>
+<script language="javascript" src="{site_path}/inf/init.js"></script>
+{redirect}
+</head>
+<body onload="init();">
+<div id="wrapper">
+	<div id="mHeader">
+		<div id="mLogo"></div>
+        <div id="mLiveSupport"><script language="JavaScript" src="http://www.adwatcher.com/phplive/js/status_image.php?base_url=http://www.adwatcher.com/phplive&l=mordcomm&x=1&deptid=1&btn=1"></script></div>
+		<a href="{site_path}/?action=new_ticket" id="mEmailUs"><img src="images/email_us.gif" border="0" /></a>
+	</div>

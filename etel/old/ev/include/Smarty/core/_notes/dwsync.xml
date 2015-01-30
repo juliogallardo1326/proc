@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="core.assemble_plugin_filepath.php" server="nichebill.com/public_html/" local="128057654200000000" remote="128909152800000000" />
+<file name="core.assign_smarty_interface.php" server="nichebill.com/public_html/" local="128057654200000000" remote="128909152800000000" />
+<file name="core.create_dir_structure.php" server="nichebill.com/public_html/" local="128057654220000000" remote="128909152800000000" />
+<file name="core.display_debug_console.php" server="nichebill.com/public_html/" local="128057654220000000" remote="128909152800000000" />
+<file name="core.get_include_path.php" server="nichebill.com/public_html/" local="128057654240000000" remote="128909152800000000" />
+<file name="core.get_microtime.php" server="nichebill.com/public_html/" local="128057654240000000" remote="128909152800000000" />
+<file name="core.get_php_resource.php" server="nichebill.com/public_html/" local="128057654240000000" remote="128909152800000000" />
+<file name="core.is_secure.php" server="nichebill.com/public_html/" local="128057654260000000" remote="128909152800000000" />
+<file name="core.is_trusted.php" server="nichebill.com/public_html/" local="128057654260000000" remote="128909152800000000" />
+<file name="core.load_plugins.php" server="nichebill.com/public_html/" local="128057654280000000" remote="128909152800000000" />
+<file name="core.load_resource_plugin.php" server="nichebill.com/public_html/" local="128057654300000000" remote="128909152800000000" />
+<file name="core.process_cached_inserts.php" server="nichebill.com/public_html/" local="128057654320000000" remote="128909152800000000" />
+<file name="core.process_compiled_include.php" server="nichebill.com/public_html/" local="128057654320000000" remote="128909152800000000" />
+<file name="core.read_cache_file.php" server="nichebill.com/public_html/" local="128057654340000000" remote="128909152800000000" />
+<file name="core.rmdir.php" server="nichebill.com/public_html/" local="128057654340000000" remote="128909152800000000" />
+<file name="core.rm_auto.php" server="nichebill.com/public_html/" local="128057654340000000" remote="128909152800000000" />
+<file name="core.run_insert_handler.php" server="nichebill.com/public_html/" local="128057654360000000" remote="128909152800000000" />
+<file name="core.smarty_include_php.php" server="nichebill.com/public_html/" local="128057654960000000" remote="128909152800000000" />
+<file name="core.write_cache_file.php" server="nichebill.com/public_html/" local="128057654960000000" remote="128909152800000000" />
+<file name="core.write_compiled_include.php" server="nichebill.com/public_html/" local="128057654980000000" remote="128909152800000000" />
+<file name="core.write_compiled_resource.php" server="nichebill.com/public_html/" local="128057654980000000" remote="128909152800000000" />
+<file name="core.write_file.php" server="nichebill.com/public_html/" local="128057655000000000" remote="128909152800000000" />
+</dwsync>

@@ -1,0 +1,865 @@
+body {
+	margin:0px;
+	cursor:default;
+	background:#ffffff;
+}
+
+form {
+	margin:0px;
+}
+
+p, body, td, textarea, input {
+	font-family:Tahoma;
+	font-size:11px;
+	color:#7a7a7a;
+}
+
+a:link {color:#000000; text-decoration:none;}
+a:visited {color:#000000; text-decoration:none;}
+a:hover {color:#000000; text-decoration:none;}
+
+label {
+	cursor:pointer;
+}
+
+.NoPrint {
+	
+}
+
+select, option {
+	font-family:Tahoma;
+	font-size:11px;
+	color:#000000;	
+}
+
+.ClientSelect {
+	background:#808080;
+	background-color:#808080;	
+	color:#c0c0c0;
+	font-size:10px;
+	font-family:Verdana;
+	width:190px;
+}
+.ClientSelect option {
+	color:#c0c0c0;
+}
+
+.HeaderWelcome {
+	font-size:11px;
+	color:#ffffff;
+	font-family:Tahoma;
+	margin:0px;
+	line-height:11px;
+}
+
+.HeaderMenu, .HeaderMenu a:link, .HeaderMenu a:visited, .HeaderMenu a:hover {
+	font-size:10px;
+	color:#ffffff;
+	font-family:Tahoma;
+	margin:0px;
+	line-height:10px;
+	text-decoration:none;
+}
+
+.ShowHide, .ShowHide a:link, .ShowHide a:visited, .ShowHide a:hover  {
+	font-size:10px;
+	text-decoration:none;
+	color:#7a7a7a;
+}
+
+.TabsBorder {
+	border-bottom-style:solid;
+	border-bottom-width:2px;
+	border-bottom-color:#86c71d;
+}
+.TabsBorder2 {
+	border-bottom-style:solid;
+	border-bottom-width:2px;
+	border-bottom-color:#86c71d;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+
+.CompName1 {
+	font-family:Arial;
+	font-size:15px;
+	color:#606163;
+	line-height:14px;
+	margin:0px;
+}
+
+.TabsMenu, .TabsMenu a:link, .TabsMenu a:visited, .TabsMenu a:hover {
+	font-size:11px;
+	font-family:Tahoma;
+	color:#000000;
+	line-height:11px;
+	text-decoration:none;
+}
+
+.TabsMenuSel, .TabsMenuSel a:link, .TabsMenuSel a:visited, .TabsMenuSel a:hover {
+	font-size:11px;
+	font-family:Tahoma;
+	color:#86c71d;
+	font-weight:bold;
+	line-height:11px;
+	text-decoration:none;
+}
+
+.Copyright {
+	font-family:Tahoma;
+	color:#707070;
+	font-size:11px;
+}
+
+.MenuPath, .MenuPath a:link, .MenuPath a:visited {
+	font-family:Tahoma;
+	font-size:10px;
+	color:#666666;
+	line-height:16px;
+	text-decoration:none;
+}
+
+.MenuPath a:hover {
+	font-family:Tahoma;
+	font-size:10px;
+	color:#666666;
+	line-height:16px;
+	text-decoration:underline;
+}
+
+.FormDiv {
+	border-style:solid;
+	border-color:#c7c7c7;
+	border-width:1px;
+} 
+
+.FormHeader {
+	background:#e5e5e5;
+	padding:6px;
+}
+
+.FormSimpleTd {
+	padding:6px;
+	
+}
+
+.InputFld {
+	color:#7a7a7a;
+}
+
+.DateFld {
+	width:65px;
+	padding-left:3px;
+	color:#000000;
+}
+
+
+
+
+
+
+
+
+
+
+
+.ReportHeaderTd {
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;	
+	padding-left:6px;
+	padding-top:2px;
+}
+
+.ReportHeaderTdNoBord {
+	padding:4px;
+}
+
+.ReportHeaderTd2 {
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;	
+}
+
+.ReportHeaderTd3 {
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;	
+	padding-left:4px;
+	padding-top:2px;
+}
+.ReportHeaderTd4 {
+	padding-left:4px;
+	padding-top:2px;
+}
+
+.ReportHeaderTableTd {
+	padding-left:6px;
+	padding-top:2px;
+	padding-bottom:2px;
+}
+
+.ReportHeaderName, .ReportHeaderName a:link, .ReportHeaderName a:visited, .ReportHeaderName a:hover {
+	color:#9b9b9b;
+	font-size:9px;
+	font-weight:bold;
+	line-height:9px;
+	margin:0px;
+	text-decoration:none;
+}
+.ReportHeaderName2, .ReportHeaderName2 a:link, .ReportHeaderName2 a:visited, .ReportHeaderName2 a:hover {
+	color:#86c71d;
+	font-size:9px;
+	font-weight:bold;	
+	line-height:9px;
+	margin:0px;	
+	text-decoration:none;
+}
+.ReportSubHeaderName, .ReportSubHeaderName a:link, .ReportSubHeaderName a:visited, .ReportSubHeaderName a:hover {
+	color:#9b9b9b;
+	font-size:9px;
+	line-height:9px;
+	margin:0px;	
+	text-decoration:none;
+}
+.ReportSubHeaderName2, .ReportSubHeaderName2 a:link , .ReportSubHeaderName2 a:visited, .ReportSubHeaderName2 a:hover {
+	color:#86c71d;
+	font-size:9px;
+	line-height:9px;
+	margin:0px;	
+	text-decoration:none;
+}
+
+
+
+.ReportNameTd {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;		
+	height:30px;
+}
+.ReportNameTd2 {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;		
+	height:30px;
+	background:#f5f5f5;
+}
+
+
+.ConstLightRow {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;		
+	height:30px;
+	background:#f5f5f5;
+}
+.ConstLightRow2 {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#ffffff;		
+	background:#f5f5f5;
+	height:30px;
+}
+
+.ConstCheckCol {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;		
+	height:30px;
+	background:#E8F8E7;
+	width:5%;
+
+}
+.ConstCheckCol2 {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#ffffff;		
+	background:#E8F8E7;
+	height:30px;
+	width:5%;
+
+}
+.ConstCheckCol3 {
+	padding-left:4px;
+	padding-top:2px;
+	padding-bottom:2px;
+	background:#E8F8E7;
+	width:5%;
+
+}
+
+
+.ReportSimpleTd {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#e1e1e1;		
+	height:30px;
+	width:5%;
+}
+.ReportSimpleTd2 {
+	padding:4px;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#ffffff;		
+	height:30px;
+	width:5%;
+}
+
+.ReportOpenTd {
+	width:auto;
+}
+
+.ReportColumn {
+	color:#000000;
+	text-decoration:none;
+}
+.ReportColumn a:link, .ReportColumn a:visited {
+	color:#000000;
+	text-decoration:none;
+}
+.ReportColumn a:hover {
+	color:#000000;
+	text-decoration:underline;
+}
+.ReportSubColumn {
+	font-size:9px;
+	color:#444444;
+}
+
+
+
+
+
+
+.CldrDiv {
+	z-index: +998;
+	position: absolute;
+	visibility:hidden;
+}
+
+.CldrMainTable {
+	border-width:1px;
+	border-color:#666666;
+	border-style:solid;
+	background:#ffffff;
+	background-color:#ffffff;
+}
+
+.CldrInnerTable {
+
+}
+
+.CldrYearSelect, .CldrYearSelect option {
+	font-size:10px;
+}
+
+.CldrMonthSelect, .CldrMonthSelect option {
+	font-size:10px;
+}
+
+.CldrWeekDay {
+	text-align:center;
+	font-weight:bold;
+}
+
+.CldrPrevMonth {
+	text-align:center;
+	font-size:8px;
+}
+
+.CldrNextMonth {
+	text-align:center;
+	font-size:8px;
+}
+
+.CldrCurrentSel, .CldrCurrentSel a:link, CldrCurrentSel a:visited,  CldrCurrentSel a:hover{
+	text-align:center;
+	font-weight:bold;
+	color:#FF9933;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#d0d0d0;
+}
+
+.CldrCurrentDay, .CldrCurrentDay a:link, .CldrCurrentDay a:visited, .CldrCurrentDay a:hover {
+	text-align:center;
+	font-weight:bold;
+	color:#66CC00;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#d0d0d0;
+}
+
+.CldrToday, .CldrToday a:link, .CldrToday a:visited, .CldrToday a:hover {
+	text-align:center;
+	color:#66CC00;
+	font-weight:bold;
+}
+
+.CldrHeader {
+	text-align:center;
+	font-weight:bold;
+	color:#FF9933;
+
+}
+
+.CldrDay {
+	text-align:center;
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:#d0d0d0;
+}
+
+
+
+
+
+.GoodROI {
+	color:#669966;
+	font-weight:bold;
+
+}
+
+.BadROI {
+	color:#FF0000;
+	font-weight:bold;
+}
+
+
+
+
+.SectionName, .SectionName a:link, .SectionName a:visited, .SectionName a:hover {
+	font-size:14px;
+	color:#000000;
+	font-weight:bold;
+	font-family:Arial;
+	line-height:32px;
+	margin-bottom:10px;
+}
+
+
+.LogTab {
+	text-align:center;
+	padding-left:10px;
+	padding-right:10px;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#e5e5e5;
+
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#C8C8C8;
+}
+
+.LogTab2 {
+	text-align:center;
+	padding-left:10px;
+	padding-right:10px;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#e5e5e5;
+	border-left-style:solid;
+	border-left-width:1px;
+	border-left-color:#C8C8C8;
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#C8C8C8;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#C8C8C8;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#ffffff;
+}
+
+.LogTab3 {
+	text-align:center;
+	padding-left:10px;
+	padding-right:10px;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#e5e5e5;
+	border-left-style:solid;
+	border-left-width:1px;
+	border-left-color:#e5e5e5;
+
+
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#C8C8C8;
+}
+
+
+.PagesTable {
+	width:100%;
+	padding-top:10px;
+	padding-bottom:10px;
+
+}
+
+.PagesTD {
+	width:100px;
+	padding-left:6px;
+	padding-right:6px;
+}	
+.PagesTD2 {
+	width:100%;
+	text-align:center;
+}
+
+
+.LogRecordTR {
+	background:#ffffff;
+}
+.LogRecordTR2 {
+	background:#f0f0f0;
+}
+.LogRecordTR3 {
+	background:#E7F8E6;
+}
+
+.LogRefGrp {
+	color:#8AC81F;
+}
+.LogRefGrp a:link, .LogRefGrp a:visited, .LogRefGrp a:hover {
+	color:#8C8C8C;
+}
+
+.ButtonsLink {
+	font-size:10px;
+	color:#727272;
+}
+
+.ListDiv2 {
+	border-color:#E1E1E1;
+	border-width:1px;
+	border-style:solid;
+	padding:5px;
+	border-top-width:0px;
+	border-top-style:solid;
+
+}
+
+
+.ListRowRight {
+	width:100%;
+	height:40px;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E5E5E5;
+	padding-left:10px;
+	padding-top:5px;
+	padding-bottom:5px;
+	color:#000000;
+}
+.ListRowRight2 {
+	width:100%;
+	height:40px;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E5E5E5;
+	padding-left:10px;
+	padding-top:5px;
+	padding-bottom:5px;
+	color:#000000;
+}
+.ListDescr {
+	color:#6F6F6F;
+	font-size:11px;
+}
+
+.ListTable {
+	width:100%;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#C7C7C7;
+}
+.ListTable2 {
+	width:100%;
+}
+
+.SectionTable {
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#E6E6E6;
+}
+
+.SectionTd {
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E6E6E6;
+	padding:6px;
+	padding-left:0px;
+}
+
+.SectionTd a:link, .SectionTd a:visited, .SectionTd a:hover {
+	color:#717171;
+}
+
+.SubMenuTable {
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#C7C7C7;
+	border-left-style:solid;
+	border-left-width:1px;
+	border-left-color:#C7C7C7;
+	border-top-style:solid;
+	border-top-width:1px;
+	border-top-color:#C7C7C7;
+}
+
+.SubMenuTd {
+	border-right-style:solid;
+	border-right-width:1px;
+	border-right-color:#C7C7C7;
+}
+
+.SubMenuTd a:link, .SubMenuTd a:visited, .SubMenuTd a:hover {
+	color:#707070;
+}
+
+/*
+.CaptionTable {
+	width:100%;
+	border-bottom-style:solid;
+	border-bottom-width:2px;
+	border-bottom-color:#E1E1E1;
+	border-spacing:0px;
+	border-collapse:collapse;
+
+}
+.CaptionTable td {
+	color:#000000;
+	padding-left:10px;
+	height:40px;
+	color:#77B60B; 
+	font-size:12px;
+	font-weight:bold;
+}
+*/
+.CaptionText {
+	color:#77B60B; 
+	font-size:12px;
+	font-weight:bold;
+
+}
+
+
+.CaptionTable {
+	width:100%;
+	border-spacing:0px;
+	border-collapse:collapse;
+}
+.CaptionTable td {
+	padding-left:10px;
+	height:27px;
+	color:#888888; 
+	font-size:11px;
+	font-weight:bold;
+	background:#E1E1E1;
+}
+
+
+
+.FormTable {
+	width:100%;
+	border-spacing:0px;
+	border-collapse:collapse;
+}
+
+.FormLeftTd {
+	width:50%;
+	height:35px;
+	color:#000000;
+	font-weight:bold;
+	padding-left:10px;
+	margin:0px;
+
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E1E1E1;
+}
+
+.FormRightTd {
+	width:50%;
+	margin:0px;
+	padding:5px;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E1E1E1;
+}
+.FormRightTd2 {
+	width:50%;
+	margin:0px;
+	padding:5px;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	border-bottom-color:#E1E1E1;
+}
+
+.FormRightTd textarea {
+	width:100%;
+	padding:2px;
+}
+
+.FormRightTd input[type="text"], .FormRightTd input[type="password"] {
+	width:100%;
+	padding:2px;
+}
+
+
+.FormRightTd input {
+	/*width: expression(this.type=="checkbox"?'':'100%');*/
+	padding:2px;
+}
+
+
+.SubmitTable {
+	width:100%;
+	height:35px;
+	border-spacing:0px;
+	border-collapse:collapse;
+}
+
+.SubmitLeftTd  {
+	width:50%;
+}
+
+.SubmitRightTd {
+	width:50%;
+}
+
+.MyTrackerHeader {
+	color:#77B60B;
+	font-size:15px;
+	font-weight:bold;
+	font-family:Arial;
+}
+
+
+
+
+
+
+
+.ContextLink, .ContextLink a:link, .ContextLink a:visited {
+	font-size:10px;
+	color:#ffffff;
+	font-weight:bold;
+	text-decoration:underline;
+}
+.ContextLink a:hover {
+	font-size:10px;
+	color:#ffffff;
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.ContextDiv {
+	position:absolute;
+	
+}
+
+.ContextClose, .ContextClose a:link , .ContextClose a:visited, .ContextClose a:hover {
+	font-size:9px;
+	color:#ffffff;
+}
+
+.ConsultBlock {
+	width:100%;
+	background:#ffffff;
+	position:relative;
+}
+
+.ConsultText {
+	text-decoration:none;
+	color:#666666;
+}
+.ConsultText a:link, .ConsultText a:visited, .ConsultText a:hover {
+	text-decoration:underline;
+	color:#666666;
+
+}
+
+
+
+.GlobalErr {
+	color:#FE001A;
+	font-weight:bold;
+	line-height:14px;
+	margin-top:4px;
+}
+
+.GlobalAlert {
+	color:#FFCC00;
+	font-weight:bold;
+	line-height:14px;
+	margin-top:4px;
+}
+
+
+.ErrorTable {
+	border-width:2px;
+	border-style:solid;
+	border-color:#FE001A;
+}
+.ErrorTable td {
+	padding:8px;
+
+}
+
+.MsgTable {
+	border-width:2px;
+	border-style:solid;
+	border-color:#88C522;
+}
+.MsgTable td {
+	padding:8px;
+
+}
+
+.AlertTable {
+	border-width:2px;
+	border-style:solid;
+	border-color:#FFCC00;
+}
+.AlertTable td {
+	padding:8px;
+
+}
+
+.GlobalMsg {
+	color:#88C522;
+	font-weight:bold;
+	line-height:14px;
+	margin-top:4px;
+
+}
+
+.FormError, .FormError a:link, .FormError a:visited, .FormError a:hover {
+	color:#FE001A;
+	font-size:9px;
+	font-weight:bold;
+}	
+
+
+
+
+
+
+
+
+.ReportRowSep {
+	background:#E1E1E1;
+	background-color:#E1E1E1;
+}
+

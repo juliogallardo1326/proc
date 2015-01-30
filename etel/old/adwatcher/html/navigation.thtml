@@ -1,0 +1,62 @@
+<div id="smallNav">
+		<a href="{site_path}/" id="home">Home</a><span></span>
+		<a href="{site_path}/?action=new_campaign" id="campaigns">Campaigns</a><span></span>
+		<a href="{site_path}/?action=reports" id="reports">Reports</a><span></span>
+		<a href="{site_path}/?action=fraud_reports" id="fraud">Click Fraud</a><span></span>
+		<a href="{site_path}/?action=settings" id="account">Settings</a><span></span>
+		<a href="{site_path}/?action=resources" id="resources">Resources</a><span></span>
+		<a href="{site_path}/?action=support" id="support">Support</a><span></span>
+		<a href="{site_path}/?action=logout" id="logout">Logout</a><span></span>
+	</div>
+	<script language="javascript">
+		if (TransMenu.isSupported()) {
+		var ms = new TransMenuSet(TransMenu.direction.down, 1, 0, TransMenu.reference.bottomLeft);
+		var menu1 = ms.addMenu(document.getElementById("account"));
+		menu1.addItem("- general settings", "{site_path}/?action=general_settings"); 
+		menu1.addItem("- email settings", "{site_path}/?action=email_settings");
+		menu1.addItem("- fraud settings", "{site_path}/?action=fraud_settings"); 
+		menu1.addItem("- blocked ips", "{site_path}/?action=blocked_ips"); 
+		menu1.addItem("- sms alerts", "{site_path}/?action=sms_alerts"); 
+		menu1.addItem("- change password", "{site_path}/?action=password");
+		menu1.addItem("- get go.php", "{site_path}/?action=get_go");
+		//==================================================================================================
+		var menu2 = ms.addMenu(document.getElementById("campaigns"));
+		menu2.addItem("- new campaign", "{site_path}/?action=new_campaign");
+		menu2.addItem("- new natural campaign", "{site_path}/?action=new_ncampaign");
+		menu2.addItem("- edit campaign", "{site_path}/?action=edit_campaign");
+		menu2.addItem("- delete campaign", "{site_path}/?action=delete_campaign");
+		menu2.addItem("- create campaign group", "{site_path}/?action=create_group");
+		menu2.addItem("- delete campaign group", "{site_path}/?action=delete_group");
+		menu2.addItem("- generate tracking code", "{site_path}/?action=generate");
+		menu2.addItem("- keyword tracker", "{site_path}/?action=keyword_tracker");
+		menu2.addItem("- manual action / sale", "{site_path}/?action=manual_as");
+		//==================================================================================================
+		var menu3 = ms.addMenu(document.getElementById("reports"));
+		menu3.addItem("- overview", "{site_path}/?action=reports");
+		menu3.addItem("- natural reports", "{site_path}/?action=natural_reports");
+		menu3.addItem("- financial reports", "{site_path}/?action=financial_reports");
+		menu3.addItem("- fraud reports", "{site_path}/?action=fraud_reports");
+		//==================================================================================================
+		var menu4 = ms.addMenu(document.getElementById("resources"));
+		menu4.addItem("- quick start guide", "{site_path}/?action=guide");
+		menu4.addItem("- advanced features", "{site_path}/?action=features");
+		menu4.addItem("- where to advertise", "{site_path}/?action=advertise");
+		menu4.addItem("- affiliate tracking", "{site_path}/?action=affiliate");
+		menu4.addItem("- click fraud info", "{site_path}/?action=fraud");
+		menu4.addItem("- keyword tools", "{site_path}/?action=keyword_tools");
+		menu4.addItem("- ip locator tool", "{site_path}/?action=ip_check");
+		//==================================================================================================
+		var menu5 = ms.addMenu(document.getElementById("support"));
+		menu5.addItem("- support main", "{site_path}/?action=support");
+		menu5.addItem("- submit new ticket", "{site_path}/?action=new_ticket");
+		menu5.addItem("- ticket status", "{site_path}/?action=ticket_status");
+		//==================================================================================================
+		var menu6 = ms.addMenu(document.getElementById("fraud"));
+		menu6.addItem("- fraud reports", "{site_path}/?action=fraud_reports");
+		menu6.addItem("- spikes analysis", "{site_path}/?action=spikes_analysis");
+		menu6.addItem("- fraud settings", "{site_path}/?action=fraud_settings");
+		menu6.addItem("- click fraud info", "{site_path}/?action=fraud");				
+		TransMenu.renderAll();
+	}
+	</script>
+	<div id="bodyContainer">

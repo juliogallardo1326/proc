@@ -1,0 +1,13 @@
+					<tr>
+						<td class="ce" width="1%" style="padding:5px;cursor:default !important;">{cid}</td>
+						<td class="sp"></td>														
+						<td class="ce" style="padding:5px;cursor:default !important;text-align:left !important;">{campaign_name}</td>						
+						<td class="sp"></td>
+						<td class="ce" style="padding:5px;cursor:default !important;">{avg_clicks}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap style="padding:5px;cursor:default !important;">{spike_date}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap style="padding:5px;cursor:default !important;">{clicks}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap style="padding:5px;cursor:default !important;">{spike}</td>												
+					</tr>

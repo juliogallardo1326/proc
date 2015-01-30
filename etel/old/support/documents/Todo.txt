@@ -1,0 +1,35 @@
+
+Todo list
+----------------------------------------------------------------------------
+
+ADMIN SIDE
+	+	Time Zone default adjustment for the admin.
+	+	Email the user if the Admin closes the ticket.
+	+	Add a system administrators announcement area. IE email all USERS
+	+	Let the Admin know when something has been writen to the request by
+		a visual sign on the site - same for the User.
+	+	Add the ability for the user to change there profile - ie change
+		password and email etc.
+	+	Finish of the language intergration file. So that different languages
+		may be added to the system.
+	+ 	Install script
+	+	Attach mods to certain departments, can only read tickets assigned to
+		that department.
+	+	Assign Mod / Admin to a certain tickets - take ownership.
+	+	Flag Tickets
+	+	Admins / Mods write notes on tickets for other admin / mods to see
+		not users
+	+	Ability to add custom fields to the ticket submission form.
+	+	User account EXPIRY date
+	+	Attachment management - deletion etc.
+
+USER SIDE
+	+	Email verifictaion on SELF REGISTRY
+	+	Attachment for NEW TICKET - Attachment Description
+	+	Sort On Headings
+	+ 	File Size Next To attachment and in emails
+
+OTHER
+	+ 	Template driven design system.
+	+	Wrap the text at 70 chars
+	+	Edit USER

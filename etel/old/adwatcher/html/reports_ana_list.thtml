@@ -1,0 +1,7 @@
+<tr class="{bg}">
+	<td class="blk" style="text-align:center;font-weight:bold;">{num}</td>
+	<td class="blk" nowrap>{time}</td>
+	<td class="blk">{clicks}</td>
+	<td class="blk" nowrap>{actions}</td>
+	<td class="blk" nowrap>{sales}</td>
+</tr>

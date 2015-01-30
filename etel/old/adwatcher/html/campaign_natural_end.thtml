@@ -1,0 +1,15 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">New Natural Campaign</div><br />
+				You have just set up a new natural campaign. Below you will find the tracking code that you need to 
+				place in the body of all pages on the website you wish to be tracked.<br /><br />
+
+				<textarea style="width:712px;height:40px;color:#E08923;"><script language="javascript" type="text/javascript">var ref;if(typeof(document.referrer)!= "undefined") {ref = escape(document.referrer);}document.write('<img src="{track_url}&ref='+ref+'" style="border:0px;width:0px;height:0px;" />');</script></textarea><br /><br />
+							
+				You can access this code in the future by going to the "Natural Reports" section of your account, 
+				clicking on this specific campaign, and then going to "Stats".
+		</div>
+		<div class="space"></div>
+	</div>
+	<div class="clear">&#160;</div>

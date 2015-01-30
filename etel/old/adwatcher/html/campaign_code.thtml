@@ -1,0 +1,14 @@
+
+	<div id="mainTitle" style="width:670px !important;margin-top:10px;">
+		<div class="bTitle" style="width:670px;">Generated Tracking Code</div>
+		<div class="leftBox" style="width:660px;float:left;">
+			<table width="660" cellspacing="1" cellpadding="2" border="0" class="smallTable">
+					<tr>
+						<td style="font-size:11px;color:#000000;"><br />Paste the code below into any thank you page that you wish to track actions or sales.</td>
+					</tr>
+					<tr>
+						<td style="text-align:center;padding:5px 0px 5px 0px;" class="nul"><textarea style="width:640px;height:80px;padding:5px;">{track_code}</textarea></td>
+					</tr>
+			</table>
+		</div>
+	</div>

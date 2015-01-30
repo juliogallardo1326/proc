@@ -1,0 +1,53 @@
+<pre>
+Added:
+
+* PHP-based tracking
+* Screen resolution statistics.(requires new Javascript tracking code to be used)
+* Screen color statistics.(requires new Javascript tracking code to be used)
+* Flash version statistics.(requires new Javascript tracking code to be used)
+* Sorting in the log reports.
+* Lots of different tracking modes are now available in Administration > 
+  General settings. They allow to precisely control to which entry point a sale
+  or an action is attributed to.
+* Redirect-based ad links
+* It is now possible to specify how many rows from the countries IP database
+  to import per step.
+* Possibility to specify a charset in personal settings of every user.
+* It is now possible to specify subnets in the ignored IPs.
+* PHP tracking could be switched off for a particular company in Agency version
+  (useful if Stuffed Tracker is used as a service)
+* It is now possible to create a demo user or demo administrator in the Agency 
+  version. A demo user will not be able to update or change any information 
+  in the database, but will have access to all other functions as usual.
+* Showing the number of visitors online for every site (available on the
+  company's home page).  
+* Showing how many records are available in the log reports and what records
+  are displayed on the current page.
+* A domain for cookies can now be specified for every site, it will be used
+  when a tracking cookie is set in the visitor's browser.
+
+Changed:
+
+* If mod_rewrite is enabled, Stuffed Tracker now generates static links
+  for redirect-based actions and split-tests, thus making the links search 
+  engine friendly.
+* Changed the Javascript tracking code. The old code still works, but to 
+  get the new stats for screen resolution, color and flash version a new
+  code should be used. 
+
+Fixed:
+
+* A bug in split tests that prevented split tests that were pointing to a
+  file that should be downloaded from working correctly.
+* If the name of the visitor was specified then the name is shown everywhere 
+  instead of the visitor ID.
+* Tracking code now correctly works with sites that use frames (no double
+  referrers any more). New Javascript tracking code is required for this to 
+  work.
+* If a particular date is specified in one of the log reports it is now 
+  preserved in the visitor paths report too.
+* Fixed a bug that caused 'field has no default value' error to appear in
+  MySQL 5.0 working in a strict mode.
+* Tracking code was not working when it was loaded inside a frame in Google
+  images search.  
+</pre>

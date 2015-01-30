@@ -1,0 +1,140 @@
+<?
+$Lang['ByHits']="Ïî õèòàì";
+$Lang['ByUni']="Ïî óíèêàëüíûì";
+$Lang['ByName']="Ïî íàçâàíèÿì";
+$Lang['ByMonths']="ÏÎ ÌÅÑßÖÀÌ";
+$Lang['ByDays']="ÏÎ ÄÍßÌ";
+$Lang['ByYear']="ÏÎ ÃÎÄÀÌ";
+$Lang['ByWeek']="ÏÎ ÄÍßÌ ÍÅÄÅËÈ";
+$Lang['ByTime']="ÏÎ ×ÀÑÀÌ";
+$Lang['BySites']="ÑÀÉÒÛ";
+$Lang['ByHost']="ÕÎÑÒÛ ÑÀÉÒÀ";
+$Lang['ByRefs']="ÐÅÔÅÐÅÐÛ";
+$Lang['BySource']="ÏËÎÙÀÄÊÈ";
+$Lang['BySourceGrp']="ÃÐÓÏÏÛ ÏËÎÙÀÄÎÊ";
+$Lang['OtherSource']="ÄÐÓÃÈÅ ÏËÎÙÀÄÊÈ";
+$Lang['ByKey']="ÊËÞ×ÅÂÛÅ ÑËÎÂÀ";
+$Lang['ByVis']="ÏÎÑÅÒÈÒÅËÈ";
+$Lang['ByAgentGrp']="ÃÐÓÏÏÛ ÁÐÀÓÇÅÐÎÂ";
+$Lang['ByAgent']="ÁÐÀÓÇÅÐÛ";
+$Lang['ByActions']="ÄÅÉÑÒÂÈß";
+$Lang['ByActionItem']="ÏÐÅÄÌÅÒÛ ÄÅÉÑÒÂÈß";
+$Lang['BySaleItem']="ÒÎÂÀÐÛ";
+$Lang['BySale']="ÇÀÊÀÇÛ";
+$Lang['ByPage']="ÇÀÏÐÎØÅÍÍÛÅ ÑÒÐÀÍÈÖÛ";
+$Lang['ByCamp']="ÊÀÌÏÀÍÈÈ";
+$Lang['ByCampGrp']="ÃÐÓÏÏÛ ÊÀÌÏÀÍÈÉ";
+$Lang['ByCampSource']="ÏËÎÙÀÄÊÈ";
+$Lang['ByCampRef']="ÐÅÔÅÐÅÐÛ";
+$Lang['BySplit']="ÑÏËÈÒ ÒÅÑÒÛ";
+$Lang['ByCountry']="ÑÒÐÀÍÛ";
+$Lang['ByResolution']="ÐÀÇÐÅØÅÍÈÅ ÝÊÐÀÍÀ";
+$Lang['ByPixel']="ÃËÓÁÈÍÀ ÖÂÅÒÀ ÝÊÐÀÍÀ";
+$Lang['ByFlash']="ÂÅÐÑÈß FLASH";
+
+$Lang['GraphByMonths']="ìåñÿöû";
+$Lang['GraphByDays']="äíè";
+$Lang['GraphByYear']="ãîäû";
+$Lang['GraphByWeek']="äíè íåäåëè";
+$Lang['GraphByTime']="÷àñû";
+
+$Lang['Vis']="Ïîñåòèòåëü";
+$Lang['OtherAgentGrp']="Äðóãèå áðàóçåðû";
+$Lang['OrderNo']="Çàêàç";
+$Lang['Total']="Âñåãî";
+$Lang['VisPath']="Ïóòè ïîëüçîâàòåëÿ ïî ñàéòàì";
+
+$Lang['GrHits']="ãðàôèê õèòîâ";
+$Lang['GrSales']="ãðàôèê ïðîäàæ";
+$Lang['GrActions']="ãðàôèê äåéñòâèé";
+$Lang['GrActionConv']="ãðàôèê êîíâåðñèè äåéñòâèé";
+$Lang['GrSaleConv']="ãðàôèê êîíâåðñèè ïðîäàæ";
+
+// 22/09/2005 {
+$Lang['GrROI']="ãðàôèê ROI";
+$Lang['GrCost']="ãðàôèê ñòîèìîñòè";
+$Lang['GrIncome']="ãðàôèê ïðèáûëè";
+// }
+
+$Lang['PieHits']="ïèðîæîê õèòîâ";
+$Lang['PieUni']="ïèðîæîê óíèêàëüíûõ";
+$Lang['PieSales']="ïèðîæîê ïðîäàæ";
+$Lang['PieUniSale']="ïèðîæîê ïîêóïàòåëåé";
+$Lang['PieActions']="ïèðîæîê äåéñòâèé";
+$Lang['PieUniAction']="ïèðîæîê ïîñåòèòåëåé";
+$Lang['PieActionConv']="ïèðîæîê êîíâåðñèè äåéñòâèé";
+$Lang['PieSaleConv']="ïèðîæîê êîíâåðñèè ïðîäàæ";
+$Lang['PieROI']="ïèðîæîê ROI";
+$Lang['PieCost']="ïèðîæîê ñòîèìîñòåé";
+$Lang['PieIncome']="ïèðîæîê ïðèáûëè";
+
+$Lang['SaveReport']="Ñîõðàíèòü îò÷åò â \"Ìîé Òðåêåð\"";
+
+$Lang['Graph']="ÃÐÀÔÈÊÈ";
+$Lang['Export']="ÝÊÑÏÎÐÒÈÐÎÂÀÒÜ ÄÀÍÍÛÅ";
+$Lang['Separator']="Ñåïàðàòîð";
+
+$Lang['NoRowLimit']="Áåç îãðàíè÷åíèÿ êîëè÷åñòâà ñòðîê";
+$Lang['IncludePerc']="Âêëþ÷àòü â êîëîíêè ïðîöåíòû";
+$Lang['DoExport']="Ýêñïîðò";
+$Lang['Pie']="ÏÈÐÎÆÊÈ";
+$Lang['ShowExportForm']="Ýêñïîðòèðîâàòü äàííûå";
+
+$Lang['SelGrpSite']="Ñàéòû";
+$Lang['SelGrpRef']="Ññûëêè";
+$Lang['SelGrpDate']="Âðåìÿ";
+$Lang['SelGrpAction']="Äåéñòâèÿ";
+$Lang['SelGrpSale']="Ïðîäàæè";
+$Lang['SelGrpVis']="Ïîñåòèòåëè";
+$Lang['SelGrpPage']="Ñòðàíèöû";
+$Lang['SelGrpCamp']="Êàìïàíèè";
+$Lang['SelGrpOther']="Ïðî÷åå";
+
+
+$Lang['DefaultSort']="Ñîðòèðîâêà ïî óìîë÷àíèþ";
+
+
+$Lang['ClickGraphName']="ÕÈÒÛ È ÓÍÈÊÀËÜÍÛÅ ÏÎÑÅÒÈÒÅËÈ";
+$Lang['Visitors']="ïîñåòèòåëè";
+$Lang['Conversion']="êîíâåðñèÿ";
+$Lang['ActionGraphName']="ÄÅÉÑÒÂÈß È ÓÍÈÊÀËÜÍÛÅ ÏÎÑÅÒÈÒÅËÈ, ÈÕ ÑÎÂÅÐØÈÂØÈÅ";
+$Lang['SaleGraphName']="ÏÐÎÄÀÆÈ È ÓÍÈÊÀËÜÍÛÅ ÏÎÑÅÒÈÒÅËÈ, ÈÕ ÑÎÂÅÐØÈÂØÈÅ";
+$Lang['GraphActionConvName']="ÊÎÍÂÅÐÑÈß ÄÅÉÑÒÂÈÉ, %";
+$Lang['GraphSaleConvName']="ÊÎÍÂÅÐÑÈß ÏÐÎÄÀÆ, %";
+$Lang['GraphUniLine']="ãðàôèê óíèêàëüíûõ";
+
+// 22/09/2005 {
+$Lang['GraphROIName']="ROI";
+$Lang['GraphCostName']="ÑÒÎÈÌÎÑÒÜ";
+$Lang['GraphIncomeName']="ÏÐÈÁÛËÜ";
+$Lang['ROI']="ROI";
+$Lang['Cost']="Ñòîèìîñòü";
+$Lang['Income']="Ïðèáûëü";
+// }
+
+
+$Lang['ClickPieName']="ÕÈÒÛ";
+$Lang['UniPieName']="ÓÍÈÊÀËÜÍÛÅ ÏÎÑÅÒÈÒÅËÈ";
+$Lang['ActionPieName']="ÄÅÉÑÒÂÈß";
+$Lang['UniActionPieName']="ÓÍÈÊÀËÜÍÛÅ ÏÎÑÅÒÈÒÅËÈ, ÑÎÂÅÐØÈÂØÈÅ ÄÅÉÑÒÂÈß";
+$Lang['SalePieName']="ÏÐÎÄÀÆÈ";
+$Lang['UniSalePieName']="ÏÎÑÅÒÈÒÅËÈ, ÑÎÂÅÐØÈÂØÈÅ ÏÎÊÓÏÊÈ";
+$Lang['ActionConvPieName']="ÑÎÎÒÍÎØÅÍÈÅ ÊÎÍÂÅÐÑÈÉ ÏÐÎÄÀÆ, %";
+$Lang['SaleConvPieName']="ÑÎÎÒÍÎØÅÍÈÅ ÊÎÍÂÅÐÑÈÉ ÄÅÉÑÒÂÈÉ, %";
+$Lang['RoiPieName']="ÑÎÎÒÍÎØÅÍÈÅ ROI";
+$Lang['CostPieName']="ÑÎÎÒÍÎØÅÍÈÅ ÑÒÎÈÌÎÑÒÅÉ";
+$Lang['IncomePieName']="ÑÎÎÒÍÎØÅÍÈÅ ÏÐÈÁÛËÅÉ";
+
+$Lang['Other']="Îñòàëüíîå";
+$Lang['UseCurrentDate']="Èñïîëüçîâàòü òåêóþùóþ äàòó ïðè êàæäîì çàõîäå";
+$Lang['AddToMy']="Äîáàâèòü îò÷åò íà ãëàâíóþ ñòðàíèöó Ìîåãî Òðåêåðà";
+$Lang['ReportName']="Íàçâàíèå îò÷åòà";
+
+
+$Lang['PrintReport']="Ðàñïå÷àòàòü îò÷åò";
+$Lang['Print']="Âåðñèÿ äëÿ ïå÷àòè";
+
+
+$Lang['None']="Íå îïðåäåëåíî";
+$Lang['Undefined']="Íå îïðåäåëåíî";
+?>

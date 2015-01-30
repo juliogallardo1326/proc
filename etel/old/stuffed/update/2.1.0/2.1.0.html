@@ -1,0 +1,61 @@
+<pre>
+Added:
+
++ Added optional IP-based tracking.
++ It is now possible to import the free MaxMind's geo database of countries in
+  the tracker and see the countries of the visitors. A separate countries 
+  report was added to the reports constructor.
++ Added click fraud detection and a separate log report that shows suspected
+  fraudelent clicks and visitors.
++ Visitors path report now breaks the results into multiple pages for easier
+  navigation.
++ Added support for timezones, including an option to automatically determine 
+  the timezone of the user that currently browses tracker's control panel (very
+  convenient with daylight saving time changes). To support this option, all
+  dates are now stored in the database in GMT timezone and thus the dates in
+  the database that were added before the upgrade to this version could be few 
+  hours off.
++ Possibility to force tracker to use a directly supplied IP and visitor ID 
+  during sales tracking.
++ Possibility to pass any custom information when logging a sale.  
++ Split tests now have an additional option to show the same page to the same
+  visitor.
++ Added ignored IPs feature. All tracking requests coming from the specified
+  IPs will be ignored.
++ It is now possible to generate multiple ad links for multiple keywords at
+  once in the control panel and optionally export them in CSV format.
++ Added an ability to track actions by placing a specially generated tracking
+  code inside a page.
++ Added income column to the split tests report.
++ Added visit length in the visitors path report.
++ It is now possible to limit number of sites that could be created for a 
+  company in the Agency version.
++ It is now possible to specify the campaign name directly as a tracking 
+  parameter. If a campaign with this name does not exist yet, it will be 
+  automagically created by Stuffed Tracker.
++ It is now possible to change the names of all tracking parameters in the
+  control panel (&src, &c, &k and &kw).  
+
+Changed:
+
+* A link to the path of one visitor located in the visitors path report now
+  doesn't enforce the current date, so you can effectively see the complete 
+  path of one visitor.
+* Tracking only certain site's hosts is now optional, but can still be turned 
+  on in the site's configuration.
+* Page URL that is specified when an action is created is not forced to the 
+  lower case any more.
+
+Fixed:
+
+* "Exclude paid traffic" setting in the natural traffic filter was working
+  incorrectly.
+* Fixed a redirect bug which caused a redirect to 'https' URL on Windows IIS 
+  servers.
+* Fixed a bug that caused tracker to use incorrect paths when a physical path
+  on the server was different from the path used in the URL (this happend on 
+  some shared SSL servers).
+* Referrer was not shown in the visitor paths report for a split test.
+* Search by IP in the visitors path report worked incorrectly in some cases.
+* Other minor bugfixes
+</pre>

@@ -1,0 +1,38 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Email Settings</div><br />
+	AdWatcher offers a number of various email reports for your convenience. You may elect to receive weekly (every Monday) or monthly (on the 1st of each month) reports concerning your campaigns' activity, as well as notifications of any potential fraudulent activity we discover. Please set the frequency with which you would like to receive our email reports or alerts by checking the appropriate boxes below and entering the email address to which you want the reports sent.	
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Email Settings</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=email_settings" method="post">
+					<tr>
+						<td style="width:45%;text-align:right;"><input type="checkbox" name="svar[fraud]" {fraud} /></td>
+						<td>Receive Fraud Alerts</td>
+					</tr>
+					<tr>
+						<td style="width:45%;text-align:right;"><input type="checkbox" name="svar[weekly]" {weekly} /></td>
+						<td>Receive Weekly Statistics</td>
+					</tr>
+					<tr>
+						<td style="width:45%;text-align:right;"><input type="checkbox" name="svar[monthly]" {monthly} /></td>
+						<td>Receive Monthly Statistics</td>
+					</tr>
+					<tr>
+						<td style="width:45%;text-align:right;">Email Address:</td>
+						<td><input type="text" name="svar[email_add]" value="{email_add}" style="width:200px;" /></td>
+					</tr>										
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Update Email Settings " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

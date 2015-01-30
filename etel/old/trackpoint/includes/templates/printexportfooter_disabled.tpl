@@ -1,0 +1,1 @@
+<br><span title="%%LNG_GenerateExcel_disabled%%"><img src=images/excelicon_disabled.gif width=20 height=20 align=absmiddle border=0>&nbsp;%%LNG_GenerateExcel%%&nbsp;&nbsp;&nbsp;&nbsp;<img src=images/printicon_disabled.gif width=20 height=20 align=absmiddle border=0>&nbsp;%%LNG_PrintReport%%</span>

@@ -1,0 +1,10 @@
+					<tr>
+						<td id="c{num}-ttd" class="ctd2" colspan="31">&#160;</td>
+					</tr>
+					<tr id="c{num}-ul">
+						<td id="c{num}-tLeft" style="border-left:1px solid #F3F3F3;"><img src="images/trans.gif" border="0" width="13" height="13" class="max" id="c{num}-img" /></td>
+						<td class="sp"></td>								
+						<td colspan="27">{lang_task}</td>
+						<td class="sp"></td>						
+						<td id="c{num}-tRight">&#160;</td> 
+					</tr>					

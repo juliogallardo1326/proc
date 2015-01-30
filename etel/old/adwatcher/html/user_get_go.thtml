@@ -1,0 +1,36 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Get Go.php</div><br />
+<u>What's Go.php?</u><br> 
+We have developed a simple script that allows you to use your own domain name in all of your tracking URLs. You only need to set this up one time and the setting will remain in place. This script will simply redirect all traffic to the appropriate AdWatcher URL based on the ad code provided, as explained below.<p>
+Now, instead of using: <p>
+http://adwatcher.com/user/tracker.php?t=XX <p>
+You can simply use:<p>
+http://yourdomain.com/go.php?t=XX
+<p>
+
+No one will even know you are using the AdWatcher tracking system! <p>
+<u>How to set this up?</u><p>
+The set-up process is very simple. All you need to do is click on the download link below and upload the file you'll receive to your server and into your home directory. If you need any help, feel free to contact us, and we'd be more than happy to do this for you. <p>
+After you upload the file, you're ready to go! Simply insert the campaign ID number after the ?t= (http://yourdomain.com/go.php?t=) and the script will automatically redirect the visitor to the appropriate tracking URL. The whole process takes less than a second to complete and is completely invisible to your visitors. 
+	
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Get Go.php</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=download_go" method="post" target="dframe">
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="svar[php]" value=" Download Go.php File " class="csubmit" /> OR <input type="submit" name="svar[asp]" value=" Download Go.asp File " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+			<div style="display:none;"><iframe name="dframe" style="width:1px;height:1px;"></iframe></div>
+			
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

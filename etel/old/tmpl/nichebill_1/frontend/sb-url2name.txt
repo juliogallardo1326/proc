@@ -1,0 +1,12 @@
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/index1.html	index
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/services.html	services
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/index.html	default
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/faq.html	faq
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/contactus.html	contactus
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/creditprocessing.html	creditprocessing
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/high_approval.html	high_approval
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/achcheck.html	achcheck
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/custom_reporting.html	custom_reporting
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/cutting_edge_fraud.html	cutting_edge_fraud
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/fast_set_up.html	fast_set_up
+file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/call_centre.html	call_centre

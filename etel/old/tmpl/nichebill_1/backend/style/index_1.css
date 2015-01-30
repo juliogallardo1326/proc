@@ -1,0 +1,58 @@
+
+/* ::::: null ::::: */
+
+* { margin: 0px; padding: 0px; }
+p { margin-top: 0.7em; margin-bottom: 0.7em; }
+* { font-size: 1em; font-family: arial,helvetica,sans-serif; }
+body { font-size: 76%; }
+img { border: medium none ; }
+ul, ol { list-style-type: none; list-style-image: none; list-style-position: outside; }
+* { background: transparent none no-repeat scroll left top; }
+#titlebar, #titlebar-right { height: 24px; }
+#titlebar-right { padding: 0pt; position: absolute; top: 0px; right: 0px; height: 24px; }
+#toolbar { display: none; position: absolute; top: 0px; left: 0px; height: 22px; }
+#secondary-toolbar { display: none; }
+#secondary-toolbar .button_right { display: none; position: relative; float: right; }
+#contentFrame { top: 0px; left: 0px; width: 100%; height: 100%; }
+#statusbar { border: 1px solid ; position: absolute; height: 15px; left: 0px; right: 0px; bottom: 0px; }
+#dropshadow { display: none; }
+#loading { display: none; }
+#content, #interclue-loading-overlay { position: absolute; top: 24px; left: 0px; bottom: 16px; right: 0px; }
+#interclue-loading-overlay { background: transparent url('undefined') repeat scroll 0% 0%; display: none; text-align: center; }
+#interclue-loading-image { background: transparent url('undefined') no-repeat scroll center center; position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; }
+.clueiframe #container { position: absolute; top: 0px; left: 0px; right: 7px; bottom: 7px; }
+.clueiframe #dropshadow { display: block; position: absolute; top: 7px; left: 7px; width: 100%; height: 100%; z-index: -1; }
+#container { border: 1px solid rgb(148, 165, 181); }
+#content { background: rgb(255, 255, 255) url('undefined') repeat-y scroll right center; }
+#titlebar { background: rgb(61, 90, 149) url('undefined') no-repeat scroll right center; overflow: hidden; text-align: left; }
+.interclue-locked #titlebar { background: rgb(61, 149, 90) url('undefined') no-repeat scroll right center; }
+#loading { display: none; }
+#statusbar { border-style: solid none none; border-color: rgb(148, 165, 181) -moz-use-text-color -moz-use-text-color; border-width: 1px medium medium; overflow: hidden; line-height: 15px; font-size: 11px; background-color: rgb(212, 208, 200); padding-left: 5px; }
+span.toolbarbutton { border: 1px solid rgb(0, 0, 136); margin: 1px; background: rgb(238, 238, 238) none repeat scroll 0% 0%; overflow: auto; cursor: default; display: -moz-inline-box; -moz-border-radius-topleft: 4px; -moz-border-radius-topright: 4px; -moz-border-radius-bottomright: 4px; -moz-border-radius-bottomleft: 4px; }
+.toolbarbutton:hover { border: 1px solid rgb(0, 204, 204); background-color: rgb(255, 255, 255); }
+.toolbarbutton-down { border: 1px solid rgb(0, 255, 255); background-color: rgb(204, 204, 255); }
+.toolbarbutton img { border: 0px none ; margin: 2px; }
+#resizehandle { background: transparent url('undefined') no-repeat scroll -32px -48px; position: absolute; display: block; width: 16px; height: 16px; bottom: 0px; right: 0px; cursor: nw-resize; }
+.clueiframe #statusbar { -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; -moz-border-radius-bottomright: 6px; -moz-border-radius-bottomleft: 6px; }
+.clueiframe #titlebar { -moz-border-radius-topleft: 6px; -moz-border-radius-topright: 6px; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px; }
+.clueiframe #container { -moz-border-radius-topleft: 8px; -moz-border-radius-topright: 8px; -moz-border-radius-bottomright: 8px; -moz-border-radius-bottomleft: 8px; }
+.error { border: 1px solid rgb(255, 0, 0); padding: 3px 3px 3px 22px; background: rgb(255, 238, 238) url('undefined') no-repeat scroll 3px 3px; color: rgb(255, 0, 0); }
+.info { border: 1px solid rgb(0, 0, 136); padding: 3px 3px 3px 22px; background: rgb(238, 238, 255) url('undefined') no-repeat scroll 3px 3px; color: rgb(0, 0, 136); }
+.warning { border: 1px solid rgb(201, 121, 14); padding: 3px 3px 3px 22px; background: rgb(255, 255, 238) url('undefined') no-repeat scroll 3px 3px; color: rgb(201, 121, 14); }
+.updated { border: 1px solid rgb(0, 102, 0); padding: 3px 3px 3px 22px; background: rgb(238, 255, 238) url('undefined') no-repeat scroll 3px 3px; color: rgb(0, 102, 0); }
+#alert { border: 1px solid rgb(0, 0, 0); padding: 25px; background: transparent url('undefined') repeat scroll 0% 0%; display: none; position: absolute; top: 0px; left: 0px; bottom: 7px; right: 7px; z-index: 10000; text-align: center; vertical-align: middle; -moz-border-radius-topleft: 8px; -moz-border-radius-topright: 8px; -moz-border-radius-bottomright: 8px; -moz-border-radius-bottomleft: 8px; }
+#alert-box { border: 1px solid rgb(0, 0, 0); position: relative; min-width: 80%; min-height: 80%; -moz-border-radius-topleft: 5px; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px; -moz-border-radius-bottomleft: 5px; background-color: rgb(251, 251, 251); padding-bottom: 10px; }
+#alert-title { border-bottom: 1px solid rgb(51, 51, 51); background: rgb(61, 90, 149) none repeat scroll 0% 0%; color: rgb(255, 255, 255); font-weight: bold; font-size: 1.3em; }
+#alert-message { margin: 1em 32px; text-align: left; }
+#alert-close { background: rgb(238, 238, 255) url('undefined') no-repeat scroll center center; position: absolute; top: 2px; right: 2px; min-width: 16px; min-height: 16px; cursor: default; }
+#alert-dont-show-again-label { display: block; font-size: smaller; }
+.alert-error #alert-title { border-bottom: 1px solid rgb(255, 0, 0); background: rgb(255, 238, 238) url('undefined') no-repeat scroll 2px 3px; color: rgb(255, 0, 0); }
+.alert-warning #alert-title { border-bottom: 1px solid rgb(201, 121, 14); background: rgb(255, 255, 238) url('undefined') no-repeat scroll 2px 3px; color: rgb(201, 121, 14); }
+.alert-update #alert-title { border-bottom: 1px solid rgb(0, 136, 0); background: rgb(238, 255, 238) url('undefined') no-repeat scroll 2px 3px; color: rgb(0, 136, 0); }
+.alert-message #alert-title { border-bottom: 1px solid rgb(0, 0, 255); background: rgb(238, 238, 255) url('undefined') no-repeat scroll 2px 3px; color: rgb(0, 0, 255); }
+#logo { text-align: right; line-height: 15px; font-size: 11px; }
+#donate-link { color: rgb(0, 0, 255); text-decoration: underline; cursor: pointer; }
+#donate-link:hover { color: rgb(51, 51, 255); text-decoration: underline; }
+.clueiframe #logo { position: absolute; bottom: 8px; right: 18px; }
+img#summary-view-image-full-sized { cursor: -moz-zoom-out; }
+#alert-button-ok, alert-button-cancel { margin: 8px; width: 80px; }

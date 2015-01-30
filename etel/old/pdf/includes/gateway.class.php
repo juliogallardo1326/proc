@@ -1,0 +1,7 @@
+<?
+class gateway_class
+{
+
+}
+
+?>

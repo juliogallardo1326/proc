@@ -1,0 +1,254 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;"><div style="float:left;margin:0px;padding:0px;">Reports :: {campaign_name}</div> <div style="float:right;margin:0px;padding:0px;">Created: {created}</div><div class="space">&#160;</div></div><br />
+			<div class="leftBox" style="width:700px;">
+				<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+					<tr>
+						<th>Statistical Overview</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="nul">
+							<table width="100%" cellspacing="0" cellpadding="2" border="0">
+								<tr>
+									<td class="keyi">Clicks:</td>
+									<td>{clicks}</td>
+									<td class="keyi">Actions:</td>
+									<td>{actions}</td>
+								</tr>
+								<tr>
+									<td class="keyi">Sales:</td>
+									<td>{sales}</td>
+									<td class="keyi">Revenue:</td>
+									<td>{revenue}</td>
+								</tr>
+								<tr>
+									<td class="keyi">Clicks to Action (C2A):</td>
+									<td>{c2a}</td>
+									<td class="keyi">Clicks to Sales (C2S):</td>
+									<td>{c2s}</td>
+								</tr>
+								<tr>
+									<td class="keyi">Actions to Sales (A2S):</td>
+									<td colspan="3">{a2s}</td>
+								</tr>					
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="nul">
+							<table width="300" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+								<tr>
+									<th style="padding-bottom:2px;">Tracking Code</th>
+								</tr>
+								<tr>
+									<td><textarea style="width:690px;height:50px;color:#E08923;">{tracking_url}</textarea></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div style="width:712px;padding-top:10px;clear:both;">
+				<div id="fGraph" style="float:left;margin-left:0px;border:1px solid #D6D6D6;">{graph1}</div>
+				<div id="fGraph2" style="float:right;margin-right:0px;border:1px solid #D6D6D6;">{graph2}</div>
+			</div>
+			
+			<div style="width:712px;padding-top:10px;clear:both;">			
+			
+				<div class="leftBox" style="width:339px;height:182px;float:left;">
+					<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+					  <form action="?action=genlogged" method="post" target="_output">
+					  <input type="hidden" name="svar[cid]" value="{cid}" />
+						<tr>
+							<th>Logged Statistics</th>
+						</tr>
+						<tr>
+							<td class="nul">
+								<table cellspacing="0" cellpadding="2" border="0" width="100%">
+									<tr>
+										<td class="nul" style="padding-top:5px;">View logged information for every:<br />
+											<table cellspacing="0" cellpadding="0" border="0" width="100%">
+												<tr>
+													<td style="padding-top:5px;padding-right:6px;">Type: </td>
+													<td style="padding-top:5px;width:100%;padding-bottom:3px;"><select name="svar[log]" size="1">
+														<option value="c">Clicks</option>
+														<option value="a">Actions</option>
+														<option value="s">Sales</option>
+														</select>
+													</td>
+												</tr>
+											</table>
+										
+										</td>
+									</tr>
+									<tr>
+										<td class="nul" style="padding-top:2px;">View By:<br />
+											<table cellspacing="0" cellpadding="0" border="0" width="100%">
+												<tr>
+													<td><input checked type="radio" name="svar[log_type]" checked value="t" class="noborder" style="margin-left:40px;margin-right:10px;" onclick="changeTimeDate('logged0','logged1');" /></td>
+													<td width="100%">Timeframe</td>
+												</tr>
+												<tr>
+													<td><input type="radio" name="svar[log_type]" value="d" class="noborder" style="margin-left:40px;margin-right:10px;" onclick="changeTimeDate('logged1','logged0');" /></td>
+													<td>Date Range</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<table cellspacing="0" cellpadding="0" border="0" width="100%" id="logged0">
+												<tr>
+													<td style="text-align:right;width:40%;" class="nul" width="40%">Timeframe:</td>
+													<td class="nul">&#160;</td>
+													<td class="nul" style="width:60%;"><select name="svar[timeframe]" size="1">
+															<option value="1">Today</option>
+															<option value="2">Yesterday</option>
+															<option value="3">This Week</option>
+															<option value="4">Last Week</option>
+															<option value="5">Last 7 Days</option>
+															<option value="6">This Month</option>
+															<option value="7">Last Month</option>
+															<option value="8">Last 30 Days</option>
+															<option value="9">This Quarter</option>
+															<option value="10">Last Quarter</option>
+															<option value="11">This Year</option>
+															<option value="12">Last Year</option>
+														</select>
+													</td>
+												</tr>
+											</table>
+										
+											<table cellspacing="0" cellpadding="0" border="0" width="100%" id="logged1" style="display:none;">
+												<tr>
+													<td colspan="4" class="nul">From:</td>
+													<td colspan="3" class="nul">To:</td>
+												<tr>
+													<td class="nul">{select_mstart}</td>
+													<td class="nul">{select_dstart}</td>
+													<td class="nul">{select_ystart}</td>
+													<td class="nul">&#160;-&#160;</td>
+													<td class="nul">{select_mend}</td>
+													<td class="nul">{select_dend}</td>
+													<td class="nul">{select_yend}</td>
+												</tr>
+											</table>					
+										</td>
+									</tr>					
+									<tr>
+										<td align="center" class="nul" style="padding-top:5px;"><input type="submit" name="submit" value=" Show Logged Statistics " class="csubmit"  onclick="showBox('Box1', 'tBox1');window.location.href='#stats';" /></td>
+									</tr>
+								</table>
+	
+							</td>
+						</tr>
+					  </form>
+					</table>
+				</div>
+
+
+				<div class="leftBox" style="width:339px;height:182px;float:right;">
+					<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+					  <form action="?action=genanalysis" method="post" target="_output">
+					  <input type="hidden" name="svar[cid]" value="{cid}" />
+						<tr>
+							<th>Analyze This Campaign</th>
+						</tr>
+						<tr>
+							<td class="nul">				
+								<table cellspacing="0" cellpadding="2" border="0" width="100%">
+									<tr>
+										<td class="nul" style="padding-top:5px;">Analyze Campaign By:<br />
+											<table cellspacing="0" cellpadding="0" border="0" width="100%">
+												<tr>
+													<td style="padding:6px 6px 0px 0px;">Type:</td>
+													<td style="padding-top:6px;padding-bottom:3px;" width="100%">
+														<select name="svar[ana_stat]" size="1">
+															<option value="d" selected>Day</option>
+															<option value="a">Action Type</option>
+														</select>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td class="nul" style="padding-top:2px;">View By:<br />
+											<table cellspacing="0" cellpadding="0" border="0" width="100%">
+												<tr>
+													<td><input checked type="radio" name="svar[ana_type]" value="t" checked selected class="noborder" style="margin-left:40px;margin-right:10px;" onclick="changeTimeDate('ana0','ana1');" /></td>
+													<td width="100%">Timeframe</td>
+												</tr>
+												<tr>
+													<td><input type="radio" name="svar[ana_type]" value="d" class="noborder" style="margin-left:40px;margin-right:10px;" onclick="changeTimeDate('ana1','ana0');" /></td>
+													<td>Date Range</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<table cellspacing="0" cellpadding="0" border="0" width="100%" id="ana0">
+												<tr>
+													<td style="text-align:right;width:40%;" class="nul" width="40%">Timeframe:</td>
+													<td class="nul">&#160;</td>
+													<td class="nul" style="width:60%;"><select name="svar[timeframe]" size="1">
+															<option value="1">Today</option>
+															<option value="2">Yesterday</option>
+															<option value="3">This Week</option>
+															<option value="4">Last Week</option>
+															<option value="5">Last 7 Days</option>
+															<option value="6">This Month</option>
+															<option value="7">Last Month</option>
+															<option value="8">Last 30 Days</option>
+															<option value="9">This Quarter</option>
+															<option value="10">Last Quarter</option>
+															<option value="11">This Year</option>
+															<option value="12">Last Year</option>
+														</select>
+													</td>
+												</tr>
+											</table>
+										
+											<table cellspacing="0" cellpadding="0" border="0" width="100%" id="ana1" style="display:none;">
+												<tr>
+													<td colspan="4" class="nul">From:</td>
+													<td colspan="3" class="nul">To:</td>
+												<tr>
+													<td class="nul">{select_mstart}</td>
+													<td class="nul">{select_dstart}</td>
+													<td class="nul">{select_ystart}</td>
+													<td class="nul">&#160;-&#160;</td>
+													<td class="nul">{select_mend}</td>
+													<td class="nul">{select_dend}</td>
+													<td class="nul">{select_yend}</td>
+												</tr>
+											</table>					
+										</td>
+									</tr>					
+									<tr>
+										<td align="center" class="nul" style="padding-top:5px;"><input type="submit" name="submit" value=" Analyze This Campaign " class="csubmit"  onclick="showBox('Box1', 'tBox1');window.location.href='#stats';" /></td>
+									</tr>
+								</table>
+	
+							</td>
+						</tr>
+					  </form>
+					</table>
+				</div>
+				
+			</div>
+			<div style="clear:both;">&#160;</div>
+
+			<a name="stats"></a>
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="max" style="margin-bottom:-1px;padding-bottom:-1px;" />Statistical Output</div>
+			<div class="leftBox extended" id="Box1" style="display:none;">
+				<iframe width="700" height="400" name="_output" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes" id="output"></iframe>
+			</div>
+
+
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

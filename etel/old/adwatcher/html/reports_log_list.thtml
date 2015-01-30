@@ -1,0 +1,11 @@
+<tr style="background:{bg} !important;">
+	<td class="blk" style="text-align:center;font-weight:bold;">{num}</td>
+	<td class="blk" nowrap>{time} {delete}</td>
+	<td class="blk">{uip}</td>
+	<td class="blk" nowrap>{browser}</td>
+	<td class="blk" nowrap>{type}</td>
+</tr>
+<tr style="background:{bg} !important;">
+	<td class="pur">&#160;</td>
+	<td colspan="4" class="pur">{order_amount} {landing_page} {keywords} {original_click} {action_type} {option_value1} {option_value2} {referer}</td>
+</tr>

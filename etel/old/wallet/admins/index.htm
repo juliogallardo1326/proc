@@ -1,0 +1,86 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='GENERAL INFORMATION OVERVIEW';
+$data['PageFile']='index';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['adm_login']){
+	header("Location:{$data['Admins']}/login.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+$data['ActiveMembers']=get_members_count(1);
+$data['SuspendedMembers']=get_members_count(0);
+$data['ClosedMembers']=get_members_count(2);
+
+$data['AllTransactions']=get_transactions_count(-1);
+$data['PendingTransactions']=get_transactions_count(-1, 'both', '`status`=0');
+$data['CompletedTransactions']=get_transactions_count(-1, 'both', '`status`=1');
+$data['CancelledTransactions']=get_transactions_count(-1, 'both', '`status`=2');
+
+$data['AllDeposits']=get_transactions_count(-1, 'both', '`type`=1');
+$data['PendingDeposits']=get_transactions_count(-1, 'both', '`type`=1 AND `status`=0');
+$data['CompletedDeposits']=get_transactions_count(-1, 'both', '`type`=1 AND `status`=1');
+$data['CancelledDeposits']=get_transactions_count(-1, 'both', '`type`=1 AND `status`=2');
+
+$data['AllWithdrawals']=get_transactions_count(-1, 'both', '`type`=2');
+$data['PendingWithdrawals']=get_transactions_count(-1, 'both', '`type`=2 AND `status`=0');
+$data['CompletedWithdrawals']=get_transactions_count(-1, 'both', '`type`=2 AND `status`=1');
+$data['CancelledWithdrawals']=get_transactions_count(-1, 'both', '`type`=2 AND `status`=2');
+
+$data['AllEscrows']=get_transactions_count(-1, 'both', '`type`=3');
+$data['PendingEscrows']=get_transactions_count(-1, 'both', '`type`=3 AND `status`=0');
+$data['CompletedEscrows']=get_transactions_count(-1, 'both', '`type`=3 AND `status`=1');
+$data['CancelledEscrows']=get_transactions_count(-1, 'both', '`type`=3 AND `status`=2');
+
+$data['AllSignups']=get_transactions_count(-1, 'both', '`type`=4');
+$data['PendingSignups']=get_transactions_count(-1, 'both', '`type`=4 AND `status`=0');
+$data['CompletedSignups']=get_transactions_count(-1, 'both', '`type`=4 AND `status`=1');
+$data['CancelledSignups']=get_transactions_count(-1, 'both', '`type`=4 AND `status`=2');
+
+$data['AllCommissions']=get_transactions_count(-1, 'both', '`type`=5');
+$data['PendingCommissions']=get_transactions_count(-1, 'both', '`type`=5 AND `status`=0');
+$data['CompletedCommissions']=get_transactions_count(-1, 'both', '`type`=5 AND `status`=1');
+$data['CancelledCommissions']=get_transactions_count(-1, 'both', '`type`=5 AND `status`=2');
+
+$data['AllRefunds']=get_transactions_count(-1, 'both', '`type`=6');
+$data['PendingRefunds']=get_transactions_count(-1, 'both', '`type`=6 AND `status`=0');
+$data['CompletedRefunds']=get_transactions_count(-1, 'both', '`type`=6 AND `status`=1');
+$data['CancelledRefunds']=get_transactions_count(-1, 'both', '`type`=6 AND `status`=2');
+###############################################################################
+$data['SystemBalance']=select_balance(-1);
+###############################################################################
+display('admins');
+###############################################################################
+?>

@@ -1,0 +1,30 @@
+					<tr>
+						<td id="c{num}-ttd" class="ctd2" colspan="17">&#160;</td>
+					</tr>
+					<tr id="c{num}-ul">
+						<td onClick="toggleTable('c{num}'); return false;" id="c{num}-tLeft" style="border-left:1px solid #F3F3F3;"><img src="images/trans.gif" border="0" width="13" height="13" class="max" id="c{num}-img" /></td>
+						<td class="sp"></td>								
+						<td id="c{num}-options" nowrap><div style="float:left;padding:3px;"><a href="#" onClick="toggleTable('c{num}'); return false;">{c_name}</a></div>
+							<div class="campaignOptions" id="c{num}" class="hidden" style="float:right;width:140px;background:#fff;">
+							Options:
+							<a href="?action=view_stats&cid={cid}">stats</a>
+							<a href="?action=edit_campaign&cid={cid}">edit</a>
+							<a href="?action=delete_campaign&cid={cid}">del</a>
+							<a href="?action=reset_campaign&cid={cid}">reset</a>
+							</div>						
+						</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{clicks}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{actions}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{sales}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{cost}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{revenue}</td>
+						<td class="sp"></td>
+						<td class="ce" nowrap>{profit}</td>
+						<td class="sp"></td>
+						<td id="c{num}-tRight" class="ce" nowrap>{roi}</td>
+					</tr>

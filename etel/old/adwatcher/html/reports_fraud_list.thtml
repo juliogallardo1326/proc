@@ -1,0 +1,16 @@
+					<tr>
+						<td><input type="checkbox" name="svar[{cid}]" class="sm_check" /></td>																			
+						<td style="padding:5px;cursor:default !important;" widtd="20%">{campaign}</td>
+						<td class="sp"></td>
+						<td style="padding:5px;cursor:default !important;">{clicks}</td>												
+						<td class="sp"></td>
+						<td style="padding:5px;cursor:default !important;">{kw}</td>												
+						<td class="sp"></td>						
+						<td style="padding:5px;cursor:default !important;" nowrap>{uip}</td>
+						<td class="sp"></td>
+						<td style="padding:5px;cursor:default !important;" nowrap>{referer}</td>						
+						<td class="sp"></td>
+						<td style="padding:5px;cursor:default !important;" nowrap>{time}</td>
+						<td class="sp"></td>
+						<td style="padding:5px;cursor:default !important;" nowrap>{ltime}</td>						
+					</tr>

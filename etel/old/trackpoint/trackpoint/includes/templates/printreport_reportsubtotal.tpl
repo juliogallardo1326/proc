@@ -1,0 +1,26 @@
+	<tr class="SubTotal">
+		<td>
+			<b>%%LNG_Total%%</b>
+		</td>
+		<td>
+			&nbsp;
+		</td>
+		<td>
+			%%GLOBAL_SubTotalVisits%%
+		</td>
+		<td>
+			%%GLOBAL_SubTotalConversions%%
+		</td>
+		<td>
+			%%GLOBAL_SubTotalPercent%%
+		</td>
+		<td>
+			%%GLOBAL_SubTotalCost%%
+		</td>
+		<td>
+			%%GLOBAL_SubTotalRevenue%%
+		</td>
+		<td>
+			%%GLOBAL_SubTotalROI%%
+		</td>
+	</tr>

@@ -1,0 +1,35 @@
+<?
+
+if (!defined("NS_PHP_TRACKING")) {
+	DEFINE("HOME", $CurPath);
+	DEFINE("HOST", $_SERVER['HTTP_HOST']);
+	DEFINE("SELF", $CurPath);
+	DEFINE("PATH", $ProdPath);
+	$DefLangFile = "{C_LANG}";
+
+	///////////////////////////
+	DEFINE("SYS", HOME.$SPath);
+	DEFINE("COOKIE_PFX", "ns_");
+	// cookie must expire after (12 hours)
+	DEFINE("COOKIE_EXP", "43200");
+
+	DEFINE("PFX", "{PFX}");
+	DEFINE("MOD_R", {MOD_R});
+
+	DEFINE("INSTALLED", true);
+}
+else {
+	$CookiePfx="ns_";
+	$CookieExp="43200";
+	$DbPfx="{PFX}";
+}
+
+$DbName="{DB_NAME}";
+$DbHost="{DB_HOST}";
+$DbPass="{DB_PASS}";
+$DbUser="{DB_USER}";
+$DbPort="{DB_PORT}";
+
+
+
+?>

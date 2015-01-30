@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<TITLE>Check Purchase With Authorization</TITLE>
+<script language=javascript>
+<!--
+function IsEmpty(textField,msg){
+	var strValue=textField.value;
+	for (var i = 0; i < strValue.length; i++)
+	{
+	var c = strValue.charAt(i);
+	if ((c != ' ') && (c != '\n') && (c != '\t'))
+	return false;
+	}
+	alert (msg);
+	textField.focus();
+	textField.select();
+	return true;
+}
+function IsNotMaxLength(textField,maxlen,msg) {
+  var strValue=textField.value;
+  if (strValue.length < maxlen) {
+    alert (msg);
+    textField.focus();
+	textField.select();
+    return true;
+  }
+  return false;
+}
+
+function IsNotNumber(textField,msg) {
+  var digits = "0123456789";
+  for (i=0; i<=textField.size; i++) {
+     if (digits.indexOf(textField.value.charAt(i))== -1) {
+       alert (msg);
+       textField.focus();
+       textField.select(); 
+       return true;
+     } 
+  } 
+  return false;
+}
+function IsNotValidAmount(textField,msg){
+   var numValue=textField.value;
+	if(isNaN(numValue))
+	{
+		alert (msg);
+	    textField.focus();
+	    textField.select(); 
+	    return true;
+	}
+    return false;
+}
+function fixDecimal(DecimalNum) {
+ strNum = "" + DecimalNum;
+ if (strNum.indexOf('.') == -1)
+  return strNum + '.00';
+ seperation = strNum.length - strNum.indexOf('.');
+ if (seperation > 3)
+  return strNum.substring(0,strNum.length-seperation+3);
+ else if (seperation == 2)
+  return strNum + '0';
+ return strNum;
+}
+function fixAmount()
+{
+if (!isNaN(document.frmChk.pg_total_amount.value))
+   document.frmChk.pg_total_amount.value=fixDecimal(document.frmChk.pg_total_amount.value)
+}
+//validate the fields in the form before submitting the data
+function ValidatefrmChk() {
+if(IsEmpty(document.frmChk.pg_total_amount,"Please enter the transaction amount"))
+	return false;
+if(IsNotValidAmount(document.frmChk.pg_total_amount,"Invalid transaction amount"))
+	return false;
+if(IsEmpty(document.frmChk.ecom_billto_postal_name_first,"Please enter your first name"))
+	return false;
+if(IsEmpty(document.frmChk.ecom_billto_postal_name_last,"Please enter your last name"))
+	return false;
+if(IsEmpty(document.frmChk.ecom_payment_check_trn,"Please enter your rounting number"))
+	return false;
+if(IsNotNumber(document.frmChk.ecom_payment_check_trn,"Please enter only digits for the  rounting number"))
+	return false;
+if(IsNotMaxLength(document.frmChk.ecom_payment_check_trn,9,"The rounting number should be 9 digits long"))
+	return false;
+if(IsEmpty(document.frmChk.ecom_payment_check_account,"Please enter your account number"))
+	return false;
+if(IsNotNumber(document.frmChk.ecom_payment_check_account,"Please enter only digits for the  account number"))
+	return false;
+
+if(document.frmChk.ecom_payment_check_checkno.value!=""){
+if(IsNotNumber(document.frmChk.ecom_payment_check_checkno,"Please enter only digits for the check number"))
+	return false;
+}
+return true;
+}
+//-->
+</script>
+</HEAD>
+<BODY>
+<!--When testing is complete change the action of this form to "https://www.paymentsgateway.net/cgi-bin/postauth.pl". -->
+<form name="frmChk" action="https://www.paymentsgateway.net/cgi-bin/authtest.pl" method="post" onsubmit="return ValidatefrmChk()">
+  <P align=center><b>This example is to illustrate the check transaction (type 
+    20)</b></P>
+<P align=center>
+  <TABLE border=0 cellPadding=1 cellSpacing=1 width="450" align="center">
+    <TR> 
+      <TD align=right>Total Amount:</TD>
+      <TD> 
+        <INPUT name=pg_total_amount maxlength=20 onblur="return fixAmount()">
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>First Name:</TD>
+      <TD> 
+        <input name=ecom_billto_postal_name_first maxlength=20>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Last Name:</TD>
+      <TD> 
+        <INPUT name=ecom_billto_postal_name_last maxlength=20>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Rounting Number:</TD>
+      <TD> 
+        <INPUT name=ecom_payment_check_trn maxlength=9>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Account Number:</TD>
+      <TD> 
+        <INPUT name=ecom_payment_check_account maxlength="17">
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Account Type:</TD>
+      <TD> 
+        <select name=ecom_payment_check_account_type>
+          <option value="S">Savings</option>
+          <option value="C">Checking</option>
+        </select>
+      </TD>
+    </TR>
+    <TR> 
+      <TD align=right>Check Number:</TD>
+      <TD> 
+        <INPUT name=ecom_payment_check_checkno maxlength=5>
+      </TD>
+    </TR>
+    <TR> 
+      <TD colspan=2>&nbsp;</TD>
+    </TR>
+    <TR> 
+      <TD></TD>
+      <TD> 
+        <INPUT type=submit value="submit">
+		<!--Please Insert your own Merchant ID for the value of pg_merchant_id. -->
+        <input type="hidden" name="pg_merchant_id" value="2000">
+		<!--Please Insert your own Password for the value of pg_password. -->
+        <input type="hidden" name="pg_password" value="merchant4demo">
+        <input type="hidden" name="pg_transaction_type" value="20">
+        <input type="hidden" name="pg_response_url" value = "https://webmaster/php/results_approved.php">
+        <input type="hidden" name="pg_failure_url" value = "https://webmaster/php/results_error.php">
+        <input type="hidden" name="pg_return_url" value = "https://webmaster/php/thankyou.php">
+      </TD>
+    </TR>
+  </TABLE>
+<p></P>
+</form>
+</BODY>
+</HTML>

@@ -1,0 +1,26 @@
+	<tr class="SubReport">
+		<td>
+			%%GLOBAL_topname%%
+		</td>
+		<td>
+			%%GLOBAL_name%%
+		</td>
+		<td>
+			%%GLOBAL_visits%%
+		</td>
+		<td>
+			%%GLOBAL_conversions%%
+		</td>
+		<td>
+			%%GLOBAL_percent%%
+		</td>
+		<td>
+			%%GLOBAL_cost%%
+		</td>
+		<td>
+			%%GLOBAL_revenue%%
+		</td>
+		<td>
+			%%GLOBAL_roi%%
+		</td>
+	</tr>

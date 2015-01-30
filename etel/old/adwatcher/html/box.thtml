@@ -1,0 +1,23 @@
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#7F7F7F">
+    <tr>
+      <td align="left">
+
+<table width="100%" cellspacing="1" cellpadding="0" border="0">
+  <tr>
+   <td background="/images/nav_bg.gif" align="left" valign="middle" colspan="7">
+     <table width="100%" cellspacing="0" cellpadding="0" border="0">
+       <tr>
+         <td align="left" valign="middle"><img src="/images/trans.gif" border="0" width="5" height="20"></td>
+        <td background="/images/nav_bg.gif" align="left" valign="middle" width="100%"><font class="titleblue"><b>{box_title}</b></font></td>
+       </tr>
+     </table>
+
+   </td>
+  </tr>
+ </table>
+   </td>
+ </tr>
+</table>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+{box_body}
+</table>

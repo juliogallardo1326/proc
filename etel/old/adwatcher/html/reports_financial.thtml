@@ -1,0 +1,192 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<form action="?action=financial_reports" method="post" name="oForm">				
+				<input type="hidden" name="svar[xstart]" value="{xstart}" />
+				<input type="hidden" name="svar[xend]" value="{xend}" />
+				{hidden_select}			
+					<tr>
+						<td nowrap>Reports - Financial</td>
+						<td width="100%" style="text-align:right;"><input type="submit" name="svar[export_financial]" value=" Export To CSV " class="csubmit" style="margin-bottom:3px;" /></td>
+						<td>&#160;</td>						
+						<td style="text-align:right;"><input type="button" name="print" value=" Print This Page " class="csubmit" onclick="javascript:doPrint();" style="margin-bottom:3px;" /></td>
+					</tr>
+				</table></div><br />
+				Financial reports concentrate on the monetary aspect of all of your campaigns. They provide you with detailed information on how your ad campaigns are performing, in terms of revenue, profit, cost, and so on.	
+				
+				<br /><br />
+				<b>TIP:</b> Want to analyze the financial performance of your campaigns at your convinience? Export them into a CSV file or print them out using the buttons above.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';" style="width:712px;cursor:pointer !important;"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Campaign Reports - Financial Reports</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="innerTable">
+					<thead>
+					<tr>
+						<td class="title">&#160;</td>
+						<td class="sp">&#160;</td>
+						<td class="title">ID</td>
+						<td class="sp">&#160;</td>						
+						<td class="ctitle"><input type="checkbox" name="allbox" value="Check All" title="Select/Deselect All" onClick="CheckAll();" class="sm_check" /></td>
+						<td class="sp">&#160;</td>														
+						<td class="title" width="90%" style="text-align:left !important;">Campaign</td>						
+						<td class="sp">&#160;</td>
+						<td class="title">Rev</td>
+						<td class="sp">&#160;</td>
+						<td class="title">Cost</td>
+						<td class="sp">&#160;</td>
+						<td class="title">Profit</td>						
+						<td class="sp">&#160;</td>
+						<td class="title">CPA</td>
+						<td class="sp">&#160;</td>
+						<td class="title">CPS</td>
+						<td class="sp">&#160;</td>
+						<td class="title">CPC</td>
+						<td class="sp">&#160;</td>
+						<td class="title">ROI</td> 
+					</tr>
+					</thead>
+					<tbody>
+					{clist}
+					</tbody>
+					<tr id="cTotal">
+						<td nowrap class="tLeft" colspan="5">Total:</td>
+						<td></td>
+						<td nowrap class="ce"></td>
+						<td></td>
+						<td nowrap class="ce">{total_revenue}</td>
+						<td></td>
+						<td nowrap class="ce">{total_cost}</td>
+						<td></td>
+						<td nowrap class="ce">{total_profit}</td> 
+						<td></td>
+						<td nowrap class="ce">{total_cpa}</td>
+						<td></td>
+						<td nowrap class="ce">{total_cps}</td>
+						<td></td>
+						<td nowrap class="ce">{total_cpc}</td>
+						<td></td>
+						<td nowrap class="ce tRight">{total_roi}</td>																		
+					</tr>
+				</table>
+				<script type="text/javascript">
+				var st1 = new SortableTable(document.getElementById("innerTable"),
+				["None", "None", "Number", "None", "None", "None", "CaseInsensitiveString", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Money", "None", "Percent"]);
+				</script>				
+			</div>
+			<div class="space clear">&#160;</div>
+
+			<div class="leftBox extended" id="Box2" style="width:712px;">
+			<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				</tr>
+					<td align="left" width="100%">
+						<table cellspacing="0" cellpadding="0" border="0">
+							<tr>
+								<td>View By Group:</td>
+								<td>&#160;{groups}&#160;</td>
+								<td><input type="submit" name="submit" value=" View Group " class="csubmit" onclick="oForm.target='_self';" /></td>
+							</tr>
+						</table>					
+					</td>
+					<td><input type="submit" name="svar[selected]" value=" Show Only Selected Campaigns " class="csubmit" style="width:160px;" /></td>
+					{showall}
+				</tr>
+			</table>
+			</div>
+
+		</div>
+	</div>
+	
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Financial Report Options</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0">
+							</tr>
+								<td align="left" class="nul">
+									<table cellspacing="0" cellpadding="0" border="0">
+										<tr>
+											<td colspan="5" style="padding-left:10px;" class="nul">Show above statistics by:</td>
+										</tr>
+										<tr>
+											<td class="nul"><input checked type="radio" name="svar[stat_type]" {t_checked} value="t" class="noborder" style="margin-left:10px;margin-right:10px;" onclick="changeTimeDate('over0','over1');" /></td>
+											<td class="nul">Timeframe</td>
+											<td class="nul" style="width:15px;">&#160;</td>
+											<td class="nul"><input type="radio" name="svar[stat_type]" {d_checked} value="d" class="noborder" style="margin-left:10px;margin-right:10px;" onclick="changeTimeDate('over1','over0');" /></td>
+											<td class="nul" nowrap>Date Range</td>
+										</tr>
+									</table>
+								</td>
+								<td align="left" class="nul" style="padding-left:10px;">
+													<table cellspacing="0" cellpadding="0" border="0" id="over0" style="{t_display}">
+														<tr>
+															<td style="text-align:right;" class="nul">Timeframe:</td>
+															<td class="nul">&#160;</td>
+															<td class="nul" >{time_select}</td>
+														</tr>
+													</table>
+												
+													<table cellspacing="0" cellpadding="0" border="0" id="over1" style="{d_display}">
+														<tr>
+															<td class="nul">From:</td>
+															<td class="nul">{select_mstart}</td>
+															<td class="nul">{select_dstart}</td>
+															<td class="nul">{select_ystart}</td>
+															<td class="nul" style="padding-left:12px;">To:</td>
+															<td class="nul">{select_mend}</td>
+															<td class="nul">{select_dend}</td>
+															<td class="nul">{select_yend}</td>
+														</tr>
+													</table>					
+			
+								</td>
+								<td style="padding-left:15px;" class="nul">&#160;</td>
+								<td width="100%" class="nul"><input type="submit" name="svar[dt]" value=" Show Statistics " class="csubmit" style="width:140px;" /></td>									
+							</tr>
+						</table>
+					</td>				
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<div class="leftContainer extended">
+		<div class="leftBox extended" id="Box2">
+			<table width="100%" cellspacing="0" cellpadding="2" border="0" class="smallTable">
+				<tr>
+					<th>Financial Reports Key</th>
+				</tr>
+				<tr>
+					<td style="padding-top:8px;" class="nul">
+						<table width="100%" cellspacing="0" cellpadding="2" border="0">
+							<tr>
+								<td nowrap class="keyr">Rev : </td><td>Total Revenue of Sales</td>
+								<td nowrap class="keyr">Cost : </td><td>Total Cost of Campaign</td>
+								<td nowrap class="keyr">Profit : </td><td>Total Profit of Campaign</td>								
+							</tr>
+							<tr>
+								<td nowrap class="keyr">CPA : </td><td>Cost Per Action</td>
+								<td nowrap class="keyr">CPS : </td><td>Cost Per Sale</td>
+								<td nowrap class="keyr">CPC : </td><td>Cost Per Click</td>
+							</tr>
+							<tr>
+								<td nowrap class="keyr">ROI : </td><td colspan="5">Return On Investment</td>								
+							</tr>														
+						</table>
+					</td>				
+				</tr>
+				</form>
+			</table>
+		</div>
+	</div>	
+	
+	<div class="clear">&#160;</div>
+	<div style="display:none;"><iframe name="oframe" style="width:1px;height:1px;" src="{export_financial}"></iframe></div>

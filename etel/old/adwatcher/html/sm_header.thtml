@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>AdWatcher.com - Statistical Output</title>
+<link rel="stylesheet" type="text/css" href="{site_path}/inf/style.css">
+<script type="text/javascript" src="{site_path}/inf/sortabletable.js"></script>
+<script language="javascript">
+	function ip(ip){
+		window.open('?action=ip_check_sm&ip='+ip,'ip_search','width=270,height=75,left=10,top=10,status=no,toolbar=no,menubar=no,scrollbars=no,resize=no,alwaysRaised');
+	}
+</script>
+<style type="text/css">
+.even {background:#FFFEF7 !important;}
+.odd {background:#FFFFFF !important;}
+</style>
+</head>
+<body bgcolor="#F3F3F3" class="nbg" onLoad="self.focus();">

@@ -1,0 +1,176 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">My Advertising Campaigns</div><br />
+			Here is an overview of all of your campaigns. Click on any campaign name to view more options. You can view the campaign statistics by groups, compare and contrast specific campaigns side-by-side, or even export them to a spreadsheet or print them for offline viewing. To change the timeframe of the statistics shown, please scroll down. 
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />My Campaigns</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="innerTable">
+					<tr>
+						<th>&#160;</th>
+						<th class="sp"></th>								
+						<th width="90%">Campaign</th>
+						<th class="sp"></th>
+						<th>C</th>
+						<th class="sp"></th>
+						<th>A</th>
+						<th class="sp"></th>
+						<th>S</th>
+						<th class="sp"></th>
+						<th>Revenue</th>
+						<th class="sp"></th>
+						<th>Cost</th>
+						<th class="sp"></th>
+						<th>Profit</th>						
+						<th class="sp"></th>
+						<th>CPA</th>
+						<th class="sp"></th>
+						<th>CPS</th>
+						<th class="sp"></th>
+						<th>CPC</th>
+						<th class="sp"></th>
+						<th nowrap>ROI (%)</th> 
+						<th class="sp"></th>
+						<th nowrap>C2A (%)</th>
+						<th class="sp"></th>
+						<th nowrap>C2S (%)</th>
+						<th class="sp"></th>
+						<th nowrap>A2S (%)</th>
+					</tr>
+					{clist}
+					<tr id="cTotal">
+						<td class="tLeft" colspan="3">Total:</td>
+						<td></td>
+						<td class="ce">{total_clicks}</td>
+						<td></td>
+						<td class="ce">{total_actions}</td>
+						<td></td>
+						<td class="ce">{total_sales}</td>
+						<td></td>
+						<td class="ce">{total_revenue}</td>
+						<td></td>
+						<td class="ce">{total_cost}</td>
+						<td></td>
+						<td class="ce">{total_profit}</td> 
+						<td></td>
+						<td class="ce">{total_cpa}</td>
+						<td></td>
+						<td class="ce">{total_cps}</td>
+						<td></td>
+						<td class="ce">{total_cpc}</td>
+						<td></td>
+						<td class="ce">{total_roi}</td>
+						<td></td>
+						<td class="ce">{total_c2a}</td>
+						<td></td>
+						<td class="ce">{total_c2s}</td>
+						<td></td>
+						<td class="tRight">{total_a2s}</td>																		
+					</tr>
+				</table>
+			</div>
+			<div class="space">&#160;</div>
+			<div class="clear">&#160;</div>
+			
+			<div class="camOut" style="width:712px;" onclick="showHide('Box2', 'tBox2');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox2" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Campaigns View Options</div>
+			<div class="leftBox extended" id="Box2">
+			
+			<table cellspacing="0" cellpadding="0" id="checkTable">
+			  <tr>
+			  
+				<td style="width:0px;"><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">C</td>
+				<td class="sp"></td>
+				<td style="width:33%;">Number of Clicks</td>
+				<td class="sp"></td>
+				<td style="width:0px;"><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">A</td>
+				<td class="sp"></td>
+				<td style="width:33%;">Number of Actions</td>
+				<td class="sp"></td>
+				<td style="width:0px;"><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">S</td>
+				<td class="sp"></td>
+				<td style="width:33%;">Number of Sales</td>
+				
+			  </tr>
+			  <tr>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">Revenue</td>
+				<td class="sp"></td>
+				<td>Total Value of Sales</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">Cost</td>
+				<td class="sp"></td>
+				<td>Cost of Campaign</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">CPS</td>
+				<td class="sp"></td>
+				<td>Cost Per Sale</td>				
+			  </tr>
+			  <tr>
+			  			  
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">Profit</td>
+				<td class="sp"></td>
+				<td>Total Profit</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">CPA</td>
+				<td class="sp"></td>
+				<td>Cost Per Action</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">C2A (%)</td>
+				<td class="sp"></td>
+				<td>Percentage of Click to Actions</td>
+				
+			  </tr>
+			  <tr>
+			  
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">CPC</td>
+				<td class="sp"></td>
+				<td>Cost Per Click</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">ROI (%)</td>
+				<td class="sp"></td>
+				<td>Return On Investment</td>
+				<td class="sp"></td>
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">A2S (%)</td>
+				<td class="sp"></td>
+				<td>Percentage of Actions to Sales</td>
+				
+			  </tr>
+			  <tr>
+			  
+				<td><input type="checkbox" name="" class="check" /></td>
+				<td class="checkTitle">C2S (%)</td>
+				<td class="sp"></td>
+				<td>Percentage of Clicks to Sales</td>
+				<td class="sp"></td>
+				<td></td>
+				<td class="checkTitle"></td>
+				<td class="sp"></td>
+				<td></td>
+				<td class="sp"></td>
+				<td>&#160;</td>
+				<td>&#160;</td>
+				<td class="sp"></td>
+				<td>&#160;</td>				
+			  </tr>
+			</table>
+			<div style="text-align:right;margin-top:4px;"><input type="button" style="width:154px;" name="update" value="Update Campaign List" class="csubmit" /></div>
+			</div>
+		</div>
+	</div>
+	<div class="clear">&#160;</div>
+	<form method="POST" action="#" name="wbPForm" enctype="application/x-www-form-urlencoded"></form>

@@ -1,0 +1,296 @@
+<?php
+
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+//                                                        
+// Name:		Password Management Script        
+// Version:	Version 1.3		                  
+//                                                        
+// Latest:                                                
+//  06-24-2006 - Added optional group management (htgroup)
+//  06-30-2006 - Added php support			  
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+//########################################################################
+//
+//	- Authentication Code - 
+//	This must be the same value as the value you entered in your Control Panel. 
+//   This is how your server authenticates ours.
+//
+$authpwd = "{#secret#}";   // your authentication code
+//
+//
+//	- Password File (Required) - 
+//	This required field is your .htpasswd file. This file must be writable.
+//
+$pwdfile1 = "{#passdir#}";   // (ex. /public_html/cgi-bin/pass/.htpasswd)
+//$pwdfile2 = "public_html/cgi-bin/pass/.htpasswd2";   // Optional (ex. /public_html/cgi-bin/pass/.htpasswd)
+//
+//
+//	- Group Management (Optional) - 
+//	Enabling this option will allow this script to add users to groups based on price points they purchased. 
+//	This allows you to provide specific access to certain files/folders based on a subscription type.
+//	To disable this option, please leave it blank.  This file must be writable.
+//
+$groupfile1 = "{#groupdir#}";  // (ex. /public_html/cgi-bin/pass/.htgroup)
+//$groupfile2 = "public_html/cgi-bin/pass/.htgroup2";  // Optional (ex. /public_html/cgi-bin/pass/.htgroup)
+//
+//
+//########################################################################
+
+
+//########################################################################
+//
+//	- Customization - 
+//	Use this section to add htaccess management logic. 
+
+$PM1 = new PassManage($_REQUEST,$pwdfile1,$groupfile1);
+$PM1->validateAuth($authpwd);
+$output = $PM1->process();
+
+if($pwdfile2) 
+{
+	$PM2 = new PassManage($_REQUEST,$pwdfile2,$groupfile2);
+	$PM2->process();
+}
+die($output);
+
+//
+//
+//########################################################################
+
+//#### DO NOT MODIFY ANYTHING BELOW THIS LINE #####
+
+
+class PassManage
+{
+	var $pwdfile;
+	var $groupfile;
+	var $authpwd;
+	var $users;
+	var $groups;
+	var $request;
+	
+	function PassManage($req,$pf,$gf=NULL)
+	{
+		$this->request = $req;
+		$this->pwdfile = $pf;
+		$this->groupfile = $gf;
+	}
+	
+	function validateAuth($authpwd)
+	{
+		$authcode = PassManage::normalize($this->request['authpwd']);
+		if($authcode!=$authpwd) 
+			doError('501'); // Auth Fail
+	}
+	
+	function process()
+	{		
+		$reqtype = $this->normalize($this->request['reqtype']);
+		$groupaccess = $this->normalize($this->request['groupaccess']);
+		
+		if(!in_array($reqtype,array('add','delete','chgpwd','list')))
+			$this->doError('502'); // Invalid Request Type
+			
+		$username = $this->normalize($this->request['username']);
+		$password = $this->normalize($this->request['password']);
+		
+		if($this->groupfile)
+			$this->groupaccess = $this->normalize($this->request['groupaccess']);
+		
+		$this->users = $this->read_pwd_file();
+		$this->groups = $this->read_group_file();
+		
+		switch($reqtype)
+		{
+			case 'add':
+				if(!$this->valid_username($username)) $this->doError('507');
+				if(!$this->valid_password($password)) $this->doError('508');
+				if($this->users[$username]) $this->doError('505');
+				$this->users[$username] = crypt($password,$this->get_key());
+				$this->write_pwd_file();
+				if($groupaccess)
+				{
+					if($username) $this->groups[$groupaccess][$username] = $username;
+					$this->write_group_file();
+				}
+				return $this->doSuccess('201');
+				break;
+			case 'delete':
+				if(!$this->valid_username($username)) $this->doError('507');
+				if(!$this->users[$username]) $this->doError('506');
+				unset($this->users[$username]);
+				$this->write_pwd_file();
+				
+				if($this->groupfile && sizeof($this->groups))
+				{
+					foreach ($this->groups as $group=>$data)
+						unset($this->groups[$group][$username]);
+					$this->write_group_file();
+				}
+				
+				return $this->doSuccess('202');
+				break;
+			case 'chgpwd':
+				if(!$this->valid_username($username)) $this->doError('507');
+				if(!$this->valid_password($password)) $this->doError('508');
+				if(!$this->users[$username]) $this->doError('506');
+				$this->users[$username] = crypt($password,$this->get_key());
+				$this->write_pwd_file();
+				return $this->doSuccess('203');
+				break;
+			case 'list':
+			
+				$list = "&version=1.3";
+				if(sizeof($this->users))
+					foreach($this->users as $user=>$data ){
+						$list .= "&user[]=" . $user;
+					}
+				if($this->groupfile && sizeof($this->groups))
+				{
+					$list .= "&usinggroups=1";
+					foreach ($this->groups as $group=>$data){
+				
+						$i=0;
+						$list .= "&group[".$group."]=";
+						foreach($data as $u) 
+						{	
+							if($i++>0) $list .= ",";
+							$list .= $u;
+						}
+					}
+				}
+				$list .= "&";
+				return $this->doSuccess($list); # Send User Lists
+				
+				break;
+			default:
+				$this->doError('502'); // Invalid Request Type
+				break;
+		}
+		
+		die("Error: this shouldn't ever happen");
+	
+	}
+	
+	function doError($str)
+	{
+		die($str);
+	}
+	
+	function doSuccess($str)
+	{
+		return($str);
+	}
+	
+	function normalize($str)
+	{
+		return preg_replace('/[^a-zA-Z0-9-_ ]/','',$str);
+	}
+	
+	
+	function read_pwd_file()
+	{
+		if(!$this->pwdfile) $this->doError('503');
+		
+		if (!is_readable($this->pwdfile))  
+			$this->doError('504');
+			
+		$file = file($this->pwdfile);
+		if(sizeof($file))
+		foreach($file as $line)
+		{	
+			if($line)
+			{
+				$line=trim($line);
+				list($cuser,$cpwd) = split(":",$line);
+				if($cuser) $this->users[$cuser] = $cpwd;
+			}	
+		}
+		return $this->users;
+	}
+	
+	function read_group_file()
+	{
+		if(!$this->groupfile) return NULL;
+		$file = file($this->groupfile);
+		if($file===false) $this->doError('504');
+		foreach($file as $line)
+		{
+			if($line)
+			{
+				$line=trim($line);
+				list($cgroup,$ulist) = split(":",$line);
+				$uarray = preg_split('/[, ]/',$ulist);
+				foreach($uarray as $u)
+					if($u) $this->groups[$cgroup][$u] = $u;
+			}	
+		}
+		return $this->groups;
+	}
+	
+	
+	function write_pwd_file()
+	{
+		if(!$this->pwdfile) $this->doError('503');
+		
+		if (!is_writable($this->pwdfile))  
+			$this->doError('504');
+	
+		if (!$handle = fopen($this->pwdfile, 'w')) 
+			$this->doError('504');
+		
+		$content="";
+		
+		if(sizeof($this->users))
+		foreach($this->users as $user=>$pass)
+		{
+			$content .= $user . ":" . $pass . "\n";
+		}
+		if (fwrite($handle, $content) === FALSE) $this->doError('504');
+		fclose($handle);
+	}
+	
+	
+	function write_group_file()
+	{
+		if(!$this->groupfile) return NULL;
+		
+		if (!is_writable($this->groupfile))  
+			$this->doError('504');
+	
+		if (!$handle = fopen($this->groupfile, 'w')) 
+			$this->doError('504');
+		$content = "";
+		if(sizeof($this->groups))
+		foreach($this->groups as $group=>$data)
+		{
+			$i=0;
+			$out = "$group:";
+			foreach($data as $u)
+				$out .= ($i++>0?" ":"").$u;
+			if($i>0) 
+				$content .= $out."\n";
+		}
+		
+		if (fwrite($handle, $content) === FALSE) 
+			$this->doError('504');
+	
+		fclose($handle);
+	}
+	
+	function get_key()
+	{
+		return(substr(md5(time()+rand(0,10000)),0,4));
+	}
+	function valid_username($usr)
+	{
+		return(strlen($usr)>=3);
+	}
+	function valid_password($pwd)
+	{
+		return(strlen($pwd)>=3);
+	}
+
+}
+?>

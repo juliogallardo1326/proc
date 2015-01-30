@@ -1,0 +1,32 @@
+<?
+$Lang['Title']="My Tracker";
+$Lang['SavedReports']="Saved reports";
+$Lang['Visitors']="Visitors";
+$Lang['VisitorGrps']="Visitor groups";
+$Lang['Actions']="Actions";
+$Lang['ActionItems']="Action targets";
+$Lang['SaleItems']="Products";
+$Lang['AddNewGrp']="Add new group";
+$Lang['AIChooseClient']="Please choose a company to see a list of its action targets";
+$Lang['SIChooseClient']="Please choose a company to see a list of products";
+$Lang['MustFillName']="The name must be specified";
+$Lang['SavedVisitors']="Saved visitors";
+$Lang['AddChoosedToMy1']="Add selected to the main page of My Tracker";
+$Lang['AddChoosedToMy2']="Add selected to the main page of My Tracker";
+$Lang['Info']="Information";
+$Lang['Filter']="Filter";
+$Lang['MyReports']="My reports";
+$Lang['DeleteFromMy']="Remove from this page";
+$Lang['MyVisitors']="Tracked visitors";
+$Lang['VisitorInfo']="Visitor information";
+$Lang['Visitor']="Visitor";
+$Lang['LastVisit']="Last visit";
+$Lang['ShowPaths']="Show paths";
+$Lang['MyVisitorGrps']="Tracked visitor groups";
+$Lang['GrpInfo']="Group information";
+$Lang['MyActions']="Tracked actions";
+$Lang['ShowConst']="View in the reports contructor";
+$Lang['LastTimeUsed']="Last time happened";
+$Lang['MyActionItems']="Tracker action targets";
+$Lang['MySaleItems']="Tracked products";
+?>

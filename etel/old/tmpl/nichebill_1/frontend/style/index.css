@@ -1,0 +1,91 @@
+
+/* ::::: file:///D:/Protricity/AppData/Roaming/Mozilla/Firefox/Profiles/zp0azati.default/ScrapBook/data/20080623131025/index1.css ::::: */
+
+body { margin: 0pt; padding: 0pt; background-color: rgb(91, 207, 213); }
+img { border: 0pt none ; margin: 0pt; padding: 0pt; }
+p { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(255, 255, 255); text-align: left; }
+.logo { margin-top: 15px; }
+.margin1 { margin-top: 10px; }
+a.linkstxt { font-family: Arial,Helvetica,sans-serif; font-size: 14px; color: rgb(255, 255, 255); font-weight: bold; font-style: italic; text-decoration: none; display: block; line-height: 28px; width: 100px; }
+a.linkstxt:hover { background: transparent url('../img/homebg.png') no-repeat scroll 0% 0%; height: 28px; display: block; }
+.bdyleft { background: transparent url('../img/bglft.png') no-repeat scroll 0% 0%; height: 242px; width: 20px; }
+.bdymid { background: transparent url('../img/2.jpg') repeat-x scroll 0% 0%; height: 242px; width: 929px; }
+.bdyright { background: transparent url('../img/rht.png') no-repeat scroll 0% 0%; height: 242px; width: 20px; }
+.bluebold { font-family: Arial,Helvetica,sans-serif; font-size: 26px; font-weight: bold; color: rgb(12, 181, 243); }
+.welbg { background: transparent url('../img/weltopbg.gif') no-repeat scroll 0% 0%; height: 50px; }
+.welbgmid { background: transparent url('../img/wermidbg.gif') repeat-y scroll 0% 0%; }
+.welbtmbg { background: transparent url('../img/welbtmbg1.gif') no-repeat scroll 0% 0%; height: 9px; }
+.blueBG { background: rgb(0, 156, 171) none repeat scroll 0% 0%; }
+.whitebold { font-family: Arial,Helvetica,sans-serif; font-size: 24px; font-weight: bold; color: rgb(255, 255, 255); }
+.blueBg1 { background: transparent url('../img/bluebg.gif') repeat-x scroll 0% 0%; height: 211px; }
+.bluebtm1 { background: transparent url('../img/bluebtm.png') no-repeat scroll 0% 0%; height: 11px; }
+.blacktxt { font-family: Helios; color: rgb(0, 0, 0); font-size: 14px; font-weight: 800; text-decoration: none; }
+.greentxt { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(0, 0, 0); text-decoration: none; }
+.blueline { background: transparent url('../img/lineblue.gif') repeat-y scroll 0% 0%; }
+.blueline1 { background: transparent url('../img/blue12.gif') repeat-y scroll 0% 0%; }
+.dot { padding: 10px; background: transparent url('../img/dot.gif') repeat-x scroll 0% 0%; height: 1px; }
+.blackbox { background: transparent url('../img/box.gif') no-repeat scroll center center; height: 162px; width: 163px; }
+.price { font-family: Arial,Helvetica,sans-serif,HeliosCondBlack; font-size: 18px; color: rgb(255, 255, 255); font-style: italic; }
+.login { font-family: Arial,Helvetica,sans-serif; font-size: 26px; color: rgb(255, 255, 255); font-weight: bold; }
+.forget { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(255, 255, 255); }
+a.leftLink, a.subLeftLink { background: transparent url('../img/arrow.gif') no-repeat scroll 3px 4px; font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(255, 255, 255); font-weight: bold; padding-left: 15px; text-decoration: none; height: 30px; line-height: 30px; }
+a.leftLink:hover, a.subLeftLink { text-decoration: none; }
+a.subLeftLink { background: transparent url('../img/subarrow.gif') no-repeat scroll 3px 3px; padding-left: 15px; margin-left: 15px; }
+.whiteBg { background-color: rgb(255, 255, 255); }
+.input { border: medium none ; background: transparent url('../img/user_new.png') no-repeat scroll 0% 0%; width: 157px; height: 29px; font-family: Arial,Helvetica,sans-serif; color: rgb(51, 51, 51); font-size: 12px; padding-left: 5px; line-height: 29px; padding-top: 6px; }
+.button { font-family: Arial,Helvetica,sans-serif,Helios; font-size: 14px; font-weight: bold; text-align: center; }
+.ver { background: transparent url('../img/lineblue.gif') repeat-y scroll 0% 0%; width: 831px; height: 35px; }
+.boxblue { background-color: rgb(0, 144, 160); width: 831px; }
+.paddingborder { border: 1px solid rgb(25, 141, 154); padding: 10px; background: rgb(234, 252, 254) none repeat scroll 0% 0%; }
+.blueborder { border: 1px dotted rgb(67, 137, 3); padding: 10px; background: rgb(255, 255, 255) none repeat scroll 0% 0%; }
+.select { width: 131px; }
+.select1 { width: 100px; }
+.blktxt { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(0, 0, 0); text-decoration: none; }
+.user { background: transparent url('../img/formuser.gif') no-repeat scroll 0% 0%; width: 131px; height: 23px; font-family: Arial,Helvetica,sans-serif; color: rgb(51, 51, 51); font-size: 12px; }
+.box12 { background: transparent url('../img/box1.gif') no-repeat scroll 0% 0%; width: 110px; height: 60px; line-height: 20px; text-align: center; vertical-align: middle; }
+a.refunds { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(0, 0, 0); font-weight: bold; margin-right: 10px; text-decoration: none; }
+a.refunds:hover { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(255, 255, 255); font-weight: bold; margin-right: 10px; text-decoration: none; }
+.nichebilltxt { font-family: Arial,Helvetica,sans-serif; font-size: 47px; color: rgb(255, 255, 255); font-weight: bold; }
+.pricegreen { font-family: Arial,Helvetica,sans-serif; font-size: 21px; color: rgb(1, 118, 128); font-style: italic; font-weight: bold; }
+.graybold { font-family: Arial,Helvetica,sans-serif; font-size: 15px; color: rgb(87, 83, 83); font-weight: bold; }
+.txtgray { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(68, 69, 69); text-align: justify; text-decoration: none; line-height: 19px; padding-right: 25px; }
+.signbg { background: rgb(255, 255, 255) url('../img/signbg.png') no-repeat scroll 0% 0%; width: 732px; }
+.fees { font-family: Arial,Helvetica,sans-serif; color: rgb(10, 172, 182); font-size: 18px; }
+.linebg { background: transparent url('../img/linebg.gif') repeat-x scroll 0% 0%; width: 300px; height: 1px; }
+.topbgfees { background: transparent url('../img/feestopbg.gif') no-repeat scroll 0% 0%; width: 330px; height: 14px; }
+.btmbgfees { background: transparent url('../img/feesbtmbg.gif') no-repeat scroll 0% 0%; width: 330px; height: 14px; }
+.midfeesbg { background: transparent url('../img/midfeesbg.gif') repeat-y scroll 0% 0%; width: 330px; height: 100px; }
+.whitetxt { padding: 10px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; }
+.graytxt { font-family: Arial,Helvetica,sans-serif; color: rgb(54, 54, 54); font-size: 14px; font-weight: bold; font-style: italic; }
+.graytxt1 { font-family: Arial,Helvetica,sans-serif; color: rgb(54, 54, 54); font-size: 11px; }
+.whitetxt1 { font-family: Arial,Helvetica,sans-serif; font-size: 16px; font-weight: bold; color: rgb(255, 255, 255); }
+.whitetxt2 { font-family: Arial,Helvetica,sans-serif; font-size: 12px; font-weight: bold; color: rgb(255, 255, 255); }
+.linebg1 { background: transparent url('../img/acline.gif') repeat-x scroll 0% 0%; width: 733px; }
+.circle_services { background: transparent url('../img/circlebgservices.png') no-repeat scroll 0% 0%; height: 145px; font-family: Arial,Helvetica,sans-serif; color: rgb(51, 51, 51); font-size: 11px; padding-left: 150px; padding-top: 25px; width: 250px; }
+.acbdytop { background: transparent url('../img/acgrn.png') no-repeat scroll 0% 0%; width: 742px; height: 18px; }
+.acbdybtm { background: transparent url('../img/acgrnbtm.png') no-repeat scroll 0% 0%; width: 742px; height: 18px; }
+.reseller { background: transparent url('../img/reselleracmid.gif') repeat-x scroll 0% 0%; height: 250px; }
+.reslrtxt { font-family: Arial,Helvetica,sans-serif; font-size: 33px; font-weight: bold; color: rgb(255, 255, 255); padding-left: 20px; }
+.accstxt { font-family: Arial,Helvetica,sans-serif; font-size: 21px; color: rgb(141, 248, 247); font-weight: 800; }
+.blktxt1 { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(0, 0, 0); text-decoration: none; }
+.contactuslft { background: transparent url('../img/contactuslftbg.gif') no-repeat scroll 0% 0%; height: 472px; width: 18px; }
+.contactusrht { background: transparent url('../img/contactusrhtbg.gif') no-repeat scroll 0% 0%; height: 472px; width: 18px; }
+.contactusmid { background: transparent url('../img/contactusmidbg.jpg') repeat-x scroll 0% 0%; width: 363px; }
+.input { border: medium none ; background: transparent url('../img/user_new.png') no-repeat scroll 0% 0%; width: 157px; height: 29px; font-family: Arial,Helvetica,sans-serif; color: rgb(51, 51, 51); font-size: 12px; padding-left: 5px; line-height: 20px; }
+.whitesmall { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; }
+.select { width: 157px; }
+.select1 { width: 157px; }
+.ofcedetailbg { padding: 10px 10px 0px; background: transparent url('../img/ofce_mid.png') repeat-y scroll 0% 0%; width: 331px; height: 100px; }
+.faq { font-family: Arial,Helvetica,sans-serif; font-size: 12px; color: rgb(141, 248, 247); font-weight: 800; }
+.credittop { background: transparent url('../img/top1.png') no-repeat scroll 0% 0%; width: 969px; height: 53px; }
+.creditmidbg { background: transparent url('../img/creditmidbg.png') repeat-y scroll 0% 0%; width: 968px; }
+.creditbtm { background: transparent url('../img/creditbtmbg.png') no-repeat scroll 0% 0%; width: 969px; height: 51px; }
+.blktxt3 { font-family: Arial,Helvetica,sans-serif; font-size: 11px; color: rgb(0, 0, 0); text-decoration: none; text-align: justify; }
+.ccButton { background: transparent url('../img/creditbutton.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton2 { background: transparent url('../img/button2.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton3 { background: transparent url('../img/button3.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton4 { background: transparent url('../img/button4.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton5 { background: transparent url('../img/button5.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton6 { background: transparent url('../img/button6.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.ccButton7 { background: transparent url('../img/button7.png') no-repeat scroll 0% 0%; width: 252px; height: 57px; font-family: Arial,Helvetica,sans-serif; padding-left: 8px; font-size: 12px; color: rgb(255, 255, 255); font-weight: bold; text-decoration: none; display: block; padding-top: 15px; }
+.con_mid { background: transparent url('../img/c-mid.png') repeat-y scroll 0% 0%; width: 401px; height: 100px; }

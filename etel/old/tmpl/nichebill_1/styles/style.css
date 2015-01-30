@@ -1,0 +1,230 @@
+/* CSS Document 2007 NicheBill.com. All Right Reserved | Adult Web Site Design By http://bluedesignstudios.com */
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Trebuchet MS;
+	font-size: 11px;
+	background: #A9A9A9;
+	color: #191919;
+	}
+img, table, td {
+	margin: 0;
+	padding: 0;
+	font-size: 11px;
+	}
+img {
+	border: 0;
+	}
+h1, h2, h3, h4, h5, h6, h7, p {
+	padding: 0 0 5px 0;
+	margin: 0;
+	line-height: 11px;
+	}
+h1, h2, h3, h4, h5, h6, h7 {
+	font-size: 11px;
+	color: #000000;
+	}
+ul, li {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 15px;
+	}
+form {
+	padding: 0;
+	margin: 0;
+	}
+select, input, textarea, option {
+	padding: 0;
+	margin: 0;
+	font-size: 11px;
+	font-family: Trebuchet MS;
+	color: #575757;
+	}
+a {
+	color: #CC5913;
+	cursor: pointer;
+	cursor: hand;
+	}
+a:hover {
+	color: #003366;
+	}
+div {
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box;
+	}
+table, td {
+	border-collapse: collapse;
+	}
+td {
+	border-collapse: collapse;
+	vertical-align: top;
+	}
+
+/*********************************************/
+
+table.page {
+	margin: 0 auto;
+	border-right: #858585 3px solid;
+	border-bottom: #858585 3px solid;
+	border-left: #858585 3px solid;
+	}
+
+div.bc_comp {
+	background: url(../images/bc_comp.jpg) no-repeat 0 0;
+	width: 223px;
+	height: 133px;
+	}
+div.bc_comp div.inner {
+	padding: 60px 15px 0 34px;
+	}
+div.bc_comp div.inner2 {
+	height: 70px;
+	overflow: hidden;
+	text-align: right;
+	}
+
+div.bc_login {
+	background: url(../images/bc_login.jpg) no-repeat 0 0;
+	width: 257px;
+	height: 77px;
+	}
+div.bc_login div.inner {
+	padding: 8px 15px 0 18px;
+	width: 100%;
+	}
+
+
+
+div.bc_news {
+	background: url(../images/bc_news.jpg) no-repeat 0 0;
+	width: 257px;
+	height: 248px;
+	}
+div.bc_news div.inner {
+	height: 215px;
+	overflow: hidden;
+	}
+div.bc_news div.inner2 {
+	padding: 16px 15px 0 26px;
+	}
+div.bc_news h3 {
+	padding: 3px 0 8px 0;
+	font-size: 12px;
+	}
+div.bc_news p {
+	font-size: 12px;
+	}
+
+td.main {
+	background: #FFFFFF;
+	padding: 20px 30px;
+	width: 100%;
+	}
+td.main h2 {
+	font-size: 14px;
+	text-transform: uppercase;
+	padding: 0 0 0 5px 0;
+	}
+td.copy {
+	background: #FFFFFF;
+	text-align: right;
+	}
+td.info {
+	padding: 10px 20px 10px 50px;
+	}
+td.info h3 {
+	font-size: 12px;
+	text-transform: uppercase;
+	padding: 0;
+	}
+img.s {
+	margin: 0 10px -6px 0;
+	}
+td.pic {
+	padding: 0 0 20px 0;
+	}
+
+td.main ul li {
+	padding: 0 0 5px 0;
+	}
+
+div.hr {
+	color: #CCCCCC;
+	background: #CCCCCC;
+	height: 1px;
+	}
+
+table.tbl {
+	margin-bottom: 10px;
+	}
+table.tbl td {
+	padding: 3px 10px 3px 0;
+	vertical-align: middle;
+	}
+table.tbl td.top {
+	padding: 3px 10px 3px 0;
+	vertical-align: top;
+	}
+table.tbl td.top-x {
+	padding: 6px 10px 3px 0;
+	vertical-align: top;
+	}
+table.tbl span {
+	color: #8F8F8F;
+	font-size: 10px;
+	}
+input.in-text100 {
+	width: 200px;
+	height: 18px;
+	padding: 0 3px;
+	border-top: #838383 1px solid;
+	border-left: #838383 1px solid;
+	border-right: #E0E0E0 1px solid;
+	border-bottom: #E0E0E0 1px solid;
+	}
+select.in-select100 {
+	width: 200px;
+	height: 18px;
+	}
+input.in-chekbox {
+	margin: 0;
+	padding: 0;
+	}
+input.none {
+	border: 0;
+	}
+.small {
+	font-size: 9px;
+	color: #999999;
+	}
+input.s-text {
+	width: 90px;
+	height: 18px;
+	padding: 0 3px 0 3px;
+	border-top: #838383 1px solid;
+	border-left: #838383 1px solid;
+	border-right: #E0E0E0 1px solid;
+	border-bottom: #E0E0E0 1px solid;
+	font-size: 9px;
+	}
+select.s-select {
+	width: 90px;
+	height: 18px;
+	border-top: #838383 1px solid;
+	border-left: #838383 1px solid;
+	border-right: #E0E0E0 1px solid;
+	border-bottom: #E0E0E0 1px solid;
+	font-size: 9px;
+	}
+table.sform td {
+	font-size: 11px;
+	color: #333333;
+	vertical-align: middle;
+	padding: 0 10px;
+	}
+td.btn {
+	vertical-align: middle;
+	}
+

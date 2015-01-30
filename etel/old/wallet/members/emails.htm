@@ -1,0 +1,78 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='E-MAILS MANAGER';
+$data['PageFile']='emails';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+	header("Location:{$data['Host']}/index.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+if(is_info_empty($uid)){
+	header("Location:{$data['Host']}/members/profile.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+if($post['addnow']) {
+	$result=add_email($uid,$post['newmail']);
+	if($result==INVALID_EMAIL_ADDRESS) $data['error']="The e-mail address you entered is invalid.";
+	elseif($result==EMAIL_EXISTS) $data['error']="The e-mail address you entered is in use in the system.";
+	elseif($result==TOO_MANY_EMAILS) $data['error']="You cannot add more than {$data['maxemails']} e-mail addresses";
+	elseif($result==DB_ERROR) $data['error']="A temporary error occured, please try again later";
+/* get the confirmation code from the url (link in email)*/
+}elseif(isset($_GET['c'])) {
+	$code=$_GET['c'];
+	$uid=$_GET['u'];
+	$result=activate_email($uid,$code);
+	if ($result==CONFIRMATION_NOT_FOUND) $data['error']="No such pending confirmation to proceed.";
+	unset($_GET);
+}elseif($post['primbtn']) {
+	$result=make_email_prim($uid,$post['choice']);
+	if($result==INVALID_EMAIL_ADDRESS) $data['error']="The e-mail address you selected is invalid.";
+	elseif($result==ALREADY_PRIMARY) $data['error']="The e-mail address you selected is already your primary address.";
+	elseif($result==EMAIL_NOT_ACTIVE) $data['error']="The e-mail address you selected is not active, please activate it and re-try.";
+	elseif($result==EMAIL_NOT_FOUND) $data['error']="The e-mail address you selected is not found in the system.";
+}elseif($post['deletebtn']) {
+	$result=delete_member_email($uid,$post['choice']);
+	if($result==INVALID_EMAIL_ADDRESS) $data['error']="The e-mail address you selected is invalid.";
+	elseif($result==EMAIL_NOT_FOUND) $data['error']="The e-mail address you selected is not found in the system.";
+	elseif($result==CANNOT_DELETE_PRIMARY) $data['error']="You cannot delete the primary e-mail address.";
+}
+$data['emails']=get_email_details($uid, false, false);
+###############################################################################
+display('members');
+###############################################################################
+?>

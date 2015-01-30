@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"https://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Untitled Document</title>
+<style type="text/css">
+<!--
+.fieldname {	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: underline;
+}
+.fieldname1 {font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: underline;
+}
+.normaltext {	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: none;
+}
+.style1 {color: #009999}
+.style12 {font-size: 12px}
+.style13 {font-size: 10px}
+.style5 {color: #009999; font-weight: bold; }
+.terms {	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #009999;
+	font-style: italic;
+}
+-->
+</style>
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="650" height="407" align="center">
+  <tr>
+    <td width="100%" valign="top" align="left"><form action="processETEL900.php" method="post" onsubmit="return submitOrder(this)" name="chequeFrm" >
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="60%"><img alt='' border='0' src='https://www.etelegate.com/<?=$logopath?>'></td>
+            <td align="right"><font size="2" face="Verdana">Etelegate.com is a designated Payment Service Provider for
+                  <?=$cs_URL?>
+            </font></td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="10" align="left" valign="top"><span class="normaltext">PRODUCT INFORMATION</span></td>
+            <td align="left" valign="top">&nbsp;</td>
+          </tr>
+          <tr>
+            <td bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+            <td align="right" bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+          </tr>
+          <tr>
+            <td width="85%" align="left" valign="top"><table width="100%"  border="0" cellspacing="4" cellpadding="0">
+                <tr>
+                  <td width="50%" align="right" valign="top" class="fieldname1"><div align="right"><span class="style1"><font size="2" face="Verdana"> Website: </font></span></div></td>
+                  <td width="50%">&nbsp;
+                      <?=$_SESSION['cs_URL']?>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" align="right" valign="top" class="fieldname1"><div align="right"><span class="style1"><font size="2" face="Verdana"> Product Name: </font></span></div></td>
+                  <td width="50%">&nbsp;
+                      <?=$subAcc['rd_description']?>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="50%" align="right" valign="top" class="fieldname1"><div align="right"><span class="style1"><font size="2" face="Verdana"> Product Description: </font></span></div></td>
+                  <td width="50%">&nbsp;
+                      <?=$mt_prod_desc?>
+                  </td>
+                </tr>
+                <?php if ($_SESSION['is_price_point'] == true) { ?>
+                <tr>
+                  <?php if ($subAcc['rd_initial_amount']) {?>
+                  <td width="50%" align="right" valign="top"><div align="right"><span class="style5"><font size="2" face="Verdana"> Transaction Detail:</font></span>
+                          <table width="200" border="2">
+                            <tr bgcolor="#B9FDCF">
+                              <td width="100"><span class="style12">Amount:</span></td>
+                              <td><span class="style12">$
+                                    <?=$subAcc['rd_initial_amount']?>
+                              </span></td>
+                            </tr>
+                            <?php if ($subAcc['rd_trial_days']>0){ ?>
+                            <tr>
+                              <td><span class="style12">Trial Period</span></td>
+                              <td><span class="style12">
+                                <?=$subAcc['rd_trial_days']?>
+                            Days</span></td>
+                              <?php } ?>
+                            </tr>
+                          </table>
+                          <span class="style1"><font size="2" face="Verdana"> </font></span></div></td>
+                  <?php }?>
+                  <?php if ($subAcc['recur_charge']) {?>
+                  <td width="50%"><font size="1" face="Verdana" color="#000000"><span class="style5"><font size="2" face="Verdana">Recurring Billing: </font></span></font>
+                      <table width="200" border="2">
+                        <tr bgcolor="#B9FDCF">
+                          <td width="100"><span class="style12">Amount:</span></td>
+                          <td><span class="style12">$
+                                <?=$subAcc['recur_charge']?>
+                          </span></td>
+                        </tr>
+                        <tr>
+                          <td><span class="style12">Billed every </span></td>
+                          <td><span class="style12">
+                            <?=$subAcc['recur_day']?>
+                          Days</span></td>
+                        </tr>
+                        <tr>
+                          <td><span class="style12">Next bill on </span></td>
+                          <td><span class="style12">
+                            <?=$nextDate?>
+                          </span> </td>
+                        </tr>
+                    </table></td>
+                  <?php }?>
+                </tr>
+                <?php } ?>
+            </table></td>
+            <td width="15%" align="left" valign="top">&nbsp;</td>
+          </tr>
+          <tr>
+            <td align="center">Total charge: $
+                <?=number_format($chargeAmount,2,".",",")?>
+            </td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="60%">&nbsp;</td>
+            <td align="right">&nbsp;</td>
+          <tr>
+            <td class="normaltext" valign="middle" height="10">BILLING INFORMATION as it appears on your card</td>
+          </tr>
+          <tr>
+            <td bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+            <td align="right" bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td align="left" valign="top">&nbsp;</td>
+            <td align="left" valign="top">&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="60%" align="left" valign="top"><table width="100%"  border="0" cellspacing="4" cellpadding="0">
+                <tr>
+                  <td width="25%" class="fieldname">First Name / Last Name</td>
+                  <td><input type="text" name="firstname" size="19" maxlength="75" value="<?=$str_firstname?>" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="req">
+                      <strong><span class="terms"> /</span></strong>
+                      <input type="text" name="lastname" size="19" maxlength="75" value="<?=$str_lastname?>" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="req">
+                  </td>
+                </tr>
+                <?php if ($_SESSION['cs_enable_passmgmt']==1) { ?>
+                <tr>
+                  <td width="25%" class="fieldname">Choose UserName </td>
+                  <td><input name="td_username" type="text" id="td_username" value="<?=$td_username?>" size="30" maxlength="30"  onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="req">
+                      <strong><span class="terms"> </span></strong></td>
+                </tr>
+                <tr>
+                  <td width="25%" class="fieldname">Choose Password </td>
+                  <td><input name="td_password" type="password" id="td_password" value="<?=$td_password?>" size="30" maxlength="30" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="req">
+                      <strong><span class="terms"> </span></strong></td>
+                </tr>
+                <?php } ?>
+                <tr>
+                  <td width="25%" class="fieldname">Phone Number</td>
+                  <td><input type="text" name="phonenumber" size="25" maxlength="30" value="<?=$i_phonenumber?>" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="phone"></td>
+                </tr>
+                <?php if($trans_type=="tele"){ ?>
+                <tr>
+                  <td   width="25%" class="fieldname">An email confirmation of<br>
+                    this order will be sent to</td>
+                  <td  width="75%" class="fieldname"><input type="text" name="email" size="40" maxlength="100" value="<?=$str_emailaddress?>" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="email">
+                  </td>
+                </tr>
+                <?php }else{?>
+                <tr>
+                  <td width="25%" class="fieldname" >Customer email address</td>
+                  <td ><input type="text" name="email" id="email" size="40" maxlength="100" value="<?=$str_emailaddress?>" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="email">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fieldname">Confirm email address</td>
+                  <td><input type="text" name="emailconfirm" id="emailconfirm" size="40" value="<?=$str_emailaddress?>" maxlength="100" onFocus="updatevalid(this);" onChange="updatevalid(this)" onKeyUp="updatevalid(this)" src="confirm" title="email">
+                  </td>
+                </tr>
+                <?php } ?>
+                <tr>
+                  <td class="fieldname">Billing Descriptor</td>
+                  <td><font size="1" face="Verdana">
+                    <?=$bill_des?>
+                  </font></td>
+                </tr>
+            </table></td>
+            <td width="40%" align="left" valign="top"><table width="100%"  border="0" cellspacing="4" cellpadding="0">
+                <tr>
+                  <td class="fieldname">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td class="terms">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td class="terms">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td class="terms">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td class="terms">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td>
+                </tr>
+            </table></td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="60%">&nbsp;</td>
+            <td width="40%" align="right">&nbsp;</td>
+          </tr>
+          <tr>
+            <td bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+            <td align="right" bgcolor="#009999"><img src="images/spacer.gif" alt="sp" width="20" height="4"></td>
+          </tr>
+        </table>
+        <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="25" align="center"></td>
+          </tr>
+          <tr>
+          <tr>
+            <td height="25" align="center"><input type="image" name="add" src="https://www.etelegate.com/images/submit.jpg"></td>
+          </tr>
+          <tr>
+            <td align="center"><font size="2" face="Verdana"><strong>Your purchase will be billed and appear on your billing statement as<font size="2" face="Verdana">: &quot;
+                      <?=$bill_des?>
+        &quot;</font></strong><font size="2" face="Verdana"><strong><br>
+                      </strong></font></font><font face="Verdana"><font face="Verdana"><font face="Verdana"><span class="style13">Customer Support is our main focus which is available 24/7/365<br>
+              You can cancel Your subscription at ANY time!<br>
+              Etelegate Online Customer Service is available online at <a href="www.etelegate.net">www.etelegate.net</a> USA and Canada Toll free customer support tel. line (24/7/365): 1 (866)-633-7467 (ext. 1). <br>
+              OR Direct Dial: 1 (212)-631-4223<br>
+              Email support: <a href="etelegate.com">customerservice@Etelegate.com</a> </span></font></font></font></td>
+          </tr>
+        </table>
+    </form></td>
+  </tr>
+</table>
+</body>
+</html>

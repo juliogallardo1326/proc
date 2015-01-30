@@ -1,0 +1,18 @@
+# php_flag register_globals off
+# php_value upload_max_filesize "20M"
+# php_value session.gc_maxlifetime 3600
+# php_value session.cookie_secure 1
+DirectoryIndex index.php
+ <Files ~ "\.(bak|php3|php4|phps|phtml|shtm|pl|pm|asp|cfm|jse|jsp|jar|py|exe|com|bat|dll|scr|reg|inf|htaccess)$">
+order allow,deny
+</Files>
+Options -Indexes
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+RewriteEngine On 
+RewriteCond %{REQUEST_METHOD} ^TRACE 
+RewriteRule .* - [F] 
+RedirectMatch ^/~(.*)$ https://www.etelegate.com/$1

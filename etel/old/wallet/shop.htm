@@ -1,0 +1,70 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='SHOP';
+$data['PageFile']='shop';
+###############################################################################
+include('config.htm');
+###############################################################################
+$data['IsLogin']=true;
+$data['IsSignup']=true;
+###############################################################################
+if(!$post['action'])$post['action']='view';
+$where_pred = " parentid=0 ";
+$data['RootCategoriesList']=get_shop_categories_list_where_pred($where_pred);
+###############################################################################
+if ($post['action']=='add' && is_numeric($post["cid"]) && $post["cid"] > 0 && !empty($post['shopname']) && !empty($post['shopurl'])) {
+  if(!$_SESSION['login'])header("Location:{$data['Members']}/login.htm");
+  insert_shop_item($post['cid'], $post['shopname'], $post['shopurl'], $post['shopdescription']);
+  $post['action'] = 'view';
+}
+###############################################################################
+if ($post['action']=='search' && $post['keyword']) {
+  $data['PageName']='SEARCH';
+  $where_pred = " UPPER(`name`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`description`) LIKE '%".strtoupper(addslashes($post['keyword']))."%' ";
+	$data['CategoriesList']=get_shop_categories_list_where_pred($where_pred);
+  $where_pred = " UPPER(`name`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`url`) LIKE '%" . strtoupper(addslashes($post['keyword'])) . "%' OR UPPER(`description`) LIKE '%".strtoupper(addslashes($post['keyword']))."%' ";
+	$data['ItemsList']=get_shop_items_list_where_pred($where_pred);
+} elseif ($post['action']=='search') $post['action']='view';
+###############################################################################
+if ($post['action']=='view') {
+  if (!$post["cid"]) $post["cid"] = get_first_root_category_id();
+	$data['CategoriesList']=get_shop_categories_list($post["cid"]);
+  $data['ItemsCount']=get_shop_items_count($post["cid"]);
+	for($i=0; $i<$data['ItemsCount']; $i+=$data['MaxRowsByPage'])$data['Pages'][]=$i;
+	$data['ItemsList']=get_shop_items_list($post["cid"]);
+}
+###############################################################################
+$data['SystemBalance']=select_balance(-1);
+###############################################################################
+display();
+###############################################################################
+?>

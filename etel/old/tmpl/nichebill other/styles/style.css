@@ -1,0 +1,438 @@
+.FrontPage{
+	background-color:#e8e8e8;
+	background-image:url(../images/main_background.png);
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+.FrontPage .FrontTable {
+	background-image:url(../images/frontpage/FrontPage_Background.png);
+	width:800px;
+	height:100%;
+	text-align:left;
+	position:relative; 
+}
+
+.FrontPage .Row2x1 .PageTitle {
+	text-align:left;
+	text-align:center;
+	top:-60px;
+	font-size:20px;
+	font-style:italic;
+	font-weight:bold;
+	position:absolute; 
+}
+
+.FrontPage .FrontTable .Row1x1 {
+	background-image:url(../images/frontpage/FrontPage_1x1.png);
+	height:703px;	
+}
+
+.FrontPage .FrontTable .Row2x1 {
+	background-image:url(../images/frontpage/FrontPage_2x1.png);
+	padding:50px;
+	padding-top:0px;
+	font-size:16px;
+	font-style:italic;
+	text-indent:25px;
+	position:relative;
+}
+
+.FrontPage .FrontTable .Row3x1 {
+	background-image:url(../images/frontpage/FrontPage_3x1.png);
+	height:176px;	
+}
+
+.FrontPage .FrontTable .Button {
+	background-image:url(../images/frontpage/FrontPage_button.png);
+	width:200px;
+	height:40px;
+	position:relative; 
+	left:40px; 
+	top:240px;
+	text-align:center;
+	font-size:12px;
+	line-height:40px;	
+}
+
+.FrontPage .FrontTable .FadeImage {
+	width:240px;
+	height:320px;
+	position:absolute; 
+	left:240px; 
+	top:240px;	
+}
+.FrontPage .FrontTable .LoadImage {
+	visibility:hidden;
+	display:none;
+	position:absolute; 
+}
+
+.FrontPage .FrontTable .PaymentTypes {
+	position:absolute; 
+	left:3px; 
+	top:3px;	
+}
+
+.FrontPage .CallUsPhone{
+	left:520px; 
+	top:15px;	
+	position:absolute; 
+	text-align:center;
+	font-size:20px;
+	font-style:italic;
+	font-weight:bold;
+	letter-spacing:2.9px;
+}
+
+.FrontPage .FrontLogin{
+	left:500px; 
+	top:570px;	
+	position:absolute; 
+	font-size:10px;	
+}
+.FrontPage .FrontLogin .Failed{
+	font-weight:bold;
+	color:#CC3300;
+	font-size:12px;	
+}
+.FrontPage .FrontLogin .TextField{
+	width:60px;
+}
+
+.FrontPage .FrontLogin input{
+	font-size:9px;		
+}
+
+.FrontPage .FrontTable .Services {
+	position:absolute; 
+	left:440; 
+	top:120px;	
+}
+
+.FrontPage .FrontTable .Services .Ecommerse {
+	position:absolute; 
+	width:132px;
+	height:154px;	
+	left:80px;
+	top:0px;
+}
+
+.FrontPage .FrontTable .Services .Gaming {
+	position:absolute; 
+	width:132px;
+	height:154px;	
+	left:100px;
+	top:120px;
+}
+
+.FrontPage .FrontTable .Services .Adult {
+	position:absolute; 
+	width:132px;
+	height:154px;	
+	left:200px;
+	top:-20px;
+}
+
+.FrontPage .FrontTable .Services .Pharmacy {
+	position:absolute; 
+	width:132px;
+	height:154px;	
+	left:220px;
+	top:100px;	
+}
+
+.BackEndPage{
+	background-color:#e8e8e8;
+	background-image:url(../images/backend_background.png);
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+.BackEndPage .Table {
+	background-image:url(../images/backend/Backend_background.png);
+	width:100%;
+	text-align:left;
+	position:relative; 
+}
+
+.BackEndPage .Table .Row1x1 {
+	background-image:url(../images/backend/Backend_1x1.png);
+	background-repeat:no-repeat;
+	height:202px;
+	width:100%;
+}
+.BackEndPage .Table .Row1x1_ext {
+	background-image:url(../images/backend/Backend_1x1_ext.png);
+	height:202px;
+}
+.BackEndPage .Table .Row2x1 {
+	background-image:url(../images/backend/Backend_2x1.png);
+	width:100%;
+}
+
+.BackEndPage .Table .Row3x1 {
+	background-image:url(../images/backend/Backend_3x1.png);
+	background-repeat:no-repeat;
+	height:195px;
+	width:100%;
+}
+.BackEndPage .Table .Row3x1_ext {
+	background-image:url(../images/backend/Backend_3x1_ext.png);
+	height:202px;
+}
+
+.BackEndPage .Table .Row1x1 .SubMenuButton{
+	position:relative;
+	font-size:10px;
+	font-style:italic;
+	font-weight:bold;
+	padding:4px;
+	text-align:center;
+	top:170px;
+	left:180px;
+	display:inline;
+	
+}
+
+.BackEndPage .Table .Row1x1 .SubMenuButton a{
+	text-decoration:none;
+}
+
+.BackEndPage .Table .Row2x1 .Menu {
+	vertical-align:top;
+	width:180px;
+}
+.BackEndPage .Table .Row2x1 .Menu .MenuButton{
+	background-image:url(../images/backend/Backend_button.png);
+	background-position:left;
+	background-repeat:no-repeat;
+	font-size:10px;
+	font-weight:bold;
+	text-indent:28px;
+	height:30px;
+	width:160px;
+	line-height:30px;
+	text-align:left;
+	vertical-align:middle;
+	margin-bottom:5px;
+	
+}
+
+.BackEndPage .Table .Row2x1 .Menu .MenuButton a{
+	text-decoration:none;
+	color:#333333;
+}
+
+.BackEndPage .CallUsPhone{
+	left:529px; 
+	top:14px;	
+	position:absolute; 
+	text-align:center;
+	font-size:20px;
+	line-height:30px;
+	font-style:italic; 
+	font-weight:bold;
+	letter-spacing:2.0px;
+}
+
+.BackEndPage .ControlPanel{
+	left:520px; 
+	top:126px;	
+	position:absolute;
+	text-indent:13px;
+	font-size:11px;
+	font-style:italic;
+	font-weight:bold;
+	letter-spacing:0.5px;
+}
+
+.BackEndPage .Table .Title{
+	left:520px; 
+	top:15px;	
+	position:absolute; 
+	text-align:center;
+	font-size:20px;
+	font-style:italic;
+	font-weight:bold;
+	letter-spacing:2.9px;
+}
+
+.BackEndPage .Table .Row2x1 .MainContent{
+	position:relative; 
+	top:0px;
+}
+
+.GeneralTable {
+	margin:10px;
+	font-size:13px;
+	font-weight:bold;
+	text-align:center;
+}
+
+.GeneralTable .T1x1 { background-image:url(../images/table/Table_1x1.png); width:35px; height:51px; }
+.GeneralTable .T1x2 { background-image:url(../images/table/Table_1x2.png); height:51px; }
+.GeneralTable .T1x3 { background-image:url(../images/table/Table_1x3.png); width:43px; height:51px; }
+.GeneralTable .T2x1 { background-image:url(../images/table/Table_2x1.png); width:35px; height:76px; }
+.GeneralTable .T2x2 { background-image:url(../images/table/Table_2x2.png); height:76px; }
+.GeneralTable .T2x3 { background-image:url(../images/table/Table_2x3.png); width:43px; height:76px; }
+.GeneralTable .T3x1 { background-image:url(../images/table/Table_3x1.png); width:35px; height:63px; }
+.GeneralTable .T3x2 { background-image:url(../images/table/Table_3x2.png); height:63px; }
+.GeneralTable .T3x3 { background-image:url(../images/table/Table_3x3.png); width:43px; height:63px; }
+
+
+
+
+
+
+
+
+
+
+
+.todoList {	font-size:12px;	color:#003366; background-color:#FAFAFF; font-weight:normal}
+.todoListHeader {	font-size:14px; font-weight:bold; color:#003366; background-color:#EEEEEE}
+
+.report {
+	font-size:12px;
+	padding:5px;
+	}
+.report .small{	font-size:8px; font-weight:bold;	}
+.report .large{	font-size:16px; word-spacing:1.5; font-weight:bold;	}
+.report .bigbutton{font-size:14px; word-spacing:1.5; font-weight:bold; color:#FFFFFF; background-color:#999999; height:43px; width: 150px;}
+.report .row1{	background-color:#EEEEEE;	}
+.report .row2{	background-color:#DDDDDD;	}
+.report .rowhighlight{	background-color:#FFFF66;	}
+
+.report select{ color:#000000}
+.report textarea{ color:#000000}
+.report .header{
+	background-color:#888888;
+	color:#EEEEEE;
+	font-size:14px;
+	font-weight:bold;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #555;
+	border-top: 2px solid #FFF;
+	border-left: 2px solid #AAA;	}
+.report .header2{
+	background-color:#888888;
+	color:#EEEEEE;
+	font-size:10px;
+	height:12px;
+	font-weight:bold;
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #555;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #AAA;
+	}
+.report .header a{
+	color:#EEEEEE;
+}
+.report .header2 a{
+	color:#EEEEEE;
+}
+.report .subheader{
+	font-size:12px;
+	font-weight:bold;
+	}
+.report .subheader2{
+	font-size:10px;
+	font-weight:bold;
+	}
+
+.report .levels {
+	font-size:12px;
+	font-weight:bold;
+	}
+	
+.report .data{	font-size:10px;	}
+
+.report .data .none{
+	color:#000000;
+	}
+.report .data .mild{
+	color:#336600;
+	font-size:11px;	
+	}
+.report .data .moderate{
+	color:#CC6600;
+	font-size:11px;	
+	}
+.report .data .severe{
+	color:#FF3300;
+	font-size:12px;	
+	}
+.report .data .goal{
+	color:#FF3300;
+	font-weight:bold;
+	font-size:12px;	
+	}
+
+.invoice {	
+	font-size:10px; padding-left:2px; padding-right:2px; padding-top:2px; vertical-align:top; background-image:url(../images/invoice_bk.png);
+
+	border-spacing:0px 1px;
+
+ }
+.invoice .infoBold{	font-size:12px;		font-weight:bold;	background-color:#DDDDDD; background-image:url(../images/row2_bk.png)}
+.invoice .infoSection{	font-size:12px;		font-weight:bold;}
+.invoice .infoSection td{	height:30px;}
+.invoice .small{	font-size:8px; font-weight:bold;	}
+.invoice .large{	font-size:16px; word-spacing:1.5; font-weight:bold;	}
+
+.invoice .infoSubSection{ text-indent:10px;	font-size:10px;}
+.invoice .infoSubSection2{ text-indent:10px;	font-size:12px;}
+.invoice .infoSubSection2 td{	height:30px;}
+.invoice .infoHeader{ font-size:10px;	font-weight:bold; color: #000000; background-color:#AAAAAA; text-align:center; padding:2px;}
+.invoice .infoHeader a{color: #000000;}
+
+.invoice .infoHeader2{ font-size:12px;	font-weight:bold; color: #000000; background-color:#AAAAAA; text-align:center; padding:3px;}
+.invoice .Payable { font-size:12px;		font-weight:bold; color:#00CC33;}
+.invoice .Rollover { font-size:12px;	font-weight:bold; color:#FF0000;}
+.invoice .Paid { font-size:12px;		font-weight:bold; color:#0000FF;}
+.invoice .Nothing { font-size:12px;		font-weight:bold; color:#00CC99;}
+.invoice .Data { font-size:10px;		font-weight:normal; color:#FFFFFF; white-space:pre;}
+
+.invoice .Pending { font-size:12px;		color:#555555;}
+.invoice .WireSuccess { font-size:12px;	color:#0000FF;}
+.invoice .WireFailure { font-size:12px;	color:#FF0000;}
+.invoice .WireSent { font-size:12px;	color:#00CC99;}
+
+.invoice .border{ 
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #555;
+	border-top: 1px solid #FFF;
+	border-left: 1px solid #AAA;
+	}
+
+.invoice .bk5 {background-color:#CCEEDD;}
+.invoice .bk4 {background-color:#CCDDEE;}
+.invoice .bk3 {background-color:#CCCCCC;}
+.invoice .bk2 {background-color:#DDDDDD;}
+.invoice .bk1 {background-color:#EEEEEE;}
+.invoice .otherMonth {background-color:#AAAAAA;}
+.invoice .calendarDay {height:60; width:100; text-align:center;}
+.invoice .row0{	background-color:#FFFFFF; background-image:url(../images/row0_bk.png)	}
+.invoice .row1{	background-color:#EEEEEE; background-image:url(../images/row1_bk.png)	}
+.invoice .row2{	background-color:#DDDDDD; background-image:url(../images/row2_bk.png)	}
+.invoice .row3{	background-color:#CCCCCC; background-image:url(../images/row3_bk.png)	}
+.invoice .rowhighlight{	background-color:#FFFF66; background-image:url(../images/rowhighlight_bk.png)	}
+.invoice textarea {font-size:10px; background-image:url(../images/row0_bk.png)}
+.invoice input {font-size:10px;}
+.invoice select {font-size:10px;}
+
+.todoList {	font-size:12px;	color:#003366; background-color:#FAFAFF; font-weight:normal}
+.todoListHeader {	font-size:14px; font-weight:bold; color:#003366; background-color:#EEEEEE}
+
+.websites { font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px;}
+.websites .approved {font-weight:bold; color:#0000FF;}
+.websites .pending {font-weight:bold; color:#00CC33;}
+.websites .declined {font-weight:bold; color:#FF0000;}
+.websites .ignored {font-weight:bold; color:#BB7777;}
+.websites .rejected {font-weight:bold; color:#FF0000;}
+.websites .header{ font-size:12px;	font-weight:bold; color: #FFFFFF; background-color:#999999;}
+.websites .headerLight{ font-size:12px;	font-weight:bold; color: #555555; background-color:#DDDDDD;}
+.websites .subheader{	font-size:12px;		font-weight:bold;}
+.websites .row1{	background-color:#EEEEEE;	}
+.websites .row2{	background-color:#DDDDDD;	}

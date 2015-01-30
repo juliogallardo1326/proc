@@ -1,0 +1,11 @@
+	{msg}
+	<div id="mainTitle" style="width:100%;margin-top:10px;">
+		<div class="bTitle" style="width:100%;">
+			<div style="font-size:11px;padding-left:10px;padding-bottom:8px;padding-top:3px;">IP Information - {ip}</div>
+		</div>
+		<div class="leftBox" style=width:100%;">
+			<table width="190" cellspacing="1" cellpadding="2" border="0" class="smallTable">
+				{ip_output}
+			</table>
+		</div>
+	</div>

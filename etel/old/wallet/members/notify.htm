@@ -1,0 +1,75 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+	header("Location:{$data['Host']}/index.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+$fees=$_SESSION['fees'];unset($_SESSION['fees']);
+$dtype=$_SESSION['dtype'];unset($_SESSION['dtype']);
+$amount=$_SESSION['amount'];unset($_SESSION['amount']);
+$remote=parse_url($_SERVER["HTTP_REFERER"]);$remote=$remote['host'];
+###############################################################################
+$systems=array(
+	'paypal.com', 'stormpay.com', 'netpay.tv', 'e-gold.com', 'moneybookers.com',
+	'intgold.com', 'e-bullion.com', 'pecunix.com', 'epaydirect.net', 'evocash.com',
+	'qchex.com', 'goldmoney.com', 'virtualgold.net', 'emocorp.com', '2checkout.com'
+);
+###############################################################################
+$success=false;
+foreach($systems as $value){
+	if(eregi($value, $remote)){
+		$success=true;
+		break;
+	}
+}
+###############################################################################
+if($success){
+	transaction(
+		-1,
+		$uid,
+		$amount,
+		$fees,
+		1,
+		1,
+		"{$data['DepositMethod'][$dtype]['name']} Depositing"
+	);
+}
+###############################################################################
+header("Location:{$data['Members']}/index.htm");
+echo('ACCESS DENIED.');
+exit;
+###############################################################################
+?>

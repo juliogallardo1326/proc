@@ -1,0 +1,15 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">{lang_task} Campaign</div><br />
+				You have just set up a new campaign. Below you will find the tracking URL that you need to 
+				use to redirect your visitors to your website.<br /><br />
+
+				<span style="color:#E08923;">{track_url}</span><br /><br />
+							
+				You can access this URL in the future by going to the "Reports" section of your account, 
+				clicking on this specific campaign, and then going to "Stats".
+		</div>
+		<div class="space"></div>
+	</div>
+	<div class="clear">&#160;</div>

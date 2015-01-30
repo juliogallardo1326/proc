@@ -1,0 +1,105 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='ESCROW TRANSFERS';
+$data['PageFile']='escrow';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+	header("Location:{$data['Host']}/index.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+if(is_info_empty($uid)){
+	header("Location:{$data['Host']}/members/profile.htm");
+	echo('ACCESS DENIED.');
+	exit;
+}
+###############################################################################
+$post=select_info($uid, $post);
+if(!$post['step'])$post['step']=1;
+###############################################################################
+if($post['send']){
+	if($post['step']==1){
+		$post['step']++;
+	}elseif($post['step']==2){
+		if(!$post['receiver']){
+			$data['Error']='Please enter username or e-mail address of the receiver.';
+		}elseif(!is_member_found($post['receiver'], '')){
+			$data['Error']='This receiver was not found in the system.';
+		}elseif($uid==get_member_id($post['receiver'])){
+			$data['Error']='You cannot send money to yourself.';
+		}elseif(!is_member_active($post['receiver'])){
+			$data['Error']='You cannot send money to inactive or banned member.';
+		}elseif(!$post['amount']){
+			$data['Error']='Please enter valid amount for transfering.';
+		}elseif($post['amount']<$data['PaymentMinSum']){
+			$data['Error']="Amount can not be less than".
+				" {$data['Currency']}{$data['PaymentMinSum']}.";
+		}elseif($post['amount']>select_balance($uid)){
+			$data['Error']='You do not have enough money in your account.';
+		}elseif(get_member_status($uid)<2&&$post['amount']>$data['PaymentMaxSum']){
+			$data['Error']="You cannot send more than".
+				" {$data['Currency']}{$data['PaymentMaxSum']} per transaction".
+				" because you are UNVERIFIED member.";
+		}else{
+			$receiver=get_member_id($post['receiver']);
+			$fees=around(($post['amount']*$data['PaymentPercent']/100)+$data['PaymentFees']);
+			transaction(
+				$uid,
+				$receiver,
+				$post['amount'],
+				$fees,
+				3,
+				0,
+				"Safe transaction to {$post['receiver']}"
+			);
+			$post['fees']=$fees;
+			$post['email']=get_member_email($receiver);
+			send_email('SEND-ESCROW', $post);
+			$post['step']--;
+		}
+	}
+}elseif($post['cancel'])$post['step']--;
+if($post['action']=='confirm'){
+	update_transaction_status($uid, $post['gid'], 1);
+}elseif($post['action']=='cancel'){
+	update_transaction_status($uid, $post['gid'], 2);
+}
+if($post['step']==1){
+	$post['Outgoing']=get_transactions($uid, 'outgoing', 3, 0);
+	$post['Incoming']=get_transactions($uid, 'incoming', 3, 0);
+}
+###############################################################################
+display('members');
+###############################################################################
+?>

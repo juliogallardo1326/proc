@@ -1,0 +1,97 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='FAQ';
+$data['PageFile']='faq';
+###############################################################################
+include('config.htm');
+###############################################################################
+$data['IsLogin']=true;
+$data['IsSignup']=true;
+###############################################################################
+function getCatTitle($cat) {
+	$result=db_rows(
+                "SELECT * FROM dp_faq_cat_list WHERE id=$cat ORDER BY id"
+    );
+    return $result[0]['title'];
+}
+
+function FAQSearch($srch){
+	ob_start();
+	$query="SELECT COUNT(id) AS total FROM dp_faq_list WHERE (question REGEXP '$srch') OR (answer REGEXP '$srch')";
+	$result=mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+	extract(mysql_fetch_array($result) );
+	$query="SELECT * FROM dp_faq_list WHERE (question REGEXP '$srch') OR (answer REGEXP '$srch') ORDER BY cat DESC";
+	$result=mysql_query($query) or die ("Error in query: $query. " . mysql_error());
+	if($total>1){
+		$dd="results";
+	}else{
+		$dd="result";
+	}
+?>
+	<br>
+	<table border=0 cellpadding=0 cellspacing=0 width=100% align="center">
+	<tr valign="top">
+		<td valign="top">
+<?	
+	while($r1=mysql_fetch_object($result)){
+		if(!$r1->question) continue;
+?>
+		<a name="<?=$r1->id?>"></a>
+		<table border="0" width="100%" cellpadding="0" cellspacing="0">
+		<tr>
+			<td><h1><?=$r1->question?></h1></td>
+			<td align="right">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+					<?=$r1->answer?>
+			</td>
+		</tr>
+		</table>
+		<br><br>	
+<?		
+		$mycnt++;
+	}
+?>
+		</td>
+	</tr>
+	</table>
+	<?=$total?> <?=$dd?> results found<br>
+<?
+	$searchresults=ob_get_contents();
+	ob_end_clean(); 
+	return $searchresults;
+}
+###############################################################################
+display();
+###############################################################################
+?>

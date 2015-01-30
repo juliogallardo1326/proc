@@ -1,0 +1,56 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">SMS Alerts</div><br />
+		AdWatcher allows you to receive SMS Alerts on your cell phone showing the total clicks, actions, sales and ROI for the previous day. Please use the form below to setup your SMS alerts.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />SMS Alerts</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=sms_alerts" method="post">
+					<tr>
+						<td nowrap>
+							<table cellspaing="0" cellpadding="0" border="0" style="margin: 0px auto 0px auto;">
+								<tr>
+									<td class="nul" style="padding-right:8px;">SMS Address:<br /><input type="text" name="svar[add1]" value="{add1}" class="input" style="width:150px;" /><div></td>
+									<td style="font-weight:bold;text-align:right;padding-top:12px;" class="nul">OR</td>
+									<td class="nul">
+										<table cellspaing="0" cellpadding="0" border="0">
+											<tr>
+												<td class="nul">Phone Number:<br />
+												<input type="text" name="svar[add2]" value="{add2}" class="input" style="width:150px;" /></td>
+												<td class="nul">Provider:<br />
+												<select name="svar[provider]" size="1">
+														<option value="cingularme.com">Cingular</option>
+														<option value="messaging.sprintpcs.com">SprintPCS</option>
+														<option value="cingularme.com">AT&amp;T</option>
+														<option value="messaging.nextel.com">Nextel</option>
+														<option value="tmomail.net">T-Mobile</option>
+														<option value="vtext.com">Verizon</option>
+													</select>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td nowrap style="text-align:center;">Time Zone: {timezone}</td>
+					</tr>
+					<tr>
+						<td nowrap style="text-align:center;">Send SMS Alerts at: {sendtime}</td>
+					</tr>																									
+					<tr>
+						<td align="center"><input type="submit" name="submit" value=" Update SMS Alert Settings " class="csubmit" /></td>
+					</tr>															
+				  </form>								
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

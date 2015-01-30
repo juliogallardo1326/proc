@@ -1,0 +1,39 @@
+.fieldname {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: underline;
+}
+.normaltext {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: none;
+}
+
+.normaltext .large{font-size:14px; text-decoration:underline;}
+.terms {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #009999;
+	font-style: italic;
+}
+.fieldname1 {	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #009999;
+	text-decoration: underline;
+}
+.tdbdr {border-bottom:1px solid black;}
+.style5 {color: #009999; font-weight: bold; }
+.style13 {font-size: 10px}
+
+@page { margin: 2cm }
+P { margin-bottom: 0.21cm }
+.style14 {font-size: 9px}
+.style1 {font-size: 12px;
+			color:#001133;
+}
+	

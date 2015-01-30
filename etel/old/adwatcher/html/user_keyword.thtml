@@ -1,0 +1,112 @@
+	{msg}
+	<div id="mainContainer">
+		<div id="mainTitle" class="extended">
+			<div class="bTitle" style="width:712px;">Keyword Tracker</div><br />
+			Want to track keywords performance on 2nd tier search engines? Our tool allows you to effortlessly 
+			generate tracking URLs and even custom titles and descriptions for the search engines. Simply specify 
+			the campaign name, enter a list of keywords, write a title and description, and we will compile a 
+			excel file for you to upload to the search engine.
+		</div>
+		<div class="space"></div>
+		<div class="leftContainer extended">
+			<div class="camOut" style="width:712px;" onclick="showHide('Box1', 'tBox1');return false;" onmouseover="this.className='camOver';" onmouseout="this.className='camOut';"><img src="images/trans.gif" border="0" width="12" height="12" id="tBox1" class="min" style="margin-bottom:-1px;padding-bottom:-1px;" />Generate Tracker</div>
+			<div class="leftBox extended" id="Box1">
+
+				<table cellspacing="0" cellpadding="0" id="dataTable" border="0">
+				  <form action="?action=download_keywords" method="post" target="_output">				
+					<tr>
+						<td nowrap class="Title">Campaign Name:</td>
+						<td>{campaign_name}</td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Select the campaign you wish to generate keywords for.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Keywords:</td>
+						<td><textarea name="svar[keywords]" style="width:300px;height:100px;"></textarea></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Enter the keywords you want to track. Each keyword must be on a new line or be separated by a comma. Maximum 2,500 keywords.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Title:</td>
+						<td><input type="text" name="svar[title]" value="" style="width:250px;" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Research has shown that titles that contain the keyword a prospect is searching for can generate 
+						better conversions. We make it easy for you to create customized titles - no matter how many 
+						keywords you have. Simply enter &#123;keyword&#125; wherever you want the keyword to appear and we'll take 
+						care of the rest. The title is an optional field. Leaving this field blank will leave out the 
+						title column in the excel file. 
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Description:</td>
+						<td><input type="text" name="svar[description]" value="" style="width:250px;" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						You may also use the &#123;keyword&#125; replacement variable to have the keyword generator insert a 
+						keyword into your description. The Description field is an optional field. Leaving this field blank
+						will leave out the description column in the excel file.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+					
+					<tr>
+						<td nowrap class="Title">Bid:</td>
+						<td><input type="text" name="svar[bid]" value="" maxlength="7" style="width:50px;" /></td>
+					</tr>
+					<tr>
+						<td class="td1">&#160;</td>
+						<td class="td1">
+						<div class="tWidth">
+						Some search engines require a bid column. Please enter a CPC bid in the field above. Leaving this field
+						blank will leave out the bid column in the excel file.
+						</div>
+						<div class="space">&#160;</div>
+						<div class="space">&#160;</div>
+						</td>
+					</tr>
+										
+					<tr>
+						<td colspan="2" align="center"><input type="submit" name="submit" value=" Generate Keywords " class="csubmit" /></td>
+					</tr>
+				  </form>								
+				</table>
+			</div>
+			
+			<div style="clear:both;">&#160;</div>
+
+				<iframe width="1" height="1" name="_output" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes" id="output"></iframe>
+
+		</div>
+	</div>
+	<div class="clear">&#160;</div>

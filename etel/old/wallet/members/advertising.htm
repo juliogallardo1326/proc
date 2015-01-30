@@ -1,0 +1,108 @@
+<?
+###############################################################################
+## PROGRAM     : Dopays.com - The First Open Source Payment Gateway          ##
+## VERSION     : 2.80                                                        ##
+## AUTHOR(S)   : Dmitry Pereuda, dmitry@pereuda.com                          ##
+##               Oleg Ostaplyuck, oleg@ostaplyuk.com                         ##
+## COMPANY     : Dosware Team                                                ##
+## COPYRIGHTS  : (C)2003 Dosware Team. All Rights Reserved                   ##
+##                                                                           ##
+## LICENSE     : http://www.gnu.org/copyleft/gpl.html                        ##
+###############################################################################
+## Dopays  is free software;  you can redistribute it and/or modify it under ##
+## the terms of the  GNU  General Public License as published  by  the  Free ##
+## Software Foundation; either version 2 of the License, or (at your option) ##
+## any later version.                                                        ##
+##                                                                           ##
+## Dopays is distributed in the hope that it will be useful, but WITHOUT ANY ##
+## WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS ##
+## FOR A PARTICULAR PURPOSE.  See the  GNU General Public License  for  more ##
+## details.                                                                  ##
+##                                                                           ##
+## TO COMPLY WITH THIS LICENSE, PLEASE DO NOT REMOVE THE LINK TO THE DOSWARE ##
+## WEBSITE FROM YOUR COPY OF THE SCRIPT.  THIS IS THE LEAST YOU  CAN  DO  TO ##
+## SUPPORT THE DEVELOPMENT OF DOPAYS.COM!                                    ##
+##                                                                           ##
+## You should have received a copy of the  GNU  General Public License along ##
+## with this program; if not, you can find it here:                          ##
+##    http://www.gnu.org/copyleft/gpl.html                                   ##
+## or write to the:                                                          ##
+##    Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA ##
+###############################################################################
+$data['PageName']='ADVERTISE WITH US';
+$data['PageFile']='advertising';
+###############################################################################
+include('../config.htm');
+###############################################################################
+if(!$_SESSION['login']){
+        header("Location:{$data['Host']}/index.htm");
+        echo('ACCESS DENIED.');
+        exit;
+}
+if(!$data['Advertising']){
+        header("Location:{$data['Members']}/index.htm");
+        echo('ACCESS DENIED.');
+        exit;
+}
+if(is_info_empty($uid)){
+        header("Location:{$data['Host']}/members/profile.htm");
+        echo('ACCESS DENIED.');
+        exit;
+}
+###############################################################################
+$post=select_info($uid, $post);
+if(!$post['step'])$post['step']=1;
+###############################################################################
+if($post['send']){
+        if($post['step']==1){
+                $post['step']++;
+        }elseif($post['step']==2){
+                if(!$post['banner']){
+                   $data['Error']='No Banner URL entered. Enter Banner URL.<br>';
+                }elseif(!ereg('^http://.+\.|^https://.+\.', $post['banner'])){
+                   $data['Error']='Incorrect format of Banner URL. Enter correct Banner URL.<br>';
+                }elseif(!$post['url']){
+                   $data['Error']='No Site URL entered. Enter Site URL.<br>';
+                }elseif(!ereg('^http://.+\.|^https://.+\.', $post['url'])){
+                   $data['Error']='Incorrect format of Site URL. Enter correct Site URL.<br>';
+                }else{
+                   $post['step']++;
+                }
+        }elseif($post['step']==3){
+                insert_banner($uid, $post['banner'], $post['url'], $post['package'], $post['period']);
+                $package=fetch_banners_packages($post['package']);
+                //TODO: insert transaction
+                $post['step']++;
+        }elseif($post['step']==4){
+        }
+}elseif($post['cancel'])$post['step']--;
+if($post['action']=='delete'){
+        if($post['gid'])delete_banners($post['gid']);
+        //TODO: end reccuring
+}
+if($post['step']==1){
+   $data['Banners']=select_banners($uid);
+}
+if($post['step']==2){
+  $data['AdvPeriods']=array(
+      '30'=>'1 Month',
+      '60'=>'2 Months',
+      '90'=>'3 Months',
+      '180'=>'6 Months',
+      '270'=>'9 Months',
+      '360'=>'12 Months'
+   );
+   $data['AdvVisiblePacks']=select_banners_packages();
+}
+if($post['step']==3){
+   $data['AdvPackage']=fetch_banners_packages($post['package']);
+   $post['amount']=$data['AdvPackage']['price'];
+   $post['fees']=0;
+   $post['package_name']=$data['AdvPackage']['name'];
+   $post['period_name']=$data['AdvPeriods'][$post['period']];
+   $post['total']=$post['amount'];
+}
+###############################################################################
+display('members');
+###############################################################################
+?>

@@ -1,0 +1,29 @@
+	{msg}
+	<div style="width:725px;height:100px;padding-top:20px;">
+		<div style="width:400px;float:left;margin-left:10px;">
+			<div class="blTitle">{lang_logintitle}</div><br />
+			{lang_logintext}
+		</div>
+	
+		<form action="{login_url}" method="POST">
+		<input type="hidden" name="warn" value="1" />
+		<div style="width:200px;padding:5px;background-color:#F3F3F3;float:right;margin-right:10px;border:1px solid #D6D6D6;">
+			<table cellspacing="0" cellpadding="0" border="0" style="width:100px !important;" align="center">
+				<tr>
+					<td colspan="3">{lang_username}:<br /><input type="text" name="loginname" size="30" maxlength="16" class="input" /></td>
+				</tr>
+				<tr>
+					<td colspan="3">{lang_password}:<br /><input type="password" name="passwd" size="30" maxlength="16" class="input" /></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="remember" style="margin:0px;margin-top:3px;" /></td>
+					<td style="font-size:10px;padding-left:4px;padding-top:1px;">Remember Me</td>
+					<td style="text-align:right;"><input type="submit" name="mode" value="{lang_submit}" class="submit" style="margin-top:4px;font-size:11px;" /></td>
+				</tr>
+				<tr>
+					<td colspan="3" style="font-size:10px;padding-top:6px;">Forgot Password? <a href="javascript:pw();" class="sm">Click Here</a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</form>
