@@ -7,24 +7,24 @@
  */
 (function(){
     var CLS_FIELDSET_WALLET = 'fieldset-wallet';
-    var PARAM_WALLET_ID = 'wallet-id';
+    var PARAM_WALLET_TYPE = 'wallet-type';
+    const FORM_NAME = 'create-wallet';
 
     var ready = function() {
 
-        jQuery('form:has(fieldset.' + CLS_FIELDSET_WALLET + ')').each(function(i, form) {
+        jQuery('form[name=' + FORM_NAME + ']').each(function(i, form) {
             if (typeof form.walletInit !== 'undefined')
                 return;
             form.walletInit = true;
 
             var Form = jQuery(form);
+            console.info(FORM_NAME + " Form Found: ", form);
             Form.on('input', function(e) {
-                var walletType = Form.find('*[name=' + PARAM_WALLET_ID + ']').val();
+                var walletType = Form.find('*[name=' + PARAM_WALLET_TYPE + ']').val();
                 var WalletFieldSets = Form.find('.' + CLS_FIELDSET_WALLET);
-                if(walletType) {
-                    var WalletFieldSet = WalletFieldSets.filter('[data-' + PARAM_WALLET_ID + '=' + walletType + ']');
-                    WalletFieldSets = WalletFieldSets.not(WalletFieldSet);
-                    WalletFieldSet.filter(':disabled').removeAttr('disabled');
-                }
+                var WalletFieldSet = WalletFieldSets.filter('[data-' + PARAM_WALLET_TYPE + '=' + walletType + ']');
+                WalletFieldSets = WalletFieldSets.not(WalletFieldSet);
+                WalletFieldSet.filter(':disabled').removeAttr('disabled');
                 WalletFieldSets.filter(':enabled').attr('disabled', 'disabled');
             }).trigger('input');
 

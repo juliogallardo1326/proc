@@ -384,6 +384,10 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 		return $this->email;
 	}
 
+	function getTitle() {
+		return $this->title ?: "Stored Wallet";
+	}
+
 	/**
 	 * Generate a hash value for this wallet
 	 * @return String
@@ -433,17 +437,9 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 
 			"<div style='display: inline-block'>",
 
-			new HTMLElement('label', 'label-' . self::PARAM_BILLING_NAME, "Full Name<br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_BILLING_NAME, "Name on Address<br/>",
 				new HTMLInputField(self::PARAM_BILLING_NAME, $this->name,
 					new Attributes('placeholder', '"Sam Bell"'),
-					new Attributes('size', 10),
-					new RequiredValidation()
-				)
-			),
-
-			new HTMLElement('label', 'label-' . self::PARAM_BILLING_EMAIL, "Full Email<br/>",
-				new HTMLInputField(self::PARAM_BILLING_EMAIL, $this->email,
-					new Attributes('placeholder', '"sam@bell.com"'),
 					new Attributes('size', 10),
 					new RequiredValidation()
 				)
@@ -464,7 +460,7 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 			),
 
 			"<br/><br/>",
-			new HTMLElement('label', 'label-' . self::PARAM_BILLING_ZIPCODE, "ZipCode<br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_BILLING_ZIPCODE, "Zip Code<br/>",
 				new HTMLInputField(self::PARAM_BILLING_ZIPCODE, $this->zip,
 					new ClassAttributes('zip-lookup-field-zipcode'),
 					new Attributes('placeholder', '"12345"'),
@@ -511,6 +507,16 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 			"</div>",
 			"<div style='float: right; margin-left: 1em;'>",
 
+
+			new HTMLElement('label', 'label-' . self::PARAM_BILLING_EMAIL, "Email Address<br/>",
+				new HTMLInputField(self::PARAM_BILLING_EMAIL, $this->email,
+					new Attributes('placeholder', '"sam@bell.com"'),
+					new Attributes('size', 10),
+					new RequiredValidation()
+				)
+			),
+
+			"<br/><br/>",
 			new HTMLElement('label', 'label-' . self::PARAM_CARD_NUMBER, "Card Number<br/>",
 				new HTMLInputField(self::PARAM_CARD_NUMBER, $this->card,
 					new Attributes('placeholder', '"1234567812345678"'),

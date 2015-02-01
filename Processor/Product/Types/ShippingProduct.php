@@ -372,7 +372,7 @@ class ShippingProduct extends AbstractProductType
 	/**
 	 * @return String
 	 */
-	function getTitle() {
+	function getProductTitle() {
 		return $this->title;
 	}
 
@@ -422,7 +422,7 @@ class ShippingProduct extends AbstractProductType
 	}
 
 	function getOrderFieldSet(IRequest $Request, $title = null) {
-		$title ?: $title = $this->getDescription();
+		$title ?: $title = $this->getTypeDescription();
 
 		$FieldSet = new HTMLElement('fieldset', self::CLS_FIELDSET_PRODUCT . ' ' . self::CLS_FIELDSET_SHIPPING_PRODUCT,
 			new HTMLHeaderScript('http://ziplookup.googlecode.com/git/zip-lookup/zip-lookup.js'),
@@ -463,7 +463,7 @@ class ShippingProduct extends AbstractProductType
 			"</div>",
 			"<div style='float: right; margin-left: 1em;'>",
 
-			new HTMLElement('label', 'label-' . self::PARAM_SHIPPING_ZIPCODE, "ZipCode<br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_SHIPPING_ZIPCODE, "Zip Code<br/>",
 				new HTMLInputField(self::PARAM_SHIPPING_ZIPCODE, $this->zip,
 					new ClassAttributes('zip-lookup-field-zipcode'),
 					new Attributes('placeholder', '"12345"'),

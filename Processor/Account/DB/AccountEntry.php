@@ -58,7 +58,7 @@ class AccountEntry implements IBuildable
 	}
 
 	public function getStatus() {
-		return $this->status;
+		return (int)$this->status;
 	}
 
 	public function hasStatus($flags) {

@@ -36,7 +36,7 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 	const FORM_ACTION = '/w/:id';
 	const FORM_ACTION2 = '/manage/wallet/:id';
 	const FORM_METHOD = 'POST';
-	const FORM_NAME = __CLASS__;
+	const FORM_NAME = 'manage-wallet';
 
 	const PARAM_ID = 'id';
 	const PARAM_WALLET_EMAIL = 'wallet-email';

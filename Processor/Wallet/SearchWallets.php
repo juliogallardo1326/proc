@@ -30,7 +30,7 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	const FORM_ACTION = '/search/wallets';
 	const FORM_ACTION2 = '/wallets';
 	const FORM_METHOD = 'POST';
-	const FORM_NAME = __CLASS__;
+	const FORM_NAME = 'search-wallets';
 	const CLS_TABLE_WALLET_SEARCH = 'search-wallets';
 
 	/**

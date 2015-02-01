@@ -28,7 +28,7 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 	/**
 	 * @return String
 	 */
-	abstract function getTitle();
+	abstract function getProductTitle();
 
 	/**
 	 * @return mixed
@@ -87,7 +87,7 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 		return static::TYPE_NAME;
 	}
 
-	public function getDescription() {
+	public function getTypeDescription() {
 		return static::TYPE_DESCRIPTION;
 	}
 
@@ -127,8 +127,8 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 	 * @return void
 	 */
 	function mapKeys(IKeyMapper $Map) {
-		$Map->map('title', $this->getTitle());
-		$Map->map('description', $this->getDescription());
+		$Map->map('title', $this->getProductTitle());
+		$Map->map('description', $this->getTypeDescription());
 		$Map->map('total', $this->getTotalCost());
 		$Map->map('type', $this->getTypeName());
 	}

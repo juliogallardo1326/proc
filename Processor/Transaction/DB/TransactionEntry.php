@@ -8,6 +8,7 @@
 namespace Processor\Transaction\DB;
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
+use CPath\Data\Date\DateUtil;
 use CPath\Data\Map\IKeyMap;
 use CPath\Data\Map\IKeyMapper;
 use CPath\Data\Schema\PDO\PDOTableClassWriter;
@@ -53,6 +54,13 @@ class TransactionEntry implements IBuildable, IKeyMap
 	 * @insert
 	 */
 	protected $status;
+
+	/**
+	 * @column DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 * @select
+	 * @insert
+	 */
+	protected $created;
 
 	/**
 	 * @column VARCHAR(16)
@@ -107,12 +115,28 @@ class TransactionEntry implements IBuildable, IKeyMap
 		return (int)$this->status;
 	}
 
+	public function getCreatedDate() {
+		return $this->created;
+	}
+
 	public function hasStatus($flags) {
 		return $this->getStatus() & $flags;
 	}
 
 	public function getStatusText() {
 		return array_search($this->getStatus(), self::$StatusOptions);
+	}
+
+	public function getProductID() {
+		return $this->product_id;
+	}
+
+	public function getPaymentSourceID() {
+		return $this->payment_source_id;
+	}
+
+	public function getWalletID() {
+		return $this->wallet_id;
 	}
 
 	/**
@@ -150,6 +174,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 			TransactionTable::COLUMN_PAYMENT_SOURCE_ID => $source_id,
 			TransactionTable::COLUMN_AMOUNT => $amount,
 			TransactionTable::COLUMN_STATUS => $status,
+			TransactionTable::COLUMN_CREATED => time(),
 			TransactionTable::COLUMN_INVOICE => serialize($Invoice),
 		))
 			->execute($Request);
@@ -214,11 +239,13 @@ class TransactionEntry implements IBuildable, IKeyMap
 		$Map->map('transaction-id', $this->getID());
 		$Map->map('wallet-id', $this->wallet_id);
 		$Map->map('product-id', $this->product_id); // , $Product->getTitle());
+		$Map->map('created', $this->getCreatedDate());
 		$Map->map('status', $this->getStatusText());
 		$Map->map('amount', $this->amount);
 		$Map->map('email', $Invoice->getWallet()->getEmail());
 
-		$Map->map('description', $Product->getDescription());
+		$Map->map('product', $Product->getProductTitle());
+//		$Map->map('description', $Product->getTypeDescription());
 
 		$Map->map('currency', $Source->getCurrency());
 //		$Map->map('payment-source', $Source->getTitle()); //todo: flags for mapping headers?

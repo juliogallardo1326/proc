@@ -80,7 +80,7 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 				'disabled', 'disabled'
 			));
 			$ProductForms[] = $FieldSet;
-			$productOptions[$ProductType->getDescription()] = $ProductType->getTypeName();
+			$productOptions[$ProductType->getTypeDescription()] = $ProductType->getTypeName();
 		}
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,

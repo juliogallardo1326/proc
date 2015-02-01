@@ -1,0 +1,13 @@
+fieldset.fieldset-wallet {
+    display: inline-block;
+}
+
+fieldset.fieldset-wallet label {
+    display: inline-block;
+    /*width:100%;*/
+}
+
+form[name=create-wallet] fieldset.fieldset-wallet[disabled],
+form[name=create-wallet] fieldset.fieldset-product[disabled] {
+    display: none;
+}

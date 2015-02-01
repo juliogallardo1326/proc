@@ -48,7 +48,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 	const PARAM_WALLET_ID = 'wallet-id';
 	const PARAM_PRODUCT_ID = 'product-id';
 	const PARAM_TRANSACTION_STATUS = 'transaction-status';
-	const PARAM_TRANSACTION_EMAIL = 'transaction-email';
+//	const PARAM_TRANSACTION_EMAIL = 'transaction-email';
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -67,7 +67,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 		$productOptions = array('Choose a Product' => null);
 		foreach($Products as $ProductEntry) {
 			$Product = $ProductEntry->getProduct();
-			$productOptions[$Product->getTotalCost() . ' - ' . $Product->getTitle()] = $ProductEntry->getID();
+			$productOptions[$Product->getTotalCost() . ' - ' . $Product->getProductTitle()] = $ProductEntry->getID();
 			$Product = $ProductEntry->getProduct();
 			$FieldSet = $Product->getOrderFieldSet($Request);
 			$key = $ProductEntry->getID();
@@ -80,37 +80,37 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 		/** @var AbstractWallet[] $WalletTypes */
 		$WalletTypes = array();
 
-		foreach (AbstractWallet::loadAllWalletTypes() as $WalletType) {
-			$key = $WalletType->getTypeName();
-			$WalletTypes[$key] = $WalletType;
-			$FieldSet = $WalletType->getFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_WALLET_ID, $WalletType->getTypeName(),
-				'disabled', 'disabled'
-			));
-			$WalletForms[] = $FieldSet;
-			$walletOptions['New ' . $WalletType->getTypeName()] = $key;
-		}
-
 		$SessionWalletEntries = AbstractWallet::loadSessionWallets($SessionRequest);
 		foreach ($SessionWalletEntries as $WalletEntry) {
-			$WalletType = $WalletEntry->getWallet();
+			$Wallet = $WalletEntry->getWallet();
 			$key = $WalletEntry->getID();
-			$WalletTypes[$key] = $WalletType;
-			$FieldSet = $WalletType->getFieldSet($Request);
+			$WalletTypes[$key] = $Wallet;
+			$FieldSet = $Wallet->getFieldSet($Request);
 			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_WALLET_ID, $WalletType->getTypeName(),
+				'data-' . self::PARAM_WALLET_ID, $key,
 				'disabled', 'disabled'
 			));
 			$WalletForms[] = $FieldSet;
-			$walletOptions['New ' . $WalletType->getDescription()] = $key;
+			$walletOptions[$Wallet->getTitle() . ' - ' . $Wallet->getDescription()] = $key;
+		}
+
+		foreach (AbstractWallet::loadAllWalletTypes() as $Wallet) {
+			$key = $Wallet->getTypeName();
+			$WalletTypes[$key] = $Wallet;
+			$FieldSet = $Wallet->getFieldSet($Request);
+			$FieldSet->addAttributes(new Attributes(
+				'data-' . self::PARAM_WALLET_ID, $key,
+				'disabled', 'disabled'
+			));
+			$WalletForms[] = $FieldSet;
+			$walletOptions['New ' . $Wallet->getDescription()] = $key;
 		}
 
 //		$walletTypes = Config::$AvailableWalletTypes;
 		$Form = new HTMLForm(self::FORM_METHOD, self::FORM_ACTION, self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
-			new HTMLHeaderScript(__DIR__ . '/assets/transaction.js'),
-			new HTMLHeaderStyleSheet(__DIR__ . '/assets/transaction.css'),
+			new HTMLHeaderScript(__DIR__ . '/assets/create-transaction.js'),
+			new HTMLHeaderStyleSheet(__DIR__ . '/assets/create-transaction.css'),
 
 ////			new HTMLElement('h3', null, self::TITLE),
 
@@ -126,12 +126,12 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 						)
 					),
 
-					"<br/><br/>",
-					new HTMLElement('label', null, "Customer Email Address<br/>",
-						new HTMLInputField(self::PARAM_TRANSACTION_EMAIL,
-							new RequiredValidation()
-						)
-					),
+//					"<br/><br/>",
+//					new HTMLElement('label', null, "Customer Email Address<br/>",
+//						new HTMLInputField(self::PARAM_TRANSACTION_EMAIL,
+//							new RequiredValidation()
+//						)
+//					),
 
 					"<br/><br/>",
 					new HTMLElement('label', null, "Product<br/>",
@@ -170,7 +170,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 		$Form->setFormValues($Request);
 
 		$status = $Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
-		$email = $Form->validateField($Request, self::PARAM_TRANSACTION_EMAIL);
+//		$email = $Form->validateField($Request, self::PARAM_TRANSACTION_EMAIL);
 
 		$walletType = $Form->validateField($Request, self::PARAM_WALLET_ID);
 		$ChosenWallet = $WalletTypes[$walletType];
@@ -183,7 +183,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 
 		$paymentSourceID = $ProductEntry->getPaymentSourceID();
 
-		$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet, $email);
+		$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
 
 		$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
 

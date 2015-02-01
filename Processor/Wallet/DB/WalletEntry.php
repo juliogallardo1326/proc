@@ -24,8 +24,8 @@ use Processor\Wallet\Type\AbstractWallet;
  */
 class WalletEntry implements IBuildable, IKeyMap
 {
+	const STATUS_INACTIVE = 0x00;
 	const STATUS_ACTIVE = 0x01;
-	const STATUS_INACTIVE = 0x02;
 
 	static $StatusOptions = array(
 		"Active" => self::STATUS_ACTIVE,
@@ -73,7 +73,7 @@ class WalletEntry implements IBuildable, IKeyMap
 	}
 
 	public function getStatus() {
-		return $this->status;
+		return (int)$this->status;
 	}
 
 	public function getStatusText() {
@@ -92,9 +92,11 @@ class WalletEntry implements IBuildable, IKeyMap
 		return $this->hash;
 	}
 
-	function update($Request, $Wallet, $status=null) {
+	function update($Request, AbstractWallet $Wallet, $status=null) {
 		$update = array(
 			WalletTable::COLUMN_WALLET => serialize($Wallet),
+			WalletTable::COLUMN_EMAIL => $Wallet->getEmail(),
+			WalletTable::COLUMN_HASH => $Wallet->getWalletHash(),
 		);
 		$status === null ?: $update[WalletTable::COLUMN_STATUS] = $status;
 		$update = self::table()->update($update)
@@ -125,20 +127,22 @@ class WalletEntry implements IBuildable, IKeyMap
 
 		$Map->map('wallet-id', $this->getID());
 		$Map->map('email', $this->getEmail()); // , $Product->getTitle());
-		$Map->map('hash', $this->getHash());
+		$Map->map('hash', substr($Wallet->getWalletHash(), -8));
 		$Map->map('status', $this->getStatus(), $this->getStatusText());
 		$Wallet->mapKeys($Map);
 	}
 
 	// Static
 
-	static function create(IRequest $Request, AbstractWallet $Wallet, $email) {
+	static function create(IRequest $Request, AbstractWallet $Wallet, $status=null) {
 		$id = uniqid('wallet-');
 
+		$status !== null ?: $status = self::STATUS_ACTIVE;
 		$inserted = self::table()->insert(array(
 			WalletTable::COLUMN_ID => $id,
-			WalletTable::COLUMN_EMAIL => $email,
-			WalletTable::COLUMN_STATUS => 0,
+			WalletTable::COLUMN_EMAIL => $Wallet->getEmail(),
+			WalletTable::COLUMN_STATUS => $status,
+			WalletTable::COLUMN_HASH => $Wallet->getWalletHash(),
 			WalletTable::COLUMN_WALLET => serialize($Wallet),
 		))
 		->execute($Request);
@@ -149,10 +153,10 @@ class WalletEntry implements IBuildable, IKeyMap
 		return $id;
 	}
 
-	static function createOrUpdate(IRequest $Request, AbstractWallet $ChosenWallet, $email=null, $status=null) {
+	static function createOrUpdate(IRequest $Request, AbstractWallet $ChosenWallet, $status=null) {
 		$Entry = self::findWalletEntry($ChosenWallet);
 		if(!$Entry)
-			return self::create($Request, $ChosenWallet, $email);
+			return self::create($Request, $ChosenWallet, $status);
 
 		$Entry->update($Request, $ChosenWallet, $status);
 		$Request->log("Wallet Entry Updated: " . $Entry->getID(), $Request::VERBOSE);

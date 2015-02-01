@@ -139,7 +139,8 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group Processor\Wallet\CreateWallet
 			$Map->route('ANY /create/wallet/', 'Processor\\Wallet\\CreateWallet') ||
-			$Map->route('ANY /wallets/', 'Processor\\Wallet\\CreateWallet', 256, 'Wallets') ||
+			$Map->route('ANY /wallets', 'Processor\\Wallet\\CreateWallet', 256, 'Wallets') ||
+			$Map->route('ANY /create/wallet', 'Processor\\Wallet\\CreateWallet') ||
 
 			// @group Processor\Wallet\ManageWallet
 			$Map->route('ANY /w/:id', 'Processor\\Wallet\\ManageWallet') ||

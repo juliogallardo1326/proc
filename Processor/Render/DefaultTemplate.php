@@ -9,6 +9,7 @@ namespace Processor\Render;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
+use CPath\Data\Date\DateUtil;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HeaderConfig;
 use CPath\Render\HTML\Header\HTMLMetaTag;
@@ -164,7 +165,11 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 		switch($key) {
 			case 'created':
 				if($value)
-					echo date('m-d g:i a', $value);
+					echo DateUtil::ago($value) . ' ago';
+				return true;
+
+			case 'status':
+				echo $label ?: $value;
 				return true;
 
 			case 'payment-source-id':

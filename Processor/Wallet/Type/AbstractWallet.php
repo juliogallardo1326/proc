@@ -15,6 +15,7 @@ use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\IRequestValidation;
 use Processor\Config;
 use Processor\Wallet\DB\WalletEntry;
+use Processor\Wallet\DB\WalletTable;
 
 abstract class AbstractWallet implements IRequestValidation, IKeyMap
 {
@@ -34,6 +35,10 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 	abstract function getWalletHash();
 
 
+	abstract function getTitle();
+
+	abstract function getEmail();
+
 	abstract function sanitize();
 
 	function __construct() {
@@ -46,8 +51,6 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 	public function getDescription() {
 		return static::TYPE_DESCRIPTION;
 	}
-
-	abstract function getEmail();
 
 	/**
 	 * Export wallet to string
@@ -68,7 +71,10 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 	 * @return WalletEntry[]
 	 */
 	static function loadSessionWallets(ISessionRequest $Request) {
-		return array();
+		$Table = new WalletTable();
+		return $Table
+			->select()
+			->limit(50);
 	}
 
 	/**

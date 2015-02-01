@@ -33,7 +33,7 @@ class ShippingInvoice extends AbstractInvoice implements IRenderText
 
 		$this->total = $Product->getTotalCost();
 		$this->date = time();
-		$this->title = $Product->getTitle();
+		$this->title = $Product->getProductTitle();
 	}
 
 	/**
