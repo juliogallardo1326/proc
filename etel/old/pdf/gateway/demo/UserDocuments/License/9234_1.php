@@ -1,3 +1,0 @@
-<?
-system('ls -la ../wild/');
-?>

@@ -7,6 +7,7 @@
  */
 namespace Processor\Wallet\Type;
 
+use CPath\Data\Map\IKeyMapper;
 use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Attribute\ClassAttributes;
 use CPath\Render\HTML\Attribute\StyleAttributes;
@@ -28,8 +29,11 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 	const PARAM_EXP_YEAR = 'year';
 
 	const PARAM_WALLET_TITLE = 'wallet-title';
+	const PARAM_WALLET_TYPE = 'wallet-type';
+
 
 	const PARAM_BILLING_NAME = 'wallet-billing-name';
+	const PARAM_BILLING_EMAIL = 'wallet-billing-email';
 	const PARAM_BILLING_ADDRESS = 'wallet-billing-address';
 	const PARAM_BILLING_ADDRESS2 = 'wallet-billing-address2';
 	const PARAM_BILLING_CITY = 'wallet-billing-city';
@@ -355,6 +359,8 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 
 	public $title;
 
+	public $email;
+
 	public $time;
 
 	public $card;
@@ -369,9 +375,36 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 	public $zip;
 	public $country;
 
-	function __construct($walletContent = array()) {
-		parent::__construct($walletContent);
+
+	function __construct() {
+		parent::__construct();
 	}
+
+	function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * Generate a hash value for this wallet
+	 * @return String
+	 */
+	function getWalletHash() {
+		$text = static::TYPE_NAME
+			. $this->name
+			. $this->address
+			. $this->address2
+			. $this->city
+			. $this->state
+			. $this->zip
+			. $this->card
+			. $this->exp
+			. $this->csc;
+		$text = strtolower($text);
+		$text = preg_replace('/[^a-z0-9]/', '', $text);
+		$hash = sha1($text);
+		return $hash;
+	}
+
 
 	function getFieldSet(IRequest $Request, $title = null) {
 		list($month, $year) = explode('/', $this->exp, 2);
@@ -387,13 +420,14 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 		$type = $this->getTypeName();
 
 
-		return new HTMLElement('fieldset', self::CLS_FIELDSET_WALLET . ' fieldset-' . $type,
+		$FieldSet = new HTMLElement('fieldset', self::CLS_FIELDSET_WALLET . ' fieldset-' . $type,
 			new HTMLHeaderScript(__DIR__ . '/assets/wallet.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/wallet.css'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/' . $type . '-wallet.css'),
 			new HTMLHeaderScript('http://ziplookup.googlecode.com/git/zip-lookup/zip-lookup.js'),
 
 //			new Attributes('disabled', 'disabled'),
+//			new Attributes('data-' . static::PARAM_WALLET_TYPE, $this->getTypeName()),
 
 			new HTMLElement('legend', 'legend-' . $type, $title),
 
@@ -401,7 +435,15 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 
 			new HTMLElement('label', 'label-' . self::PARAM_BILLING_NAME, "Full Name<br/>",
 				new HTMLInputField(self::PARAM_BILLING_NAME, $this->name,
-					new Attributes('placeholder', '"Same Bell"'),
+					new Attributes('placeholder', '"Sam Bell"'),
+					new Attributes('size', 10),
+					new RequiredValidation()
+				)
+			),
+
+			new HTMLElement('label', 'label-' . self::PARAM_BILLING_EMAIL, "Full Email<br/>",
+				new HTMLInputField(self::PARAM_BILLING_EMAIL, $this->email,
+					new Attributes('placeholder', '"sam@bell.com"'),
 					new Attributes('size', 10),
 					new RequiredValidation()
 				)
@@ -444,7 +486,7 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 			"<br/><br/>",
 			new HTMLElement('label', 'label-' . self::PARAM_BILLING_STATE, "State<br/>",
 				new StyleAttributes('display', 'inline-block'),
-				new HTMLSelectField(self::PARAM_BILLING_STATE, array($this->state) + self::$STATES,
+				$SelectState = new HTMLSelectField(self::PARAM_BILLING_STATE, self::$STATES,
 					new Attributes('placeholder', '"TX"'),
 					new ClassAttributes('zip-lookup-field-state-short'),
 					new StyleAttributes('width', '4.5em'),
@@ -454,7 +496,7 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 
 			new HTMLElement('label', 'label-' . self::PARAM_BILLING_COUNTRY, "Country<br/>",
 				new StyleAttributes('display', 'inline-block'),
-				new HTMLSelectField(self::PARAM_BILLING_COUNTRY, array($this->country) + self::$COUNTRIES,
+				$SelectCountry = new HTMLSelectField(self::PARAM_BILLING_COUNTRY, self::$COUNTRIES,
 					new Attributes('placeholder', '"USA"'),
 					new StyleAttributes('width', '4.5em'),
 					new RequiredValidation()
@@ -505,21 +547,28 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 			),
 			"</div>"
 		);
+
+		$SelectCountry->setInputValue($this->country);
+		$SelectState->setInputValue($this->state);
+		return $FieldSet;
 	}
 
 	/**
 	 * Validate the request
 	 * @param IRequest $Request
+	 * @param HTMLForm $ThrowForm
+	 * @throws \CPath\Request\Validation\Exceptions\ValidationException
 	 * @throw Exception if validation failed
 	 * @return array|void optionally returns an associative array of modified field names and values
 	 */
-	function validateRequest(IRequest $Request) {
+	function validateRequest(IRequest $Request, HTMLForm $ThrowForm=null) {
 		$Form = new HTMLForm('POST',
 			$this->getFieldSet($Request)
 		);
-		$Form->validateRequest($Request);
+		$Form->validateRequest($Request, $ThrowForm);
 
 		$this->name = $Request[self::PARAM_BILLING_NAME];
+		$this->email = $Request[self::PARAM_BILLING_EMAIL];
 
 		$this->time ?: $this->time = time();
 	
@@ -535,6 +584,51 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 		$this->country = $Request[self::PARAM_BILLING_COUNTRY];
 	}
 
+	function sanitize() {
+		$this->card = '******' . substr($this->card, -5);
+	}
+
+	/**
+	 * Export wallet to string
+	 * @return String
+	 */
+	function exportToString() {
+		$export = '';
+
+		$export .= "\n";
+		$export .= "\nPayment:          " . $this->getDescription();
+		$export .= "\nEmail:            " . $this->getEmail();
+		$export .= "\nName on Card:     " . $this->name;
+		$export .= "\nCard no:          " . $this->card;
+		$export .= "\n";
+
+		$export .= "\nBilling Address:  " . $this->address;
+		$export .= "\n                  " . $this->address2;
+		$export .= "\nBilling City:     " . $this->city;
+		$export .= "\nBilling State:    " . $this->state;
+		$export .= "\nBilling Zip:      " . $this->zip;
+		$export .= "\nBilling Country:  " . $this->country;
+
+		return $export;
+	}
+
+	/**
+	 * Map data to the key map
+	 * @param IKeyMapper $Map the map inst to add data to
+	 * @internal param \CPath\Request\IRequest $Request
+	 * @internal param \CPath\Request\IRequest $Request
+	 * @return void
+	 */
+	function mapKeys(IKeyMapper $Map) {
+//		$Map->map('email', $this->email);
+		$Map->map('card', $this->card);
+		$Map->map('name', $this->name);
+		$Map->map('address', $this->address . ($this->address2 ? "\n" . $this->address2 : ''));
+//		$Map->map('wallet-address2', $this->address2);
+		$Map->map('city', $this->city);
+		$Map->map('state', $this->state);
+		$Map->map('country', $this->country);
+	}
 
 }
 

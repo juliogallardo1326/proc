@@ -43,27 +43,18 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group Processor\Account\SearchAccounts
 			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
-			$Map->route('ANY /query/accounts', 'Processor\\Account\\SearchAccounts') ||
+			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts') ||
 
 			// @group Processor\Applications\MerchantApplication
 			$Map->route('ANY /applications/merchant', 'Processor\\Applications\\MerchantApplication') ||
-			$Map->route('ANY /apply', 'Processor\\Applications\\MerchantApplication') ||
+			$Map->route('ANY /apply', 'Processor\\Applications\\MerchantApplication', 256, 'Apply Now') ||
 
 			// @group Processor\Applications\ResellerApplication
 			$Map->route('ANY /applications/reseller', 'Processor\\Applications\\ResellerApplication') ||
-			$Map->route('ANY /reseller', 'Processor\\Applications\\ResellerApplication') ||
-
-			// @group Processor\Batch\BatchRefunds
-			$Map->route('ANY /batch/subscriptions', 'Processor\\Batch\\BatchRefunds') ||
-
-			// @group Processor\Batch\BatchSubscriptions
-			$Map->route('ANY /batch/subscriptions', 'Processor\\Batch\\BatchSubscriptions') ||
-
-			// @group Processor\Batch\BatchTransactions
-			$Map->route('ANY /batch/transactions', 'Processor\\Batch\\BatchTransactions') ||
+			$Map->route('ANY /reseller', 'Processor\\Applications\\ResellerApplication', 256, 'Reseller') ||
 
 			// @group Processor\Integration\Integrate
-			$Map->route('ANY /integrate', 'Processor\\Integration\\Integrate') ||
+			$Map->route('ANY /integrate', 'Processor\\Integration\\Integrate', 256, 'Integration') ||
 
 			// @group Processor\Invoice\CreateInvoice
 			$Map->route('ANY /create/invoice/', 'Processor\\Invoice\\CreateInvoice') ||
@@ -75,13 +66,45 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group Processor\Invoice\SearchInvoices
 			$Map->route('ANY /invoices', 'Processor\\Invoice\\SearchInvoices') ||
-			$Map->route('ANY /query/invoices', 'Processor\\Invoice\\SearchInvoices') ||
+			$Map->route('ANY /search/invoices', 'Processor\\Invoice\\SearchInvoices') ||
+
+			// @group Processor\PaymentSource\CreatePaymentSource
+			$Map->route('ANY /create/payment-source/', 'Processor\\PaymentSource\\CreatePaymentSource') ||
+			$Map->route('ANY /payment-sources', 'Processor\\PaymentSource\\CreatePaymentSource', 256, 'Payment Source') ||
+
+			// @group Processor\PaymentSource\ManagePaymentSource
+			$Map->route('ANY /ps/:id', 'Processor\\PaymentSource\\ManagePaymentSource') ||
+			$Map->route('ANY /payment-source/:id', 'Processor\\PaymentSource\\ManagePaymentSource') ||
+			$Map->route('ANY /manage/payment-source/:id', 'Processor\\PaymentSource\\ManagePaymentSource') ||
+
+			// @group Processor\PaymentSource\SearchPaymentSources
+			$Map->route('ANY /payment-sources', 'Processor\\PaymentSource\\SearchPaymentSources') ||
+			$Map->route('ANY /search/payment-sources', 'Processor\\PaymentSource\\SearchPaymentSources') ||
+
+			// @group Processor\Product\CreateProduct
+			$Map->route('ANY /create/product/', 'Processor\\Product\\CreateProduct') ||
+			$Map->route('ANY /products', 'Processor\\Product\\CreateProduct', 256, 'Products') ||
+
+			// @group Processor\Product\ManageProduct
+			$Map->route('ANY /p/:id', 'Processor\\Product\\ManageProduct') ||
+			$Map->route('ANY /product/:id', 'Processor\\Product\\ManageProduct') ||
+			$Map->route('ANY /manage/product/:id', 'Processor\\Product\\ManageProduct') ||
+
+			// @group Processor\Product\SearchProducts
+			$Map->route('ANY /products', 'Processor\\Product\\SearchProducts') ||
+			$Map->route('ANY /search/products', 'Processor\\Product\\SearchProducts') ||
+
+			// @group Processor\Report\ReportRoute
+			$Map->route('ANY /reports', 'Processor\\Report\\ReportRoute', 256, 'Reports') ||
 
 			// @group Processor\Report\RiskReport
 			$Map->route('ANY /report/risk', 'Processor\\Report\\RiskReport') ||
 
 			// @group Processor\SiteIndex
 			$Map->route('ANY /', 'Processor\\SiteIndex') ||
+
+			// @group Processor\Subscription\BatchSubscriptions
+			$Map->route('ANY /batch/subscriptions', 'Processor\\Subscription\\BatchSubscriptions') ||
 
 			// @group Processor\Subscription\CreateSubscription
 			$Map->route('ANY /create/subscription/', 'Processor\\Subscription\\CreateSubscription') ||
@@ -93,10 +116,17 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group Processor\Subscription\SearchSubscriptions
 			$Map->route('ANY /subscriptions', 'Processor\\Subscription\\SearchSubscriptions') ||
-			$Map->route('ANY /query/subscriptions', 'Processor\\Subscription\\SearchSubscriptions') ||
+			$Map->route('ANY /search/subscriptions', 'Processor\\Subscription\\SearchSubscriptions') ||
+
+			// @group Processor\Transaction\BatchRefunds
+			$Map->route('ANY /batch/subscriptions', 'Processor\\Transaction\\BatchRefunds') ||
+
+			// @group Processor\Transaction\BatchTransactions
+			$Map->route('ANY /batch/transactions', 'Processor\\Transaction\\BatchTransactions') ||
 
 			// @group Processor\Transaction\CreateTransaction
 			$Map->route('ANY /create/transaction/', 'Processor\\Transaction\\CreateTransaction') ||
+			$Map->route('ANY /transactions', 'Processor\\Transaction\\CreateTransaction', 256, 'Transactions') ||
 
 			// @group Processor\Transaction\ManageTransaction
 			$Map->route('ANY /t/:id', 'Processor\\Transaction\\ManageTransaction') ||
@@ -105,20 +135,19 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group Processor\Transaction\SearchTransactions
 			$Map->route('ANY /transactions', 'Processor\\Transaction\\SearchTransactions') ||
-			$Map->route('ANY /query/transactions', 'Processor\\Transaction\\SearchTransactions') ||
+			$Map->route('ANY /search/transactions', 'Processor\\Transaction\\SearchTransactions') ||
 
 			// @group Processor\Wallet\CreateWallet
 			$Map->route('ANY /create/wallet/', 'Processor\\Wallet\\CreateWallet') ||
+			$Map->route('ANY /wallets/', 'Processor\\Wallet\\CreateWallet', 256, 'Wallets') ||
 
 			// @group Processor\Wallet\ManageWallet
 			$Map->route('ANY /w/:id', 'Processor\\Wallet\\ManageWallet') ||
 			$Map->route('ANY /manage/wallet/:id', 'Processor\\Wallet\\ManageWallet') ||
 
 			// @group Processor\Wallet\SearchWallets
-			$Map->route('ANY /query/wallets', 'Processor\\Wallet\\SearchWallets') ||
-
-			// @group Processor\Wallet\WalletRoute
-			$Map->route('ANY /wallets', 'Processor\\Wallet\\WalletRoute') ||
+			$Map->route('ANY /search/wallets', 'Processor\\Wallet\\SearchWallets') ||
+			$Map->route('ANY /wallets', 'Processor\\Wallet\\SearchWallets', 256, 'Wallets') ||
 
 			// @group __default_template
 			$Map->route('ANY *', 'Processor\\Render\\DefaultTemplate') ||

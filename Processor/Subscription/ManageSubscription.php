@@ -14,6 +14,7 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
@@ -26,6 +27,7 @@ class ManageSubscription implements IExecutable, IBuildable, IRoutable
 {
 	const TITLE = 'Manage Subscription';
 
+	const FORM_FORMAT = '/s/%s';
 	const FORM_ACTION = '/s/:id';
 	const FORM_ACTION2 = '/subscription/:id';
 	const FORM_ACTION3 = '/manage/subscription/:id';
@@ -33,6 +35,16 @@ class ManageSubscription implements IExecutable, IBuildable, IRoutable
 	const FORM_NAME = __CLASS__;
 
 	const PARAM_ID = 'id';
+
+	private $id;
+
+	public function __construct($subscriptionID) {
+		$this->id = $subscriptionID;
+	}
+
+	private function getSubscriptionID() {
+		return $this->id;
+	}
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -45,21 +57,28 @@ class ManageSubscription implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
 				"Subscription ID:<br/>",
-				new HTMLInputField(self::PARAM_ID,
+				new HTMLInputField(self::PARAM_ID, $this->id,
 					new RequiredValidation()
 				),
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL($id) {
+		return sprintf(self::FORM_FORMAT, $id);
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -72,7 +91,7 @@ class ManageSubscription implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new static();
+		return new ExecutableRenderer(new static($Request[self::PARAM_ID]), true);
 	}
 
 	/**

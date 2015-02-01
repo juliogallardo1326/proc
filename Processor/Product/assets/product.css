@@ -1,0 +1,15 @@
+fieldset.fieldset-product,
+fieldset.fieldset-product-config {
+    display: inline-block;
+}
+
+fieldset.fieldset-product[disabled],
+fieldset.fieldset-product-config[disabled] {
+    display: none;
+}
+
+fieldset.fieldset-product label,
+fieldset.fieldset-product-config label {
+    display: inline-block;
+    /*width:100%;*/
+}

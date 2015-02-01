@@ -43,7 +43,8 @@ class RiskReport implements IExecutable, IBuildable, IRoutable
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;

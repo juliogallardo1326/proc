@@ -1,7 +1,0 @@
-<?
-class gateway_class
-{
-
-}
-
-?>

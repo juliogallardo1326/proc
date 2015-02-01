@@ -1,0 +1,7 @@
+fieldset.fieldset-payment-source {
+    display: inline-block;
+}
+
+fieldset.fieldset-payment-source[disabled=disabled] {
+    display: none;
+}

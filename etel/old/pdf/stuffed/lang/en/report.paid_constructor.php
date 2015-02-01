@@ -1,5 +1,0 @@
-<?
-$Lang['Title']="Paid traffic";
-
-
-?>

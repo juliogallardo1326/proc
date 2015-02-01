@@ -27,3 +27,4 @@ class Config {
 		return self::$ContentPath . ($additionalPath ? '/' . $additionalPath : '');
 	}
 }
+

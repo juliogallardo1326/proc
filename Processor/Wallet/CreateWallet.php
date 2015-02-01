@@ -15,24 +15,18 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
-use CPath\Render\HTML\Header\HTMLHeaderScript;
-use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
-use CPath\Request\Validation\Exceptions\ValidationException;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\Config;
-use Processor\DB\Schema\Tables\TransactionTable;
-use Processor\DB\Schema\Tables\WalletTable;
-use Processor\DB\Schema\WalletEntry;
 use Processor\SiteMap;
+use Processor\Wallet\DB\WalletEntry;
 use Processor\Wallet\Type\AbstractWallet;
 
 class CreateWallet implements IExecutable, IBuildable, IRoutable
@@ -40,12 +34,18 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 	const TITLE = 'Create Wallet';
 
 	const FORM_ACTION = '/create/wallet/';
+	const FORM_ACTION2 = '/wallets/';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
 
 	const PARAM_WALLET_TYPE = 'wallet-type';
 	const PARAM_WALLET_NAME = 'wallet-name';
-	const PARAM_WALLET_EMAIL = 'wallet-email';
+//	const PARAM_WALLET_EMAIL = 'wallet-email';
+	const PARAM_WALLET_STATUS = 'wallet-status';
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -61,10 +61,10 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 		foreach (AbstractWallet::loadAllWalletTypes() as $WalletType) {
 			$WalletTypes[$WalletType->getTypeName()] = $WalletType;
 			$FieldSet = $WalletType->getFieldSet($Request);
-			$FieldSet->addAttributes(
-				new Attributes('data-' . self::PARAM_WALLET_TYPE, $WalletType->getTypeName()),
-				new Attributes('disabled', 'disabled')
-			);
+			$FieldSet->addAttributes(new Attributes(
+				'data-' . self::PARAM_WALLET_TYPE, $WalletType->getTypeName(),
+				'disabled', 'disabled'
+			));
 			$WalletForms[] = $FieldSet;
 			$walletOptions['New ' . $WalletType->getDescription()] = $WalletType->getTypeName();
 		}
@@ -74,21 +74,23 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\wallet.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\wallet.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-wallet', 'Create a new Wallet'),
 
-				new HTMLElement('label', null, "New Wallet name<br/>",
-					new HTMLInputField(self::PARAM_WALLET_NAME
+//				new HTMLElement('label', null, "New Wallet name<br/>",
+//					new HTMLInputField(self::PARAM_WALLET_NAME
+////						new RequiredValidation()
+//					)
+//				),
+//
+//				"<br/><br/>",
+//				new HTMLElement('label', null, "New Wallet email<br/>",
+//					new HTMLInputField(self::PARAM_WALLET_EMAIL,
 //						new RequiredValidation()
-					)
-				),
-
-				"<br/><br/>",
-				new HTMLElement('label', null, "New Wallet email<br/>",
-					new HTMLInputField(self::PARAM_WALLET_EMAIL,
-						new RequiredValidation()
-					)
-				),
+//					)
+//				),
 
 				"<br/><br/>",
 				new HTMLElement('label', null, "New Wallet type<br/>",
@@ -112,17 +114,12 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 
 		$walletType = $Form->validateField($Request, self::PARAM_WALLET_TYPE);
 		$NewWallet = $WalletTypes[$walletType];
-		try {
-			$NewWallet->validateRequest($Request);
-		} catch (ValidationException $ex) {
-			$ex->setForm($Form);
-			throw $ex;
-		}
+		$NewWallet->validateRequest($Request, $Form);
 
-		$name = $Request[self::PARAM_WALLET_NAME];
-		$email = $Request[self::PARAM_WALLET_EMAIL];
+//		$name = $Request[self::PARAM_WALLET_NAME];
+//		$email = $Request[self::PARAM_WALLET_EMAIL];
 
-		$id = WalletEntry::create($Request, $NewWallet, $name, $email);
+		$id = WalletEntry::create($Request, $NewWallet, $NewWallet->getEmail());
 
 		return new RedirectResponse(ManageWallet::getRequestURL($id), "Wallet created successfully. Redirecting...", 5);
 	}
@@ -153,5 +150,6 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__, IRequest::NAVIGATION_ROUTE, "Wallets");
 	}
 }

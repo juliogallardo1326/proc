@@ -8,30 +8,36 @@
 namespace Processor\Wallet\Type;
 
 
+use CPath\Data\Map\IKeyMap;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\IRequestValidation;
 use Processor\Config;
-use Processor\DB\Schema\WalletEntry;
+use Processor\Wallet\DB\WalletEntry;
 
-abstract class AbstractWallet implements IRequestValidation
+abstract class AbstractWallet implements IRequestValidation, IKeyMap
 {
 	const TYPE_NAME = null;
 	const TYPE_DESCRIPTION = null;
-
-	private $mFields;
-	function __construct($walletContent=array()) {
-		if(is_string($walletContent))
-			$walletContent = json_decode($walletContent, true);
-		$this->mFields = $walletContent;
-	}
 
 	/**
 	 * @param IRequest $Request
 	 * @return HTMLForm
 	 */
 	abstract function getFieldSet(IRequest $Request);
+
+	/**
+	 * Generate a hash value for this wallet
+	 * @return String
+	 */
+	abstract function getWalletHash();
+
+
+	abstract function sanitize();
+
+	function __construct() {
+	}
 
 	function getTypeName() {
 		return static::TYPE_NAME;
@@ -40,6 +46,14 @@ abstract class AbstractWallet implements IRequestValidation
 	public function getDescription() {
 		return static::TYPE_DESCRIPTION;
 	}
+
+	abstract function getEmail();
+
+	/**
+	 * Export wallet to string
+	 * @return String
+	 */
+	abstract function exportToString();
 
 	// Static
 
@@ -53,7 +67,7 @@ abstract class AbstractWallet implements IRequestValidation
 	 * @param ISessionRequest $Request
 	 * @return WalletEntry[]
 	 */
-	public static function loadSessionWallets(ISessionRequest $Request) {
+	static function loadSessionWallets(ISessionRequest $Request) {
 		return array();
 	}
 
@@ -62,10 +76,11 @@ abstract class AbstractWallet implements IRequestValidation
 	 */
 	static function loadAllWalletTypes() {
 		$WalletTypes = array();
-		foreach(Config::$AvailableWalletTypes as $typeName) {
+		foreach (Config::$AvailableWalletTypes as $typeName) {
 			$WalletTypes[$typeName] = self::loadWalletByType($typeName);
 		}
-		return $WalletTypes;
-	}
 
+		return $WalletTypes;
+
+	}
 }

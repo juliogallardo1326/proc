@@ -13,22 +13,20 @@ use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
+use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
-use CPath\Render\HTML\Header\HTMLHeaderScript;
-use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
-use CPath\Request\Validation\Exceptions\ValidationException;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\DB\Schema\WalletEntry;
 use Processor\SiteMap;
+use Processor\Wallet\DB\WalletEntry;
 
 class ManageWallet implements IExecutable, IBuildable, IRoutable
 {
@@ -42,7 +40,7 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 
 	const PARAM_ID = 'id';
 	const PARAM_WALLET_EMAIL = 'wallet-email';
-	const PARAM_WALLET_NAME = 'wallet-name';
+	const PARAM_WALLET_STATUS = 'wallet-status';
 	const PARAM_SUBMIT = 'submit';
 
 	private $id;
@@ -68,17 +66,15 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\wallet.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\wallet.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				"Wallet ID:<br/>",
-				new HTMLInputField(self::PARAM_ID, $WalletEntry->getID(),
-					new Attributes('disabled', 'disabled')
-				),
+				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
 
-				"<br/><br/>",
-				new HTMLElement('label', null, "Wallet name<br/>",
-					new HTMLInputField(self::PARAM_WALLET_NAME, $WalletEntry->getName(),
+				new HTMLElement('label', null, "Wallet Status<br/>",
+					$Select = new HTMLSelectField(self::PARAM_WALLET_STATUS, WalletEntry::$StatusOptions,
 						new RequiredValidation()
 					)
 				),
@@ -91,7 +87,6 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 				),
 
 				"<br/><br/>",
-
 				$Wallet->getFieldSet($Request),
 
 				"<br/><br/>",
@@ -105,24 +100,18 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 		if(!$Request instanceof IFormRequest)
 			return $Form;
 
-		try {
-			$Wallet->validateRequest($Request);
-		} catch (ValidationException $ex) {
-			$ex->setForm($Form);
-			throw $ex;
-		}
+		$Wallet->validateRequest($Request, $Form);
 
 		$submit = $Request[self::PARAM_SUBMIT];
-		$name = $Request[self::PARAM_WALLET_NAME];
 
 		switch($submit) {
 			case 'update':
-				WalletEntry::update($Request, $this->getWalletID(), $Wallet, $name);
+				$WalletEntry->update($Request, $Wallet);
 				return new RedirectResponse(ManageWallet::getRequestURL($this->getWalletID()), "Wallet updated successfully. Redirecting...", 5);
 
 			case 'delete':
 				WalletEntry::delete($Request, $this->getWalletID());
-				return new RedirectResponse(WalletRoute::getRequestURL(), "Wallet deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(CreateWallet::getRequestURL(), "Wallet deleted successfully. Redirecting...", 5);
 		}
 
 		throw new \InvalidArgumentException($submit);
@@ -130,10 +119,10 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 
 	// Static
 
-
 	public static function getRequestURL($id) {
 		return sprintf(self::FORM_FORMAT, $id);
 	}
+
 	/**
 	 * Route the request to this class object and return the object
 	 * @param IRequest $Request the IRequest inst for this render

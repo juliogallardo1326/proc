@@ -1,0 +1,13 @@
+fieldset.fieldset-transaction,
+fieldset.fieldset-choose-wallet,
+fieldset.fieldset-create-transaction,
+fieldset.fieldset-product-config,
+fieldset.fieldset-product-container,
+fieldset.fieldset-product {
+    display: inline-block;
+}
+
+form[name=create-transaction] fieldset.fieldset-wallet[disabled],
+form[name=create-transaction] fieldset.fieldset-product[disabled] {
+    display: none;
+}

@@ -40,11 +40,14 @@ class MerchantApplication implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
@@ -76,6 +79,6 @@ class MerchantApplication implements IExecutable, IBuildable, IRoutable
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__);
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__, IRequest::NAVIGATION_ROUTE, "Apply Now");
 	}
 }

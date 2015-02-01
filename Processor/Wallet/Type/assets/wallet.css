@@ -2,10 +2,6 @@ fieldset.fieldset-wallet {
     display: inline-block;
 }
 
-fieldset.fieldset-wallet[disabled] {
-    display: none;
-}
-
 fieldset.fieldset-wallet label {
     display: inline-block;
     /*width:100%;*/

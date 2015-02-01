@@ -20,8 +20,8 @@ use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\DB\Schema\Tables\TransactionTable;
 use Processor\SiteMap;
+use Processor\Transaction\DB\TransactionTable;
 
 class CreateAccount implements IExecutable, IBuildable, IRoutable
 {
@@ -45,6 +45,8 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-wallet', self::TITLE),
 
@@ -63,13 +65,18 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 					new RequiredValidation()
 				),
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object

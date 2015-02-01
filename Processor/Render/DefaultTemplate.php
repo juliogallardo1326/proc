@@ -12,20 +12,27 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HeaderConfig;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\HTML\HTMLConfig;
 use CPath\Render\HTML\HTMLContainer;
 use CPath\Render\HTML\HTMLResponseBody;
+use CPath\Render\HTML\IHTMLValueRenderer;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;
 use CPath\Response\IResponseHeaders;
 use CPath\Response\ResponseRenderer;
-use CPath\Route\CPathMap;
 use CPath\Route\HTML\HTMLRouteNavigator;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use CPath\Route\RouteIndex;
 use CPath\Route\RouteRenderer;
 use Processor\Config;
+use Processor\PaymentSource\ManagePaymentSource;
+use Processor\Product\DB\ProductEntry;
+use Processor\Product\ManageProduct;
+use Processor\Product\Types\AbstractProductType;
 use Processor\SiteMap;
+use Processor\Transaction\ManageTransaction;
+use Processor\Wallet\ManageWallet;
 
 class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 
@@ -47,8 +54,7 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 			$this->mHeader = new HTMLElement('section', 'header',
 				$this->mHeaderTitle = new HTMLElement('h1', 'header-title')
 			),
-			$this->mNavBar = new HTMLElement('section', 'navbar',
-				$NavBarTitle = new HTMLElement('h3', 'navbar-title')
+			$this->mNavBar = new HTMLElement('section', 'navbar'
 			),
 			$Content = new HTMLElement('section', 'content'
 			),
@@ -92,6 +98,10 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $RouteRenderer=null, $args=array()) {
+		static $customLoaded = false;
+		$customLoaded ?: HTMLConfig::addValueRenderer(new CustomHTMLValueRenderer($Request));
+		$customLoaded = true;
+
 		$class = Config::$TemplateClass;
 		/** @var DefaultTemplate $Template */
 		$Template = new $class();
@@ -101,18 +111,9 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 			if(!$Object)
 				$Object = new RouteIndex($RouteRenderer);
 
-			$Template->mNavBar->addAll(function() {
-				?>
-		<a href="http://localhost/proc/invoices">Invoices</a>
-		<a href="http://localhost/proc/subscriptions">Subscriptions</a>
-		<a href="http://localhost/proc/transactions">Transactions</a>
-		<a href="http://localhost/proc/wallets">Wallets</a>
-		<a href="http://localhost/proc/report/risk">Risk Report</a>
-		<a href="http://localhost/proc/integrate">Integration</a>
-		<a href="http://localhost/proc/apply">Apply Now</a>
-		<a href="http://localhost/proc/reseller">Resellers</a>
-				<?php
-			});
+//			$NavBarTitle = new HTMLElement('h3', 'navbar-title');
+//			$Template->mNavBar->
+			$Template->mNavBar->addContent(new HTMLRouteNavigator($RouteRenderer));
 		}
 
 
@@ -142,5 +143,68 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 
 		$Template->renderHTML($Request);
 		return true;
+	}
+}
+
+class CustomHTMLValueRenderer implements IHTMLValueRenderer {
+	private $domain;
+
+	function __construct(IRequest $Request) {
+		$this->domain = $Request->getDomainPath();
+	}
+
+
+	/**
+	 * @param $key
+	 * @param $value
+	 * @param null $label
+	 * @return bool if true, the value has been rendered, otherwise false
+	 */
+	function renderNamedValue($key, $value, $label=null) {
+		switch($key) {
+			case 'created':
+				if($value)
+					echo date('m-d g:i a', $value);
+				return true;
+
+			case 'payment-source-id':
+				$href = $this->domain . ltrim(ManagePaymentSource::getRequestURL($value), '/');
+				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				return true;
+
+			case 'transaction-id':
+				$href = $this->domain . ltrim(ManageTransaction::getRequestURL($value), '/');
+				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				return true;
+
+			case 'product-id':
+				$href = $this->domain . ltrim(ManageProduct::getRequestURL($value), '/');
+				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				return true;
+//
+//			case 'product':
+//				if($value instanceof ProductEntry) {
+//					$Product = $value->getProduct();
+//					$href = $this->domain . ltrim(ManageProduct::getRequestURL($value->getID()), '/');
+//					echo "<a href='{$href}'>", $Product->getTitle(), "</a>";
+//
+//					return true;
+//				}
+//				break;
+
+			case 'wallet-id':
+				$href = $this->domain . ltrim(ManageWallet::getRequestURL($value), '/');
+				echo "<a href='{$href}'>", $value, "</a>";
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * @param $value
+	 * @return bool if true, the value has been rendered, otherwise false
+	 */
+	function renderValue($value) {
+		return false;
 	}
 }

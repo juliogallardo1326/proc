@@ -12,20 +12,28 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
+use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Header\HTMLHeaderScript;
+use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
+use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
+use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use Processor\SiteMap;
+use Processor\Transaction\DB\TransactionEntry;
 
 class ManageTransaction implements IExecutable, IBuildable, IRoutable
 {
 	const TITLE = 'Manage Transaction';
 
+	const FORM_FORMAT = '/t/%s';
 	const FORM_ACTION = '/t/:id';
 	const FORM_ACTION2 = '/transaction/:id';
 	const FORM_ACTION3 = '/manage/transaction/:id';
@@ -33,6 +41,17 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 	const FORM_NAME = __CLASS__;
 
 	const PARAM_ID = 'id';
+	const PARAM_TRANSACTION_STATUS = 'transaction-status';
+
+	private $id;
+
+	public function __construct($transactionID) {
+		$this->id = $transactionID;
+	}
+
+	private function getTransactionID() {
+		return $this->id;
+	}
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -40,26 +59,63 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$TransactionEntry = TransactionEntry::get($this->getTransactionID());
+		$Invoice = $TransactionEntry->getInvoice();
+		$Product = $Invoice->getProduct();
+		$Wallet = $Invoice->getWallet();
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
-//			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
-//			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
+			new HTMLHeaderScript(__DIR__ . '/assets/transaction.js'),
+			new HTMLHeaderStyleSheet(__DIR__ . '/assets/transaction.css'),
 
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				"Transaction ID:<br/>",
-				new HTMLInputField(self::PARAM_ID,
+				new HTMLElement('label', null, "Status<br/>",
+					$SelectStatus = new HTMLSelectField(self::PARAM_TRANSACTION_STATUS, TransactionEntry::$StatusOptions,
+						new RequiredValidation()
+					)
+				),
+
+				"<br/><br/>Transaction ID:<br/>",
+				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden',
 					new RequiredValidation()
 				),
-				new HTMLButton('submit', 'Submit', 'submit')
-			)
+
+				new HTMLButton('submit', 'Update', 'submit')
+			),
+
+			$Wallet->getFieldSet($Request)
+				->setAttribute('disabled', 'disabled'),
+			new HTMLElement('fieldset', 'fieldset-product-container',
+				new HTMLElement('legend', 'legend-product', 'Product'),
+				$Product->getConfigFieldSet($Request)
+					->setAttribute('disabled', 'disabled'),
+				"<br/>",
+				$Product->getOrderFieldSet($Request)
+					->setAttribute('disabled', 'disabled')
+			),
+			"<br/>"
 		);
 
-		return $Form;
+		$SelectStatus->setInputValue($TransactionEntry->getStatus());
+
+		if(!$Request instanceof IFormRequest)
+			return $Form;
+
+		$status = $Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
+
+		$TransactionEntry->update($Request, $status);
+
+		return new RedirectResponse(ManageTransaction::getRequestURL($TransactionEntry->getID()), "Transaction updated successfully. Redirecting...", 5);
+
 	}
 
 	// Static
+
+	public static function getRequestURL($id) {
+		return sprintf(self::FORM_FORMAT, $id);
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -72,7 +128,7 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new static();
+		return new ExecutableRenderer(new static($Request[self::PARAM_ID]), true);
 	}
 
 	/**

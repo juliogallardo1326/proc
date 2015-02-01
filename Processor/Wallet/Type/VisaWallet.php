@@ -7,15 +7,13 @@
  */
 namespace Processor\Wallet\Type;
 
-use Processor\Wallet\Type\AbstractCreditCardWallet;
-
 class VisaWallet extends AbstractCreditCardWallet
 {
 	const TYPE_NAME = 'visa';
 	const TYPE_DESCRIPTION = 'Visa Credit Card';
 
-	function __construct($walletContent = array()) {
-		parent::__construct($walletContent);
+	function __construct() {
+		parent::__construct();
 	}
 }
 

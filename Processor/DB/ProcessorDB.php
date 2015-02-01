@@ -12,11 +12,11 @@ use CPath\Data\Schema\IRepairableSchema;
 use CPath\Data\Schema\IWritableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOTable;
 use PDO;
-use Processor\DB\Schema\Tables\AccountTable;
-use Processor\DB\Schema\Tables\ProductTable;
-use Processor\DB\Schema\Tables\SubscriptionTable;
-use Processor\DB\Schema\Tables\TransactionTable;
-use Processor\DB\Schema\Tables\WalletTable;
+use Processor\Account\DB\AccountTable;
+use Processor\Product\DB\ProductTable;
+use Processor\Subscription\DB\SubscriptionTable;
+use Processor\Transaction\DB\TransactionTable;
+use Processor\Wallet\DB\WalletTable;
 
 class ProcessorDB extends \PDO implements IReadableSchema, IRepairableSchema
 {

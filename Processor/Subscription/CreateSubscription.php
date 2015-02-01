@@ -14,6 +14,7 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
@@ -43,6 +44,8 @@ class CreateSubscription implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
@@ -51,13 +54,18 @@ class CreateSubscription implements IExecutable, IBuildable, IRoutable
 					new RequiredValidation()
 				),
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -70,7 +78,7 @@ class CreateSubscription implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new static();
+		return new ExecutableRenderer(new static());
 	}
 
 	/**

@@ -46,7 +46,7 @@ function trace($msg) {
 }
 
 
-class Exception {
+class Exception123 {
     /* Emulate a Java exception, sort of... */
   var $message;
   function Exception($message) {

@@ -12,22 +12,27 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
+use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use Processor\SiteMap;
+use Processor\Transaction\DB\TransactionTable;
 
 class SearchTransactions implements IExecutable, IBuildable, IRoutable
 {
 	const TITLE = 'Search Transactions';
 
 	const FORM_ACTION = '/transactions';
-	const FORM_ACTION2 = '/query/transactions';
+	const FORM_ACTION2 = '/search/transactions';
 	const FORM_METHOD = 'POST';
-	const FORM_NAME = __CLASS__;
+	const FORM_NAME = 'search-transaction';
+	const CLS_TABLE_TRANSACTION_SEARCH = 'table-transaction-search';
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -35,22 +40,39 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$Table = new TransactionTable();
+		$Query = $Table
+			->select()
+			->limit(50);
+
+		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_TRANSACTION_SEARCH);
+
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				new HTMLButton('submit', 'Submit', 'submit')
-			)
+				new HTMLTable(
+					$TBody
+				),
+				new HTMLButton('submit', 'Search', 'submit')
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -63,7 +85,7 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new static();
+		return new ExecutableRenderer(new static(), true);
 	}
 
 	/**

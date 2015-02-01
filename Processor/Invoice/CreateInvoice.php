@@ -51,13 +51,18 @@ class CreateInvoice implements IExecutable, IBuildable, IRoutable
 					new RequiredValidation()
 				),
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object

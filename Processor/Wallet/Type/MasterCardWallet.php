@@ -7,14 +7,12 @@
  */
 namespace Processor\Wallet\Type;
 
-use Processor\Wallet\Type\AbstractCreditCardWallet;
-
 class MasterCardWallet extends AbstractCreditCardWallet
 {
 	const TYPE_NAME = 'mastercard';
 	const TYPE_DESCRIPTION = 'MasterCard Credit Card';
 
-	function __construct($walletContent = array()) {
-		parent::__construct($walletContent);
+	function __construct() {
+		parent::__construct();
 	}
 }

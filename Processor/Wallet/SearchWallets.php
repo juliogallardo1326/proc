@@ -12,22 +12,26 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
+use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\Wallet\CreateWallet;
 use Processor\SiteMap;
+use Processor\Wallet\DB\WalletTable;
 
 class SearchWallets implements IExecutable, IBuildable, IRoutable
 {
-	const TITLE = 'Wallet Accounts';
+	const TITLE = 'Search Wallets';
 
-	const FORM_ACTION = '/query/wallets';
+	const FORM_ACTION = '/search/wallets';
+	const FORM_ACTION2 = '/wallets';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
+	const CLS_TABLE_WALLET_SEARCH = 'search-wallets';
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -35,15 +39,27 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$Table = new WalletTable();
+		$Query = $Table
+			->select()
+			->limit(50);
+
+		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_WALLET_SEARCH);
+
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				new HTMLButton('submit', 'Submit', 'submit')
+				new HTMLTable(
+					$TBody
+				),
+				new HTMLButton('submit', 'Search', 'submit')
 			)
 		);
 
@@ -51,6 +67,10 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -76,5 +96,6 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__, IRequest::NAVIGATION_ROUTE, "Wallets");
 	}
 }

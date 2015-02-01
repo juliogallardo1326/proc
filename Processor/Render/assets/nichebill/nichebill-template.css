@@ -27,13 +27,13 @@ div.error { background-color: #edd; border-top: 3pt solid #ecc; }
 /** Page Layout **/
 
 section, div.section {
-    /*padding: 3pt 0;*/
-    border: 0;
+    /*margin: 0 0 0 0;*/
+    margin: 0 1px 1px 0;
+    border: 1px solid #CCC;
 
     background-color: #eee;
     overflow: hidden;
 
-    margin: 0 0 0 0;
     padding: 15px;
 }
 
@@ -54,8 +54,6 @@ section, div.section {
 }
 
 .navbar a {
-    display: block;
-    text-decoration: none;
 }
 
 .navbar a:hover {
@@ -71,16 +69,21 @@ section, div.section {
 
 .navbar a {
     /*font-family: 'Courier New' , Monospace;*/
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
     background-color: #DDE;
     border: 1pt solid #335588;
     border-radius: 1em;
-    box-shadow: inset 0 .4em .5em #999;
-    padding: 0.8em;
+    box-shadow: inset 0 .3em .5em #999;
+    padding: 1em 1.5em 1em 1.5em;
     /*font-size: 1.1em;*/
 }
 
 .navbar a:hover {
-    font-weight: bold;
+    font-style: italic;
+    margin-right: 1em;
+    padding: 1em 0.5em 1em 1.5em;
 }
 
 .navbar a + a {

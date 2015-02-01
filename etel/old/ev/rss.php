@@ -22,7 +22,7 @@
 // | 59 Temple Place - Suite 330                                          |
 // | Boston, MA 02111-1307, USA.                                          |
 // +----------------------------------------------------------------------+
-// | Authors: João Prado Maia <jpm@mysql.com>                             |
+// | Authors: Joï¿½o Prado Maia <jpm@mysql.com>                             |
 // +----------------------------------------------------------------------+
 //
 // @(#) $Id: s.rss.php 1.14 03/11/12 16:56:44-00:00 jpradomaia $
@@ -55,11 +55,7 @@ function returnError($msg)
     echo '<?xml version="1.0"?>' . "\n";
 ?>
 <rss version="2.0"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-    xmlns:admin="http://webns.net/mvcb/"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	>
   <channel>
     <title>Error!</title>
     <link><?php echo APP_BASE_URL; ?></link>
@@ -165,11 +161,7 @@ Header("Content-Type: text/xml; charset=" . APP_CHARSET);
 echo '<?xml version="1.0" encoding="'. APP_CHARSET .'"?>' . "\n";
 ?>
 <rss version="2.0"
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-    xmlns:admin="http://webns.net/mvcb/"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	>
   <channel>
     <title><?php echo htmlspecialchars($setup['tool_caption']); ?> - <?php echo htmlspecialchars($filter['cst_title']); ?></title>
     <link><?php echo APP_BASE_URL; ?></link>

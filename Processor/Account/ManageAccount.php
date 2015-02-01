@@ -14,6 +14,7 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
@@ -27,11 +28,23 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 	const TITLE = 'Manage Account';
 
 	const FORM_ACTION = '/a/:id';
+	const FORM_FORMAT = '/a/%s';
 	const FORM_ACTION2 = '/manage/account/:id';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
 
 	const PARAM_ID = 'id';
+
+	private $id;
+
+	public function __construct($accountID) {
+		$this->id = $accountID;
+	}
+
+	private function getAccountID() {
+		return $this->id;
+	}
+
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -44,6 +57,8 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
@@ -52,13 +67,18 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 					new RequiredValidation()
 				),
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL($id) {
+		return sprintf(self::FORM_FORMAT, $id);
+	}
 
 	/**
 	 * Route the request to this class object and return the object
@@ -71,7 +91,7 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new static();
+		return new ExecutableRenderer(new static($Request[self::PARAM_ID]), true);
 	}
 
 	/**

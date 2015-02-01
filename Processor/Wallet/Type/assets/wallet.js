@@ -7,7 +7,7 @@
  */
 (function(){
     var CLS_FIELDSET_WALLET = 'fieldset-wallet';
-    var PARAM_WALLET_TYPE = 'wallet-type';
+    var PARAM_WALLET_ID = 'wallet-id';
 
     var ready = function() {
 
@@ -18,13 +18,14 @@
 
             var Form = jQuery(form);
             Form.on('input', function(e) {
-                var walletType = Form.find('*[name=' + PARAM_WALLET_TYPE + ']').val();
+                var walletType = Form.find('*[name=' + PARAM_WALLET_ID + ']').val();
+                var WalletFieldSets = Form.find('.' + CLS_FIELDSET_WALLET);
                 if(walletType) {
-                    var WalletFieldSets = Form.find('.' + CLS_FIELDSET_WALLET);
-                    var WalletFieldSet = WalletFieldSets.filter('[data-' + PARAM_WALLET_TYPE + '=' + walletType + ']');
-                    WalletFieldSets.not(WalletFieldSet).filter(':enabled').attr('disabled', 'disabled');
+                    var WalletFieldSet = WalletFieldSets.filter('[data-' + PARAM_WALLET_ID + '=' + walletType + ']');
+                    WalletFieldSets = WalletFieldSets.not(WalletFieldSet);
                     WalletFieldSet.filter(':disabled').removeAttr('disabled');
                 }
+                WalletFieldSets.filter(':enabled').attr('disabled', 'disabled');
             }).trigger('input');
 
         });

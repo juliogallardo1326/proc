@@ -25,7 +25,7 @@ class SearchSubscriptions implements IExecutable, IBuildable, IRoutable
 	const TITLE = 'Search Subscriptions';
 
 	const FORM_ACTION = '/subscriptions';
-	const FORM_ACTION2 = '/query/subscriptions';
+	const FORM_ACTION2 = '/search/subscriptions';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
 
@@ -40,17 +40,24 @@ class SearchSubscriptions implements IExecutable, IBuildable, IRoutable
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
 
+//			new HTMLElement('h3', null, self::TITLE),
+
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
 				new HTMLButton('submit', 'Submit', 'submit')
-			)
+			),
+			"<br/>"
 		);
 
 		return $Form;
 	}
 
 	// Static
+
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object
