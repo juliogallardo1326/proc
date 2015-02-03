@@ -64,10 +64,8 @@ class CreateWallet implements IExecutable, IBuildable, IRoutable
 		foreach (AbstractWallet::loadAllWalletTypes() as $WalletType) {
 			$WalletTypes[$WalletType->getTypeName()] = $WalletType;
 			$FieldSet = $WalletType->getFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_WALLET_TYPE, $WalletType->getTypeName(),
-				'disabled', 'disabled'
-			));
+			$FieldSet->setAttribute('data-' . self::PARAM_WALLET_TYPE, $WalletType->getTypeName());
+			$FieldSet->setAttribute('disabled', 'disabled');
 			$WalletForms[] = $FieldSet;
 			$walletOptions[$WalletType->getDescription()] = $WalletType->getTypeName();
 		}

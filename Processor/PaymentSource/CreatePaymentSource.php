@@ -66,10 +66,8 @@ class CreatePaymentSource implements IExecutable, IBuildable, IRoutable
 		foreach (AbstractPaymentSource::loadAllPaymentSourceTypes() as $SourceType) {
 			$SourceTypes[$SourceType->getTypeName()] = $SourceType;
 			$FieldSet = $SourceType->getFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_SOURCE_TYPE, $SourceType->getTypeName(),
-				'disabled', 'disabled'
-			));
+			$FieldSet->setAttribute('data-' . self::PARAM_SOURCE_TYPE, $SourceType->getTypeName());
+			$FieldSet->setAttribute('disabled', 'disabled');
 			$SourceForms[] = $FieldSet;
 			$sourceOptions[$SourceType->getDescription()] = $SourceType->getTypeName();
 		}

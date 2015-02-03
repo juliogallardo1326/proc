@@ -425,9 +425,9 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 
 
 		$FieldSet = new HTMLElement('fieldset', self::CLS_FIELDSET_WALLET . ' fieldset-' . $type,
-			new HTMLHeaderScript(__DIR__ . '/assets/wallet.js'),
+//			new HTMLHeaderScript(__DIR__ . '/assets/wallet.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/wallet.css'),
-			new HTMLHeaderStyleSheet(__DIR__ . '/assets/' . $type . '-wallet.css'),
+//			new HTMLHeaderStyleSheet(__DIR__ . '/assets/' . $type . '-wallet.css'),
 			new HTMLHeaderScript('http://ziplookup.googlecode.com/git/zip-lookup/zip-lookup.js'),
 
 //			new Attributes('disabled', 'disabled'),

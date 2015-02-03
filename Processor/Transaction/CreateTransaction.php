@@ -71,7 +71,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 			$Product = $ProductEntry->getProduct();
 			$FieldSet = $Product->getOrderFieldSet($Request);
 			$key = $ProductEntry->getID();
-			$FieldSet->addAttributes(new Attributes('data-' . self::PARAM_PRODUCT_ID, $key));
+			$FieldSet->setAttribute('data-' . self::PARAM_PRODUCT_ID, $key);
 			$ProductForms[] = $FieldSet;
 		}
 
@@ -86,10 +86,8 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 			$key = $WalletEntry->getID();
 			$WalletTypes[$key] = $Wallet;
 			$FieldSet = $Wallet->getFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_WALLET_ID, $key,
-				'disabled', 'disabled'
-			));
+			$FieldSet->setAttribute('data-' . self::PARAM_WALLET_ID, $key);
+			$FieldSet->setAttribute('disabled', 'disabled');
 			$WalletForms[] = $FieldSet;
 			$walletOptions[$Wallet->getTitle() . ' - ' . $Wallet->getDescription()] = $key;
 		}
@@ -98,10 +96,8 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 			$key = $Wallet->getTypeName();
 			$WalletTypes[$key] = $Wallet;
 			$FieldSet = $Wallet->getFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'data-' . self::PARAM_WALLET_ID, $key,
-				'disabled', 'disabled'
-			));
+			$FieldSet->setAttribute('data-' . self::PARAM_WALLET_ID, $key);
+			$FieldSet->setAttribute('disabled', 'disabled');
 			$WalletForms[] = $FieldSet;
 			$walletOptions['New ' . $Wallet->getDescription()] = $key;
 		}

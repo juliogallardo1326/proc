@@ -36,13 +36,16 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Account\CreateAccount
 			$Map->route('ANY /a/:id', 'Processor\\Account\\CreateAccount') ||
 			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\CreateAccount') ||
+			$Map->route('ANY /create/account/', 'Processor\\Account\\CreateAccount') ||
+			$Map->route('ANY /accounts', 'Processor\\Account\\CreateAccount', 256, 'Accounts') ||
 
 			// @group Processor\Account\ManageAccount
 			$Map->route('ANY /a/:id', 'Processor\\Account\\ManageAccount') ||
 			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount') ||
+			$Map->route('ANY /account/:id', 'Processor\\Account\\ManageAccount') ||
 
 			// @group Processor\Account\SearchAccounts
-			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
+			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts', 256, 'Accounts') ||
 			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts') ||
 
 			// @group Processor\Applications\MerchantApplication

@@ -39,7 +39,7 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 	const FORM_NAME = 'manage-wallet';
 
 	const PARAM_ID = 'id';
-	const PARAM_WALLET_EMAIL = 'wallet-email';
+//	const PARAM_WALLET_EMAIL = 'wallet-email';
 	const PARAM_WALLET_STATUS = 'wallet-status';
 	const PARAM_SUBMIT = 'submit';
 
@@ -62,14 +62,14 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 		$WalletEntry = WalletEntry::get($this->id);
 		$Wallet = $WalletEntry->getWallet();
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
-			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
+			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE . ': ' . $Wallet->getTitle()),
 //			new HTMLHeaderScript(__DIR__ . '\assets\wallet.js'),
 //			new HTMLHeaderStyleSheet(__DIR__ . '\assets\wallet.css'),
 
 //			new HTMLElement('h3', null, self::TITLE),
 
 			new HTMLElement('fieldset',
-				new HTMLElement('legend', 'legend-submit', self::TITLE),
+				new HTMLElement('legend', 'legend-submit', self::TITLE . ': ' . $Wallet->getTitle()),
 
 				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
 
@@ -79,12 +79,12 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 					)
 				),
 
-				"<br/><br/>",
-				new HTMLElement('label', null, "Wallet email<br/>",
-					new HTMLInputField(self::PARAM_WALLET_EMAIL, $WalletEntry->getEmail(),
-						new Attributes('disabled', 'disabled')
-					)
-				),
+//				"<br/><br/>",
+//				new HTMLElement('label', null, "Wallet email<br/>",
+//					new HTMLInputField(self::PARAM_WALLET_EMAIL, $WalletEntry->getEmail(),
+//						new Attributes('disabled', 'disabled')
+//					)
+//				),
 
 				"<br/><br/>",
 				$Wallet->getFieldSet($Request),

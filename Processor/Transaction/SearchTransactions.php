@@ -27,6 +27,8 @@ use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use Processor\PaymentSource\DB\PaymentSourceEntry;
+use Processor\PaymentSource\DB\PaymentSourceTable;
+use Processor\PaymentSource\Sources\AbstractPaymentSource;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
 use Processor\Transaction\DB\TransactionTable;
@@ -71,15 +73,58 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 
 
 		$StatsQuery = $Table
-			->select(TransactionTable::COLUMN_AMOUNT, 'total', 'SUM(%s)')
-
-			->select(TransactionTable::COLUMN_PAYMENT_SOURCE_ID, "Currency")
+			->select(TransactionTable::COLUMN_PAYMENT_SOURCE_ID, PaymentSourceTable::COLUMN_SOURCE,
+				"(Select " . PaymentSourceTable::COLUMN_SOURCE
+				. " FROM " . PaymentSourceTable::TABLE_NAME
+				. " WHERE " . PaymentSourceTable::COLUMN_ID . '=' . TransactionTable::COLUMN_PAYMENT_SOURCE_ID
+				. ")")
 			->select(TransactionTable::COLUMN_PRODUCT_ID, "Product")
+			->select(TransactionTable::COLUMN_STATUS, 'approves', 'SUM(%s = ' . TransactionEntry::STATUS_APPROVED . ')')
+			->select(TransactionTable::COLUMN_STATUS, 'approve_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_APPROVED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+
+			->select(TransactionTable::COLUMN_STATUS, 'pending', 'SUM(%s = ' . TransactionEntry::STATUS_PENDING . ')')
+			->select(TransactionTable::COLUMN_STATUS, 'pending_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_PENDING . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+
+			->select(TransactionTable::COLUMN_STATUS, 'declines', 'SUM(%s = ' . TransactionEntry::STATUS_DECLINED . ')')
+			->select(TransactionTable::COLUMN_STATUS, 'decline_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_DECLINED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+
+			->select(TransactionTable::COLUMN_STATUS, 'refunds', 'SUM(%s = ' . TransactionEntry::STATUS_REFUNDED . ')')
+			->select(TransactionTable::COLUMN_STATUS, 'refund_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_REFUNDED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+
+			->select(TransactionTable::COLUMN_STATUS, 'chargebacks', 'SUM(%s = ' . TransactionEntry::STATUS_CHARGE_BACK . ')')
+			->select(TransactionTable::COLUMN_STATUS, 'chargeback_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_CHARGE_BACK . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+
+			->select(TransactionTable::COLUMN_AMOUNT, 'count', 'COUNT(%s)')
+			->select(TransactionTable::COLUMN_AMOUNT, 'total', 'SUM(%s)')
 
 			->groupBy(TransactionTable::COLUMN_PAYMENT_SOURCE_ID . ', ' . TransactionTable::COLUMN_PRODUCT_ID)
 			->limit(50)
 			->addRowCallback(function(&$row) {
-				$row['omg'] = 'wut';
+				/** @var AbstractPaymentSource $Source */
+				$Source = unserialize($row[PaymentSourceTable::COLUMN_SOURCE]);
+				unset($row[PaymentSourceTable::COLUMN_SOURCE]);
+				$row['total'] = $row['total'] . ' ' . $Source->getCurrency() . ' (' . $row['count'] . ')';
+				unset($row['count']);
+
+				if($row['approves'])
+					$row['approves'] = '(' . $row['approves'] . ') <span class="total">' . $row['approve_total'] . '</span> ' . $Source->getCurrency();
+				unset($row['approve_total']);
+
+				if($row['pending'])
+					$row['pending'] = '(' . $row['pending'] . ') <span class="total">' . $row['pending_total'] . '</span> ' . $Source->getCurrency();
+				unset($row['pending_total']);
+
+				if($row['declines'])
+					$row['declines'] = '(' . $row['declines'] . ') <span class="total">' . $row['decline_total'] . '</span> ' . $Source->getCurrency();
+				unset($row['decline_total']);
+
+				if($row['refunds'])
+					$row['refunds'] = '(' . $row['refunds'] . ') <span class="total">' . $row['refund_total'] . '</span> ' . $Source->getCurrency();
+				unset($row['refund_total']);
+
+				if($row['chargebacks'])
+					$row['chargebacks'] = '(' . $row['chargebacks'] . ') <span class="total">' . $row['chargeback_total'] . '</span> ' . $Source->getCurrency();
+				unset($row['chargeback_total']);
 			});
 
 		$StatsTBody = new HTMLSequenceTableBody($StatsQuery, self::CLS_TABLE_TRANSACTION_SEARCH);
@@ -127,7 +172,7 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 		        'Product' => TransactionTable::COLUMN_PRODUCT_ID,
 		        'Source' => TransactionTable::COLUMN_PAYMENT_SOURCE_ID,
 		        'Status' => TransactionTable::COLUMN_STATUS,
-		        'Date' => TransactionTable::COLUMN_CREATED,
+//		        'Date' => TransactionTable::COLUMN_CREATED,
 			) as $desc => $column) {
 			$OptionsFieldSet->addContent(
 				new HTMLElement('fieldset', 'fieldset-filter fieldset-filter-' . $column,
@@ -147,11 +192,15 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 				)
 			);
 
-			if(!empty($Request['filter-' . $column]))
+			if(!empty($Request['filter-' . $column])) {
 				$SearchQuery->where($column, $Request['filter-' . $column]);
+				$StatsQuery->where($column, $Request['filter-' . $column]);
+			}
 
-			if(!empty($Request['sort-' . $column]))
+			if(!empty($Request['sort-' . $column])) {
 				$SearchQuery->orderBy($column,  $Request['sort-' . $column]);
+//				$StatsQuery->orderBy($column, $Request['sort-' . $column]);
+			}
 		}
 
 

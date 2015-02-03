@@ -12,28 +12,40 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
+use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Header\HTMLHeaderScript;
+use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
+use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
+use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\PaymentSource\DB\PaymentSourceTable;
+use Processor\Account\DB\AccountEntry;
 use Processor\SiteMap;
 
 class ManageAccount implements IExecutable, IBuildable, IRoutable
 {
 	const TITLE = 'Manage Account';
 
-	const FORM_ACTION = '/a/:id';
 	const FORM_FORMAT = '/a/%s';
-	const FORM_ACTION2 = '/manage/account/:id';
+	const FORM_ACTION = '/a/:id';
+	const FORM_ACTION2 = '/account/:id';
+	const FORM_ACTION3 = '/manage/account/:id';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
 
+	const PARAM_ACCOUNT_TYPE = 'account-type';
+	const PARAM_ACCOUNT_STATUS = 'account-status';
 	const PARAM_ID = 'id';
+	const PARAM_SUBMIT = 'submit';
+	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 
 	private $id;
 
@@ -45,33 +57,72 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 		return $this->id;
 	}
 
-
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$AccountEntry = AccountEntry::get($this->id);
+		$Account = $AccountEntry->getAccount();
+
+		$sourceOptions = array("Choose a Payment Account" => null);
+		$PaymentSourceTable = new PaymentSourceTable();
+		foreach($PaymentSourceTable->fetchAll(1) as $PaymentSourceEntry) {
+			$PaymentSource = $PaymentSourceEntry->getPaymentSource();
+			$sourceOptions[$PaymentSource->getTitle()] = $PaymentSourceEntry->getID();
+		}
+
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
-//			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
-//			new HTMLHeaderStyleSheet(__DIR__ . '\assets\form-login.css'),
+			new HTMLHeaderScript(__DIR__ . '/assets/account.js'),
+			new HTMLHeaderStyleSheet(__DIR__ . '/assets/account.css'),
 
 //			new HTMLElement('h3', null, self::TITLE),
 
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				"Account ID:<br/>",
-				new HTMLInputField(self::PARAM_ID,
-					new RequiredValidation()
+				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
+				new HTMLInputField(self::PARAM_ACCOUNT_TYPE, $Account->getTypeName(), 'hidden'),
+
+				new HTMLElement('label', null, "Status<br/>",
+					$SelectStatus = new HTMLSelectField(self::PARAM_ACCOUNT_STATUS, AccountEntry::$StatusOptions,
+						new RequiredValidation()
+					)
 				),
-				new HTMLButton('submit', 'Submit', 'submit')
+
+				"<br/><br/>",
+				$Account->getFieldSet($Request),
+
+				"<br/><br/>",
+				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update'),
+				new HTMLButton(self::PARAM_SUBMIT, 'Delete', 'delete')
 			),
 			"<br/>"
 		);
 
-		return $Form;
+		$SelectStatus->setInputValue($AccountEntry->getStatus());
+
+		if(!$Request instanceof IFormRequest)
+			return $Form;
+
+		$submit = $Request[self::PARAM_SUBMIT];
+		$sourceID = $Request[self::PARAM_PAYMENT_SOURCE_TYPE];
+
+		switch($submit) {
+			case 'update':
+				$status = $Request[self::PARAM_ACCOUNT_STATUS];
+				$Account->validateRequest($Request, $Form);
+				$AccountEntry->update($Request, $Account, $sourceID, $status);
+				return new RedirectResponse(ManageAccount::getRequestURL($this->getAccountID()), "Account updated successfully. Redirecting...", 5);
+
+			case 'delete':
+				AccountEntry::delete($Request, $this->getAccountID());
+				return new RedirectResponse(CreateAccount::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
+		}
+
+		throw new \InvalidArgumentException($submit);
 	}
 
 	// Static
@@ -105,5 +156,6 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__);
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION3, __CLASS__);
 	}
 }

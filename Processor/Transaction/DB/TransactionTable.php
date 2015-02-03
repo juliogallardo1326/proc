@@ -37,7 +37,7 @@ class TransactionTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_STATUS = 'status';
 	/**
 
-	 * @column DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 * @column INT
 	 * @select
 	 * @insert
 	 */

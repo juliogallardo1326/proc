@@ -12,6 +12,7 @@ use CPath\Data\Schema\PDO\PDOTableClassWriter;
 use CPath\Data\Schema\PDO\PDOTableWriter;
 use CPath\Data\Schema\TableSchema;
 use CPath\Request\IRequest;
+use Processor\Account\Types\AbstractAccountType;
 use Processor\DB\ProcessorDB;
 
 
@@ -21,6 +22,14 @@ use Processor\DB\ProcessorDB;
  */
 class AccountEntry implements IBuildable
 {
+	const STATUS_ACTIVE = 0x01;
+	const STATUS_INACTIVE = 0x02;
+
+	static $StatusOptions = array(
+		"Active" => self::STATUS_ACTIVE,
+		"Inactive" => self::STATUS_INACTIVE,
+	);
+
 	/**
 	 * @column VARCHAR(64) PRIMARY KEY
 	 * @select
@@ -39,14 +48,22 @@ class AccountEntry implements IBuildable
 	 * @select
 	 * @insert
 	 */
-	protected $email;
+//	protected $email;
 
 	/**
 	 * @column VARCHAR(64)
 	 * @select
 	 * @update
 	 */
-	protected $password;
+//	protected $password;
+
+	/**
+	 * @column TEXT
+	 * @select
+	 * @insert
+	 * @update
+	 */
+	protected $account;
 
 	/**
 	 * @column VARCHAR(64)
@@ -65,30 +82,40 @@ class AccountEntry implements IBuildable
 		return $this->status & $flags;
 	}
 
-//	function update($Request, AbstractPaymentSource $PaymentSource, $status=null) {
-//		$update = array(
-//			PaymentSourceTable::COLUMN_SOURCE => serialize($PaymentSource),
-//		);
-//		$status === null ?: $update[PaymentSourceTable::COLUMN_STATUS] = $status;
-//		$update = self::table()->update($update)
-//			->where(PaymentSourceTable::COLUMN_ID, $this->id)
-//			->execute($Request);
-//		if(!$update)
-//			throw new \InvalidArgumentException("Could not update " . __CLASS__);
-//	}
+	public function getStatusText() {
+		return array_search($this->getStatus(), self::$StatusOptions);
+	}
+
+	/**
+	 * @return AbstractAccountType
+	 */
+	public function getAccount() {
+		if(is_string($this->account))
+			$this->account = unserialize($this->account);
+		return $this->account;
+	}
+
+	public function update($Request, AbstractAccountType $Account, $status) {
+		$update = array(
+			AccountTable::COLUMN_ACCOUNT => serialize($Account),
+		);
+		$status === null ?: $update[AccountTable::COLUMN_STATUS] = $status;
+		$update = self::table()->update($update)
+			->where(AccountTable::COLUMN_ID, $this->getID())
+			->execute($Request);
+		if(!$update)
+			throw new \InvalidArgumentException("Could not update " . __CLASS__);
+	}
 
 	// Static
 
-	static function create(IRequest $Request, $email, $password) {
+	static function create(IRequest $Request, AbstractAccountType $Account) {
 		$id = uniqid('account-');
-		$salt = uniqid('salt-');
 
 		$inserted = self::table()->insert(array(
 			AccountTable::COLUMN_ID => $id,
-			AccountTable::COLUMN_EMAIL => $email,
-			AccountTable::COLUMN_PASSWORD => crypt($password, $salt),
-			AccountTable::COLUMN_PASSWORD_SALT => $salt,
 			AccountTable::COLUMN_STATUS => 0,
+			AccountTable::COLUMN_ACCOUNT => serialize($Account),
 		))
 			->execute($Request);
 
@@ -149,4 +176,5 @@ class AccountEntry implements IBuildable
 		$DBWriter = new PDOTableWriter($DB);
 		$Schema->writeSchema($DBWriter);
 	}
+
 }

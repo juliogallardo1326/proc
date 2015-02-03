@@ -59,7 +59,8 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 			),
 			$Content = new HTMLElement('section', 'content'
 			),
-			$Footer = new HTMLElement('section', 'footer'
+			$Footer = new HTMLElement('section', 'footer',
+				new HTMLElement('div', 'logos')
 			)
 		);
 
@@ -166,6 +167,11 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 			case 'created':
 				if($value)
 					echo DateUtil::ago($value) . ' ago';
+				return true;
+
+			case 'amount':
+				if($value)
+					echo "<span class='amount'>", $value, "</span>";
 				return true;
 
 			case 'status':

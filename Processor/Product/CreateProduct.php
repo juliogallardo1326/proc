@@ -76,9 +76,7 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 		foreach (Types\AbstractProductType::loadAllProductTypes() as $ProductType) {
 			$ProductTypes[$ProductType->getTypeName()] = $ProductType;
 			$FieldSet = $ProductType->getConfigFieldSet($Request);
-			$FieldSet->addAttributes(new Attributes(
-				'disabled', 'disabled'
-			));
+			$FieldSet->setAttribute('disabled', 'disabled');
 			$ProductForms[] = $FieldSet;
 			$productOptions[$ProductType->getTypeDescription()] = $ProductType->getTypeName();
 		}

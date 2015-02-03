@@ -56,7 +56,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 	protected $status;
 
 	/**
-	 * @column DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+	 * @column INT
 	 * @select
 	 * @insert
 	 */
@@ -115,7 +115,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 		return (int)$this->status;
 	}
 
-	public function getCreatedDate() {
+	public function getCreatedTimestamp() {
 		return $this->created;
 	}
 
@@ -239,7 +239,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 		$Map->map('transaction-id', $this->getID());
 		$Map->map('wallet-id', $this->wallet_id);
 		$Map->map('product-id', $this->product_id); // , $Product->getTitle());
-		$Map->map('created', $this->getCreatedDate());
+		$Map->map('created', $this->getCreatedTimestamp());
 		$Map->map('status', $this->getStatusText());
 		$Map->map('amount', $this->amount);
 		$Map->map('email', $Invoice->getWallet()->getEmail());

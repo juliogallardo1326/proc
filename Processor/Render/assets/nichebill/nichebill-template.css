@@ -94,21 +94,28 @@ section, div.section {
 }
 
 .footer {
-    background: url("img/footer.jpg") no-repeat right;
     height: 35px;
-    background-color: #eee;
     clear:both;
     min-height: 20pt;
     padding: 1pt;
 
 }
-.footer.fixed {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
 
+.footer div.logos {
+    float:right;
+    margin:5px;
+    background: #eee url("img/footer.jpg") no-repeat;
+    width: 114px;
+    height: 28px;
 }
+
+/*.footer.fixed {*/
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+
+/*}*/
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
