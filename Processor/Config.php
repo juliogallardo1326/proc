@@ -8,6 +8,7 @@
 namespace Processor;
 
 define('CONFIG_CONTENT_PATH', dirname(__DIR__));
+
 class Config {
     static $ProfileSalt = 'QtbeMAJCJlGtZZaJlGbeS6mVGUw';
     static $ContentPath = CONFIG_CONTENT_PATH;
@@ -20,6 +21,7 @@ class Config {
 	);
 //	public static $TemplateClass = 'Processor\\Render\\DefaultTemplate';
 	public static $TemplateClass = 'Processor\\Render\\NicheBillTemplate';
+	public static $OrderPageTemplateClass = 'Processor\\Render\\BlankTemplate';
 //	public static $TemplateClass = 'Processor\\Render\\EtelegateTemplate';
 
 

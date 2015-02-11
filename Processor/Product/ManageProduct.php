@@ -13,6 +13,7 @@ use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
+use CPath\Render\HTML\Element\HTMLAnchor;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
@@ -29,6 +30,7 @@ use CPath\Route\RouteBuilder;
 use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\Product\DB\ProductEntry;
 use Processor\SiteMap;
+use Processor\OrderForm\OrderForm;
 
 class ManageProduct implements IExecutable, IBuildable, IRoutable
 {
@@ -57,7 +59,6 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 		return $this->id;
 	}
 
-
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
@@ -79,8 +80,13 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderScript(__DIR__ . '/assets/product.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/product.css'),
 
-//			new HTMLElement('h3', null, self::TITLE),
 
+			new HTMLElement('fieldset',
+				new HTMLElement('legend', 'legend-order-page', "Try Order Page"),
+
+				new HTMLAnchor(OrderForm::getRequestURL($this->getProductID()), "Order Page")
+			),
+			
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
@@ -128,7 +134,7 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 
 			case 'delete':
 				ProductEntry::delete($Request, $this->getProductID());
-				return new RedirectResponse(CreateProduct::getRequestURL(), "Product deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(SearchProducts::getRequestURL(), "Product deleted successfully. Redirecting...", 5);
 		}
 
 		throw new \InvalidArgumentException($submit);

@@ -26,6 +26,7 @@ class WalletEntry implements IBuildable, IKeyMap
 {
 	const STATUS_INACTIVE = 0x00;
 	const STATUS_ACTIVE = 0x01;
+	const ID_PREFIX = 'W';
 
 	static $StatusOptions = array(
 		"Active" => self::STATUS_ACTIVE,
@@ -135,7 +136,7 @@ class WalletEntry implements IBuildable, IKeyMap
 	// Static
 
 	static function create(IRequest $Request, AbstractWallet $Wallet, $status=null) {
-		$id = uniqid('wallet-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$status !== null ?: $status = self::STATUS_ACTIVE;
 		$inserted = self::table()->insert(array(

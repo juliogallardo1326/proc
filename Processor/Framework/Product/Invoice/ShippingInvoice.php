@@ -7,8 +7,6 @@
  */
 namespace Processor\Framework\Product\Invoice;
 
-use Processor\Invoice\Types\AbstractInvoice;
-
 
 class ShippingInvoiceItem {
 

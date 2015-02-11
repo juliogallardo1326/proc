@@ -8,7 +8,6 @@
 namespace Processor\Transaction\DB;
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Data\Date\DateUtil;
 use CPath\Data\Map\IKeyMap;
 use CPath\Data\Map\IKeyMapper;
 use CPath\Data\Schema\PDO\PDOTableClassWriter;
@@ -32,6 +31,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 
 	const STATUS_REFUNDED = 0x10;
 	const STATUS_CHARGE_BACK = 0x20;
+	const ID_PREFIX = 'T';
 
 	static $StatusOptions = array(
 		"Pending"      => self::STATUS_PENDING,
@@ -163,7 +163,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 	// Static
 
 	static function create(IRequest $Request, AbstractInvoice $Invoice, $status, $wallet_id, $product_id, $source_id) {
-		$id = uniqid('trans-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$amount = $Invoice->getProduct()->getTotalCost();
 
@@ -182,6 +182,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 		if(!$inserted)
 			throw new \InvalidArgumentException("Could not insert " . __CLASS__);
 		$Request->log("New Transaction Entry Inserted: " . $id, $Request::VERBOSE);
+
 		return $id;
 	}
 

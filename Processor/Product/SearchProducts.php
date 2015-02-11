@@ -20,6 +20,7 @@ use CPath\Request\IRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Product\DB\ProductEntry;
 use Processor\Product\DB\ProductTable;
 use Processor\SiteMap;
 

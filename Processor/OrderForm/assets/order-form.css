@@ -1,0 +1,23 @@
+fieldset.fieldset-payment-source {
+    display: inline-block;
+}
+
+fieldset.fieldset-transaction-details,
+fieldset.fieldset-choose-wallet,
+fieldset.fieldset-product {
+    display: inline-block;
+}
+
+form[name=form-order-page] fieldset.fieldset-wallet[disabled] {
+    display: none;
+}
+
+form[name=form-order-page] fieldset {
+    display: inline-block;
+    background-color: #E5E5E5;
+}
+
+form[name=form-order-page] fieldset fieldset {
+    display: inline-block;
+    background-color: #EEE;
+}

@@ -14,7 +14,6 @@ use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
-use CPath\Render\Text\IRenderText;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
 use Processor\Account\Exceptions\InvalidAccountPassword;
@@ -26,13 +25,21 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 	const PARAM_ACCOUNT_NAME = 'account-name';
 	const PARAM_ACCOUNT_PASSWORD = 'account-password';
 
+	public $email;
 	public $name;
 	public $pass;
 
 	/**
+	 * Get Account Name
 	 * @return String
 	 */
 	function getAccountName() { return $this->name; }
+
+	/**
+	 * Get Account Email
+	 * @return String
+	 */
+	function getAccountEmail() { return $this->email; }
 
 	abstract function getTypeName();
 
@@ -50,9 +57,17 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 		return new HTMLElement('fieldset', self::CLS_FIELDSET_ACCOUNT,
 			new Attributes('data-' . static::PARAM_ACCOUNT_TYPE, $this->getTypeName()),
 
-			new HTMLElement('legend', 'legend-shipping', "Create new " . ucfirst($this->getTypeName()) . " Account"),
+			new HTMLElement('legend', 'legend-shipping', ucfirst($this->getTypeName()) . " Account"),
 
-			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_NAME, "Username<br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_NAME, "Email<br/>",
+				new HTMLInputField(self::PARAM_ACCOUNT_NAME, $this->email,
+					new Attributes('placeholder', '"my@email.com"'),
+					new RequiredValidation()
+				)
+			),
+
+			"<br/><br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_NAME, "Name<br/>",
 				new HTMLInputField(self::PARAM_ACCOUNT_NAME, $this->name,
 					new Attributes('placeholder', '"myuser"'),
 					new RequiredValidation()
@@ -129,7 +144,8 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 	 * @return void
 	 */
 	function mapKeys(IKeyMapper $Map) {
-		$Map->map('title', $this->getAccountName());
+		$Map->map('name', $this->getAccountName());
+		$Map->map('type', $this->getTypeName());
 	}
 
 	// Static
@@ -142,6 +158,7 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 			new MerchantAccount(),
 			new ResellerAccount(),
 			new AdministratorAccount(),
+			new ProcessorAccount(),
 		);
 	}
 }

@@ -1,3 +1,14 @@
+/** Page **/
+
+section.centered form {
+    text-align: center;
+}
+
+section.centered form * {
+    text-align: left;
+}
+
+
 /** Form **/
 
 form {

@@ -8,6 +8,8 @@
 namespace Processor\Account\DB;
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
+use CPath\Data\Map\IKeyMap;
+use CPath\Data\Map\IKeyMapper;
 use CPath\Data\Schema\PDO\PDOTableClassWriter;
 use CPath\Data\Schema\PDO\PDOTableWriter;
 use CPath\Data\Schema\TableSchema;
@@ -20,10 +22,11 @@ use Processor\DB\ProcessorDB;
  * Class AccountEntry
  * @table account
  */
-class AccountEntry implements IBuildable
+class AccountEntry implements IBuildable, IKeyMap
 {
 	const STATUS_ACTIVE = 0x01;
 	const STATUS_INACTIVE = 0x02;
+	const ID_PREFIX = 'A';
 
 	static $StatusOptions = array(
 		"Active" => self::STATUS_ACTIVE,
@@ -42,6 +45,13 @@ class AccountEntry implements IBuildable
 	 * @insert
 	 */
 	protected $status;
+
+	/**
+	 * @column INT
+	 * @select
+	 * @insert
+	 */
+	protected $created;
 
 	/**
 	 * @column VARCHAR(64)
@@ -68,7 +78,7 @@ class AccountEntry implements IBuildable
 	/**
 	 * @column VARCHAR(64)
 	 */
-	protected $password_salt;
+//	protected $password_salt;
 
 	public function getID() {
 		return $this->id;
@@ -84,6 +94,10 @@ class AccountEntry implements IBuildable
 
 	public function getStatusText() {
 		return array_search($this->getStatus(), self::$StatusOptions);
+	}
+
+	public function getCreatedTimestamp() {
+		return $this->created;
 	}
 
 	/**
@@ -107,14 +121,29 @@ class AccountEntry implements IBuildable
 			throw new \InvalidArgumentException("Could not update " . __CLASS__);
 	}
 
+	/**
+	 * Map data to the key map
+	 * @param IKeyMapper $Map the map inst to add data to
+	 * @internal param \CPath\Request\IRequest $Request
+	 * @internal param \CPath\Request\IRequest $Request
+	 * @return void
+	 */
+	function mapKeys(IKeyMapper $Map) {
+		$Map->map('account-id', $this->getID());
+		$this->getAccount()->mapKeys($Map);
+		$Map->map('created', $this->getCreatedTimestamp());
+		$Map->map('status', $this->getStatus(), $this->getStatusText());
+	}
+
 	// Static
 
 	static function create(IRequest $Request, AbstractAccountType $Account) {
-		$id = uniqid('account-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$inserted = self::table()->insert(array(
 			AccountTable::COLUMN_ID => $id,
 			AccountTable::COLUMN_STATUS => 0,
+			AccountTable::COLUMN_CREATED => time(),
 			AccountTable::COLUMN_ACCOUNT => serialize($Account),
 		))
 			->execute($Request);
@@ -176,5 +205,4 @@ class AccountEntry implements IBuildable
 		$DBWriter = new PDOTableWriter($DB);
 		$Schema->writeSchema($DBWriter);
 	}
-
 }

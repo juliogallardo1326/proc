@@ -9,7 +9,6 @@ namespace Processor\Product;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
@@ -28,8 +27,8 @@ use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use Processor\PaymentSource\DB\PaymentSourceTable;
-use Processor\Product\Types\AbstractProductType;
 use Processor\Product\DB\ProductEntry;
+use Processor\Product\Types\AbstractProductType;
 use Processor\SiteMap;
 
 

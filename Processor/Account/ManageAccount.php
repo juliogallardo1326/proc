@@ -26,8 +26,8 @@ use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\Account\DB\AccountEntry;
+use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\SiteMap;
 
 class ManageAccount implements IExecutable, IBuildable, IRoutable
@@ -45,7 +45,6 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 	const PARAM_ACCOUNT_STATUS = 'account-status';
 	const PARAM_ID = 'id';
 	const PARAM_SUBMIT = 'submit';
-	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 
 	private $id;
 
@@ -78,8 +77,6 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderScript(__DIR__ . '/assets/account.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/account.css'),
 
-//			new HTMLElement('h3', null, self::TITLE),
-
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
@@ -108,18 +105,17 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 			return $Form;
 
 		$submit = $Request[self::PARAM_SUBMIT];
-		$sourceID = $Request[self::PARAM_PAYMENT_SOURCE_TYPE];
 
 		switch($submit) {
 			case 'update':
 				$status = $Request[self::PARAM_ACCOUNT_STATUS];
 				$Account->validateRequest($Request, $Form);
-				$AccountEntry->update($Request, $Account, $sourceID, $status);
+				$AccountEntry->update($Request, $Account, $status);
 				return new RedirectResponse(ManageAccount::getRequestURL($this->getAccountID()), "Account updated successfully. Redirecting...", 5);
 
 			case 'delete':
 				AccountEntry::delete($Request, $this->getAccountID());
-				return new RedirectResponse(CreateAccount::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(SearchAccounts::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
 		}
 
 		throw new \InvalidArgumentException($submit);

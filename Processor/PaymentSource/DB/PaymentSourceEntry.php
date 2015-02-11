@@ -26,6 +26,7 @@ class PaymentSourceEntry implements IBuildable, IKeyMap
 {
 	const STATUS_ACTIVE = 0x01;
 	const STATUS_INACTIVE = 0x02;
+	const ID_PREFIX = 'PS';
 
 	static $StatusOptions = array(
 		"Active" => self::STATUS_ACTIVE,
@@ -94,7 +95,7 @@ class PaymentSourceEntry implements IBuildable, IKeyMap
 	// Static
 
 	static function create(IRequest $Request, AbstractPaymentSource $PaymentSource, $status=0) {
-		$id = uniqid('psource-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$inserted = self::table()->insert(array(
 			PaymentSourceTable::COLUMN_ID => $id,

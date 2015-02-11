@@ -9,7 +9,6 @@ namespace Processor\Account;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
@@ -118,8 +117,8 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 	// Static
 
 	public static function getRequestURL() {
-	return self::FORM_ACTION;
-}
+		return self::FORM_ACTION;
+	}
 
 	/**
 	 * Route the request to this class object and return the object

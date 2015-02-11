@@ -16,8 +16,6 @@ use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLMetaTag;
-use CPath\Render\HTML\HTMLMapRenderer;
-use CPath\Render\Map\MapRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;

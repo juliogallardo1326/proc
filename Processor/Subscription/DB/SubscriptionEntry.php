@@ -22,6 +22,7 @@ use Processor\DB\Schema\AbstractSubscription;
  */
 class SubscriptionEntry implements IBuildable
 {
+	const ID_PREFIX = 'S';
 	/**
 	 * @column VARCHAR(64) PRIMARY KEY
 	 * @select
@@ -65,7 +66,7 @@ class SubscriptionEntry implements IBuildable
 	// Static
 
 	static function create(IRequest $Request, AbstractSubscription $Subscription, $wallet_id) {
-		$id = uniqid('subscription-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$inserted = self::table()->insert(array(
 			SubscriptionTable::COLUMN_ID => $id,

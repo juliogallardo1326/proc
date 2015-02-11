@@ -5,7 +5,7 @@
  * Date: 1/27/2015
  * Time: 1:56 PM
  */
-namespace Processor\Transaction;
+namespace Processor\OrderForm;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
@@ -13,10 +13,10 @@ use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
-use CPath\Render\HTML\Element\HTMLLabel;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\HTML\HTMLResponseBody;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
@@ -30,48 +30,49 @@ use CPath\Route\RouteBuilder;
 use Processor\Product\DB\ProductEntry;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
+use Processor\Transaction\ManageTransaction;
 use Processor\Wallet\DB\WalletEntry;
 use Processor\Wallet\Type\AbstractWallet;
 
-
-class CreateTransaction implements IExecutable, IBuildable, IRoutable
+class OrderForm implements IExecutable, IBuildable, IRoutable
 {
-	const TITLE = 'Create a new Transaction';
+	const TITLE = 'Order Form';
 
-	const FORM_ACTION = '/create/transaction/';
-	const FORM_ACTION2 = '/transactions';
+	const FORM_FORMAT = '/order/%s';
+	const FORM_ACTION = '/order/:id';
 	const FORM_METHOD = 'POST';
-	const FORM_NAME = 'create-transaction';
+	const FORM_NAME = 'form-order-page';
 
+	const PARAM_PRODUCT_ID = 'id';
+	const PARAM_SUBMIT = 'submit';
+	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 	const PARAM_WALLET_ID = 'wallet-id';
-	const PARAM_PRODUCT_ID = 'product-id';
-	const PARAM_TRANSACTION_STATUS = 'transaction-status';
-//	const PARAM_TRANSACTION_EMAIL = 'transaction-email';
+
+	private $id;
+
+	public function __construct($productID) {
+		$this->id = $productID;
+	}
+
+	private function getProductID() {
+		return $this->id;
+	}
+
 
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
+	 * @throws \CPath\Request\Validation\Exceptions\ValidationException
 	 * @throws \Exception
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$ProductEntry = ProductEntry::get($this->id);
+		$Product = $ProductEntry->getProduct();
+
 		$SessionRequest = $Request;
 		if (!$SessionRequest instanceof ISessionRequest)
 			throw new \Exception("Session required");
-
-		$ProductForms = array();
-
-		$Products = ProductEntry::loadSessionProducts($SessionRequest);
-		$productOptions = array('Choose a Product' => null);
-		foreach($Products as $ProductEntry) {
-			$Product = $ProductEntry->getProduct();
-			$productOptions[$Product->getTotalCost() . ' - ' . $Product->getProductTitle()] = $ProductEntry->getID();
-			$Product = $ProductEntry->getProduct();
-			$FieldSet = $Product->getOrderFieldSet($Request);
-			$key = $ProductEntry->getID();
-			$FieldSet->setAttribute('data-' . self::PARAM_PRODUCT_ID, $key);
-			$ProductForms[] = $FieldSet;
-		}
 
 		$walletOptions = array('Choose a Wallet' => null);
 		$WalletForms = array();
@@ -103,47 +104,19 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 //		$walletTypes = Config::$AvailableWalletTypes;
 		$Form = new HTMLForm(self::FORM_METHOD, self::FORM_ACTION, self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
-			new HTMLHeaderScript(__DIR__ . '/assets/create-transaction.js'),
-			new HTMLHeaderStyleSheet(__DIR__ . '/assets/create-transaction.css'),
+			new HTMLHeaderScript(__DIR__ . '/assets/order-form.js'),
+			new HTMLHeaderStyleSheet(__DIR__ . '/assets/order-form.css'),
 
 ////			new HTMLElement('h3', null, self::TITLE),
 
-			new HTMLElement('fieldset', 'fieldset-create-transaction',
-				new HTMLElement('legend', 'legend-wallet', self::TITLE),
-
-				new HTMLElement('fieldset', 'fieldset-transaction',
-					new HTMLElement('legend', 'legend-transaction', 'Transaction Details'),
-
-					new HTMLElement('label', null, "Status<br/>",
-						new HTMLSelectField(self::PARAM_TRANSACTION_STATUS, TransactionEntry::$StatusOptions,
-							new RequiredValidation()
-						)
-					),
-
-//					"<br/><br/>",
-//					new HTMLElement('label', null, "Customer Email Address<br/>",
-//						new HTMLInputField(self::PARAM_TRANSACTION_EMAIL,
-//							new RequiredValidation()
-//						)
-//					),
-
-					"<br/><br/>",
-					new HTMLElement('label', null, "Product<br/>",
-						new HTMLSelectField(self::PARAM_PRODUCT_ID, $productOptions,
-							new RequiredValidation()
-						)
-					),
-
-					"<br/><br/>",
-					$ProductForms
-				),
+			new HTMLElement('fieldset', 'fieldset-order-form',
+				new HTMLElement('legend', 'legend-order-form', self::TITLE),
 
 				new HTMLElement('fieldset', 'fieldset-choose-wallet',
-					new HTMLElement('legend', 'legend-wallet', 'Choose a Wallet'),
+					new HTMLElement('legend', 'legend-choose-wallet', 'Choose a Wallet'),
 
 					new HTMLElement('label', null,
 						new HTMLSelectField(self::PARAM_WALLET_ID, $walletOptions,
-							//						new Attributes('onchange', 'jQuery(this.form).removeClass(this.lastVal || null).addClass(this.lastVal = jQuery(this).val());'),
 							new RequiredValidation()
 						)
 					),
@@ -152,8 +125,16 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 					$WalletForms
 				),
 
-				"<br/><br/>Submit:<br/>",
-				new HTMLButton('submit', 'Create Transaction', 'submit')
+				new HTMLElement('fieldset', 'fieldset-transaction-details',
+					new HTMLElement('legend', 'legend-transaction-details', 'Transaction Details'),
+					$Product->getTypeDescription()
+				),
+
+				"<br/><br/>",
+				new HTMLElement('fieldset', 'fieldset-submit',
+					new HTMLElement('legend', 'legend-submit', 'Submit'),
+					new HTMLButton('submit', 'Submit', 'submit')
+				)
 			),
 			"<br/>"
 		);
@@ -163,8 +144,6 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 
 		$Form->setFormValues($Request);
 
-		$status = (int)$Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
-//		$email = $Form->validateField($Request, self::PARAM_TRANSACTION_EMAIL);
 
 		$walletType = $Form->validateField($Request, self::PARAM_WALLET_ID);
 		$ChosenWallet = $WalletTypes[$walletType];
@@ -179,19 +158,25 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 
 		$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
 
-		$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
-
-		if($status === TransactionEntry::STATUS_APPROVED) {
+		if(true) {
+			$status = TransactionEntry::STATUS_APPROVED;
 			$Product->profitAddApproval($Request, $productID);
+			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+			return new RedirectResponse(ManageTransaction::getRequestURL($id), "Purchase was successful. Redirecting...", 5);
+
+		} else {
+			$status = TransactionEntry::STATUS_DECLINED;
+			$Product->profitAddDecline($Request, $productID);
+			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+			return new RedirectResponse(ManageTransaction::getRequestURL($id), "Purchase was successful. Redirecting...", 5);
 		}
 
-		return new RedirectResponse(ManageTransaction::getRequestURL($id), "Transaction created successfully. Redirecting...", 5);
 	}
 
 	// Static
 
-	public static function getRequestURL() {
-		return self::FORM_ACTION;
+	public static function getRequestURL($id) {
+		return sprintf(self::FORM_FORMAT, $id);
 	}
 
 	/**
@@ -205,7 +190,10 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new ExecutableRenderer(new static(), true);
+		return new ExecutableRenderer(new static($Request[self::PARAM_PRODUCT_ID]), true);
+//		$Render = new HTMLResponseBody($Render);
+//		$Render->renderHTML($Request);
+//		return true;
 	}
 
 	/**
@@ -218,6 +206,5 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__, IRequest::NAVIGATION_ROUTE, "Transactions");
 	}
 }

@@ -19,9 +19,9 @@ use CPath\Data\Schema\IReadableSchema;
 class AccountTable extends AbstractBase implements IReadableSchema {
 	const TABLE_NAME = 'account';
 	const FETCH_CLASS = 'Processor\\Account\\DB\\AccountEntry';
-	const SELECT_COLUMNS = 'id, status, account';
+	const SELECT_COLUMNS = 'id, status, created, account';
 	const UPDATE_COLUMNS = 'account';
-	const INSERT_COLUMNS = 'status, account';
+	const INSERT_COLUMNS = 'status, created, account';
 	const PRIMARY_COLUMN = 'id';
 	/**
 
@@ -38,19 +38,21 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_STATUS = 'status';
 	/**
 
+	 * @column INT
+	 * @select
+	 * @insert
+	 */
+	const COLUMN_CREATED = 'created';
+	/**
+
 	 * @column TEXT
 	 * @select
 	 * @insert
 	 * @update
 	 */
 	const COLUMN_ACCOUNT = 'account';
-	/**
 
-	 * @column VARCHAR(64)
-	 */
-	const COLUMN_PASSWORD_SALT = 'password_salt';
-
-	function insertRow($status = null, $account = null) { 
+	function insertRow($status = null, $created = null, $account = null) { 
 		return $this->insert(get_defined_vars());
 	}
 

@@ -9,7 +9,6 @@ namespace Processor\Wallet;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
@@ -111,7 +110,7 @@ class ManageWallet implements IExecutable, IBuildable, IRoutable
 
 			case 'delete':
 				WalletEntry::delete($Request, $this->getWalletID());
-				return new RedirectResponse(CreateWallet::getRequestURL(), "Wallet deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(SearchWallets::getRequestURL(), "Wallet deleted successfully. Redirecting...", 5);
 		}
 
 		throw new \InvalidArgumentException($submit);

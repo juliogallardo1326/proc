@@ -9,15 +9,12 @@ namespace Processor\Transaction;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
-use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
-use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\ExecutableRenderer;
@@ -202,13 +199,6 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 //				$StatsQuery->orderBy($column, $Request['sort-' . $column]);
 			}
 		}
-
-
-//		$FilterEmail->addOption(null, 'Filter by Email');
-//		$FilterProduct->addOption(null, 'Filter by Product');
-//		$FilterSource->addOption(null, 'Filter by Payment Source');
-//		$FilterStatus->addOption(null, 'Filter by Status');
-////		$FilterWallet->addOption(null, 'Filter by Wallet');
 
 		$SourceCache = array();
 		$SearchQuery->addRowCallback(function(TransactionEntry $Entry) use ($Form, $Request, &$SourceCache, $SelectFilters) {

@@ -26,11 +26,10 @@ use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use CPath\Route\RouteIndex;
 use CPath\Route\RouteRenderer;
+use Processor\Account\ManageAccount;
 use Processor\Config;
 use Processor\PaymentSource\ManagePaymentSource;
-use Processor\Product\DB\ProductEntry;
 use Processor\Product\ManageProduct;
-use Processor\Product\Types\AbstractProductType;
 use Processor\SiteMap;
 use Processor\Transaction\ManageTransaction;
 use Processor\Wallet\ManageWallet;
@@ -159,14 +158,19 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 	/**
 	 * @param $key
 	 * @param $value
-	 * @param null $label
+	 * @param null $arg1
 	 * @return bool if true, the value has been rendered, otherwise false
 	 */
-	function renderNamedValue($key, $value, $label=null) {
+	function renderNamedValue($key, $value, $arg1=null) {
 		switch($key) {
 			case 'created':
 				if($value)
 					echo DateUtil::ago($value) . ' ago';
+				return true;
+
+			case 'status':
+				if($value)
+					echo "<span class='status'>", $arg1 ?: $value, "</span>";
 				return true;
 
 			case 'amount':
@@ -174,23 +178,61 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 					echo "<span class='amount'>", $value, "</span>";
 				return true;
 
-			case 'status':
-				echo $label ?: $value;
-				return true;
-
 			case 'payment-source-id':
 				$href = $this->domain . ltrim(ManagePaymentSource::getRequestURL($value), '/');
-				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
+				return true;
+
+			case 'payment-source':
+				if($arg1) {
+					$href = $this->domain . ltrim(ManagePaymentSource::getRequestURL($arg1), '/');
+					echo "<a href='{$href}'>", $value, "</a>";
+				} else {
+					echo $value;
+				}
 				return true;
 
 			case 'transaction-id':
 				$href = $this->domain . ltrim(ManageTransaction::getRequestURL($value), '/');
-				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
 				return true;
 
 			case 'product-id':
 				$href = $this->domain . ltrim(ManageProduct::getRequestURL($value), '/');
-				echo "<a href='{$href}'>", $label ?: $value, "</a>";
+				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
+				return true;
+
+			case 'product':
+				if($arg1) {
+					$href = $this->domain . ltrim(ManageProduct::getRequestURL($arg1), '/');
+					echo "<a href='{$href}'>", $value, "</a>";
+				} else {
+					echo $value;
+				}
+				return true;
+
+			case 'test-url':
+				$href = $this->domain . ltrim($value, '/');
+				echo "<a href='{$href}'>Test</a>";
+				return true;
+
+ 			case 'order-page-url':
+				$href = $this->domain . ltrim($value, '/');
+				echo "<a href='{$href}'>Order Page</a>";
+				return true;
+
+			case 'account-id':
+				$href = $this->domain . ltrim(ManageAccount::getRequestURL($value), '/');
+				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
+				return true;
+
+			case 'account':
+				if($arg1) {
+					$href = $this->domain . ltrim(ManageAccount::getRequestURL($arg1), '/');
+					echo "<a href='{$href}'>", $value, "</a>";
+				} else {
+					echo $value;
+				}
 				return true;
 //
 //			case 'product':

@@ -22,6 +22,7 @@ use Processor\Invoice\Types\AbstractInvoice;
  */
 class InvoiceEntry implements IBuildable
 {
+	const ID_PREFIX = 'I';
 	/**
 	 * @column VARCHAR(64) PRIMARY KEY
 	 * @select
@@ -63,7 +64,7 @@ class InvoiceEntry implements IBuildable
 	// Static
 
 	static function create(IRequest $Request, AbstractInvoice $Invoice, $title) {
-		$id = uniqid('invoice-');
+		$id = strtoupper(uniqid(self::ID_PREFIX));
 
 		$inserted = self::table()->insert(array(
 			InvoiceTable::COLUMN_ID => $id,

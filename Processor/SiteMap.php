@@ -34,18 +34,16 @@ class SiteMap implements IRouteMap, IBuildable
     function mapRoutes(IRouteMapper $Map) {
 		return
 			// @group Processor\Account\CreateAccount
-			$Map->route('ANY /a/:id', 'Processor\\Account\\CreateAccount') ||
-			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\CreateAccount') ||
 			$Map->route('ANY /create/account/', 'Processor\\Account\\CreateAccount') ||
 			$Map->route('ANY /accounts', 'Processor\\Account\\CreateAccount', 256, 'Accounts') ||
 
 			// @group Processor\Account\ManageAccount
 			$Map->route('ANY /a/:id', 'Processor\\Account\\ManageAccount') ||
-			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount') ||
 			$Map->route('ANY /account/:id', 'Processor\\Account\\ManageAccount') ||
+			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount') ||
 
 			// @group Processor\Account\SearchAccounts
-			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts', 256, 'Accounts') ||
+			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
 			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts') ||
 
 			// @group Processor\Applications\MerchantApplication
@@ -70,6 +68,9 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Invoice\SearchInvoices
 			$Map->route('ANY /invoices', 'Processor\\Invoice\\SearchInvoices') ||
 			$Map->route('ANY /search/invoices', 'Processor\\Invoice\\SearchInvoices') ||
+
+			// @group Processor\OrderForm\OrderForm
+			$Map->route('ANY /order/:id', 'Processor\\OrderForm\\OrderForm') ||
 
 			// @group Processor\PaymentSource\CreatePaymentSource
 			$Map->route('ANY /create/payment-source/', 'Processor\\PaymentSource\\CreatePaymentSource') ||
@@ -141,9 +142,8 @@ class SiteMap implements IRouteMap, IBuildable
 			$Map->route('ANY /search/transactions', 'Processor\\Transaction\\SearchTransactions') ||
 
 			// @group Processor\Wallet\CreateWallet
-			$Map->route('ANY /create/wallet/', 'Processor\\Wallet\\CreateWallet') ||
-			$Map->route('ANY /wallets', 'Processor\\Wallet\\CreateWallet', 256, 'Wallets') ||
 			$Map->route('ANY /create/wallet', 'Processor\\Wallet\\CreateWallet') ||
+			$Map->route('ANY /wallets', 'Processor\\Wallet\\CreateWallet', 256, 'Wallets') ||
 
 			// @group Processor\Wallet\ManageWallet
 			$Map->route('ANY /w/:id', 'Processor\\Wallet\\ManageWallet') ||
@@ -152,6 +152,9 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Wallet\SearchWallets
 			$Map->route('ANY /search/wallets', 'Processor\\Wallet\\SearchWallets') ||
 			$Map->route('ANY /wallets', 'Processor\\Wallet\\SearchWallets', 256, 'Wallets') ||
+
+			// @group __blank_template
+			$Map->route('ANY /order/:id', 'Processor\\Render\\BlankTemplate') ||
 
 			// @group __default_template
 			$Map->route('ANY *', 'Processor\\Render\\DefaultTemplate') ||

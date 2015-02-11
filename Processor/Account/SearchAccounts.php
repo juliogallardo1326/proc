@@ -12,12 +12,15 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
+use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\DB\AccountTable;
 use Processor\SiteMap;
 
 class SearchAccounts implements IExecutable, IBuildable, IRoutable
@@ -28,6 +31,7 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 	const FORM_ACTION2 = '/search/accounts';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
+	const CLS_TABLE_ACCOUNT_SEARCH = 'search-account';
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -35,6 +39,13 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$Table = new AccountTable();
+		$Query = $Table
+			->select()
+			->limit(50);
+
+		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_ACCOUNT_SEARCH);
+
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 //			new HTMLHeaderScript(__DIR__ . '\assets\form-login.js'),
@@ -45,6 +56,9 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
+				new HTMLTable(
+					$TBody
+				),
 				new HTMLButton('submit', 'Submit', 'submit')
 			),
 			"<br/>"
@@ -82,7 +96,7 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 	 */
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__, IRequest::NAVIGATION_ROUTE, "Accounts");
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
 		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__);
 	}
 }
