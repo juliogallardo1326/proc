@@ -82,13 +82,13 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 	 * @return AbstractWallet[]
 	 */
 	static function loadAllWalletTypes() {
-		$WalletTypes = array();
-		foreach (Config::$AvailableWalletTypes as $typeName) {
-			$WalletTypes[$typeName] = self::loadWalletByType($typeName);
-		}
-
+		$WalletTypes = array(
+			new VisaWallet(),
+			new MasterCardWallet(),
+			new DiscoverWallet(),
+			new AmexWallet(),
+		);
 		return $WalletTypes;
-
 	}
 
 
