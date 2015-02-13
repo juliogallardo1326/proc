@@ -126,6 +126,13 @@ class PaymentSourceEntry implements IBuildable, IKeyMap
 	}
 
 	/**
+	 * @return PaymentSourceEntry[]
+	 */
+	static function getActiveSources() {
+		return self::table()->fetchAll(PaymentSourceTable::COLUMN_STATUS, static::STATUS_ACTIVE, '&?');
+	}
+
+	/**
 	 * @return PaymentSourceTable
 	 */
 	static function table() {

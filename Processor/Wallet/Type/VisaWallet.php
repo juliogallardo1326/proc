@@ -9,6 +9,8 @@ namespace Processor\Wallet\Type;
 
 class VisaWallet extends AbstractCreditCardWallet
 {
+	const ID_FLAG = 0x10;
+
 	const TYPE_NAME = 'visa';
 	const TYPE_DESCRIPTION = 'Visa Credit Card';
 

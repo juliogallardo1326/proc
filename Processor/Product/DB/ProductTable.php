@@ -19,9 +19,8 @@ use CPath\Data\Schema\IReadableSchema;
 class ProductTable extends AbstractBase implements IReadableSchema {
 	const TABLE_NAME = 'product';
 	const FETCH_CLASS = 'Processor\\Product\\DB\\ProductEntry';
-	const SELECT_COLUMNS = 'id, account_id, payment_source_id, status, created, profit, product';
-	const UPDATE_COLUMNS = 'profit';
-	const INSERT_COLUMNS = 'account_id, payment_source_id, status, created, profit, product';
+	const SELECT_COLUMNS = 'id, account_id, status, created, product';
+	const INSERT_COLUMNS = 'account_id, status, created, product';
 	const PRIMARY_COLUMN = 'id';
 	/**
 
@@ -39,14 +38,6 @@ class ProductTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_ACCOUNT_ID = 'account_id';
 	/**
 
-	 * @column VARCHAR(64)
-	 * @index
-	 * @select
-	 * @insert
-	 */
-	const COLUMN_PAYMENT_SOURCE_ID = 'payment_source_id';
-	/**
-
 	 * @column TINYINT
 	 * @select
 	 * @insert
@@ -61,14 +52,6 @@ class ProductTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_CREATED = 'created';
 	/**
 
-	 * @column  NUMERIC(15,2)
-	 * @select
-	 * @update
-	 * @insert
-	 */
-	const COLUMN_PROFIT = 'profit';
-	/**
-
 	 * @column TEXT
 	 * @select
 	 * @insert
@@ -80,14 +63,8 @@ class ProductTable extends AbstractBase implements IReadableSchema {
 	 * @columns account_id
 	 */
 	const PRODUCT_ACCOUNT_ID_INDEX = 'product_account_id_index';
-	/**
 
-	 * @index 
-	 * @columns payment_source_id
-	 */
-	const PRODUCT_PAYMENT_SOURCE_ID_INDEX = 'product_payment_source_id_index';
-
-	function insertRow($account_id = null, $payment_source_id = null, $status = null, $created = null, $profit = null, $product = null) { 
+	function insertRow($account_id = null, $status = null, $created = null, $product = null) { 
 		return $this->insert(get_defined_vars());
 	}
 

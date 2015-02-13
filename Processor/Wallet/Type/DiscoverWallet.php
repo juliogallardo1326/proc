@@ -9,6 +9,8 @@ namespace Processor\Wallet\Type;
 
 class DiscoverWallet extends AbstractCreditCardWallet
 {
+	const ID_FLAG = 0x40;
+
 	const TYPE_NAME = 'discover';
 	const TYPE_DESCRIPTION = 'Discover Credit Card';
 

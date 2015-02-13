@@ -22,12 +22,15 @@ use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
+use CPath\Request\Validation\Exceptions\ValidationException;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\PaymentSource\DB\PaymentSourceEntry;
 use Processor\Product\DB\ProductEntry;
+use Processor\Profit\DB\ProfitEntry;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
 use Processor\Wallet\DB\WalletEntry;
@@ -61,6 +64,11 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 
 		$ProductForms = array();
 
+		/** @var AbstractWallet[] $WalletTypes */
+		$WalletTypes = array();
+		$walletOptions = array('Choose a Wallet' => null);
+		$WalletForms = array();
+
 		$Products = ProductEntry::loadSessionProducts($SessionRequest);
 		$productOptions = array('Choose a Product' => null);
 		foreach($Products as $ProductEntry) {
@@ -71,12 +79,17 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 			$key = $ProductEntry->getID();
 			$FieldSet->setAttribute('data-' . self::PARAM_PRODUCT_ID, $key);
 			$ProductForms[] = $FieldSet;
-		}
 
-		$walletOptions = array('Choose a Wallet' => null);
-		$WalletForms = array();
-		/** @var AbstractWallet[] $WalletTypes */
-		$WalletTypes = array();
+			foreach($Product->getWalletTypes() as $WalletType) {
+				$key = $WalletType->getTypeName();
+				$WalletTypes[$key] = $WalletType;
+				$FieldSet = $WalletType->getFieldSet($Request);
+				$FieldSet->setAttribute('data-' . self::PARAM_WALLET_ID, $key);
+				$FieldSet->setAttribute('disabled', 'disabled');
+				$WalletForms[] = $FieldSet;
+				$walletOptions['New ' . $WalletType->getDescription()] = $key;
+			}
+		}
 
 		$SessionWalletEntries = AbstractWallet::loadSessionWallets($SessionRequest);
 		foreach ($SessionWalletEntries as $WalletEntry) {
@@ -90,21 +103,11 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 			$walletOptions[$Wallet->getTitle() . ' - ' . $Wallet->getDescription()] = $key;
 		}
 
-		foreach (AbstractWallet::loadAllWalletTypes() as $Wallet) {
-			$key = $Wallet->getTypeName();
-			$WalletTypes[$key] = $Wallet;
-			$FieldSet = $Wallet->getFieldSet($Request);
-			$FieldSet->setAttribute('data-' . self::PARAM_WALLET_ID, $key);
-			$FieldSet->setAttribute('disabled', 'disabled');
-			$WalletForms[] = $FieldSet;
-			$walletOptions['New ' . $Wallet->getDescription()] = $key;
-		}
-
 //		$walletTypes = Config::$AvailableWalletTypes;
 		$Form = new HTMLForm(self::FORM_METHOD, self::FORM_ACTION, self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
-			new HTMLHeaderScript(__DIR__ . '/assets/create-transaction.js'),
-			new HTMLHeaderStyleSheet(__DIR__ . '/assets/create-transaction.css'),
+			new HTMLHeaderScript(__DIR__ . '/assets/transaction.js'),
+			new HTMLHeaderStyleSheet(__DIR__ . '/assets/transaction.css'),
 
 ////			new HTMLElement('h3', null, self::TITLE),
 
@@ -123,7 +126,8 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 //					"<br/><br/>",
 //					new HTMLElement('label', null, "Customer Email Address<br/>",
 //						new HTMLInputField(self::PARAM_TRANSACTION_EMAIL,
-//							new RequiredValidation()
+//							new RequiredValidation(),
+//					new EmailValidation()
 //						)
 //					),
 
@@ -163,7 +167,7 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 
 		$Form->setFormValues($Request);
 
-		$status = (int)$Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
+//		$status = (int)$Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
 //		$email = $Form->validateField($Request, self::PARAM_TRANSACTION_EMAIL);
 
 		$walletType = $Form->validateField($Request, self::PARAM_WALLET_ID);
@@ -175,17 +179,30 @@ class CreateTransaction implements IExecutable, IBuildable, IRoutable
 		$Product = $ProductEntry->getProduct();
 		$Invoice = $Product->createNewInvoice($Request, $ChosenWallet);
 
-		$paymentSourceID = $ProductEntry->getPaymentSourceID();
+		$responses = array();
+		foreach(PaymentSourceEntry::getActiveSources() as $PaymentSourceEntry) {
+			$PaymentSource = $PaymentSourceEntry->getPaymentSource();
+			if($PaymentSource->supportsWalletType($ChosenWallet)) {
+				$Response = $PaymentSource->executeWalletTransaction($ChosenWallet);
+				$responses[] = $Response->getMessage();
+				$paymentSourceID = $PaymentSourceEntry->getID();
+				$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
 
-		$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
+				if($Response->getCode() === TransactionEntry::STATUS_APPROVED) {
+					$status = TransactionEntry::STATUS_APPROVED;
+					$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+					ProfitEntry::update($Request, $id);
+					return new RedirectResponse(ManageTransaction::getRequestURL($id), "Transaction created successfully. Redirecting...", 5);
 
-		$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
-
-		if($status === TransactionEntry::STATUS_APPROVED) {
-			$Product->profitAddApproval($Request, $productID);
+				} else {
+					$status = TransactionEntry::STATUS_DECLINED;
+					$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+					ProfitEntry::update($Request, $id);
+				}
+			}
 		}
 
-		return new RedirectResponse(ManageTransaction::getRequestURL($id), "Transaction created successfully. Redirecting...", 5);
+		throw new ValidationException($Form, "Transaction declined: \n\t" . implode("\n\t", $responses));
 	}
 
 	// Static

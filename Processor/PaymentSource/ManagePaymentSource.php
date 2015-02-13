@@ -15,15 +15,19 @@ use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
+use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
 use Processor\PaymentSource\DB\PaymentSourceEntry;
 use Processor\SiteMap;
 
@@ -60,6 +64,14 @@ class ManagePaymentSource implements IExecutable, IBuildable, IRoutable
 		$Entry = PaymentSourceEntry::get($this->id);
 		$Source = $Entry->getPaymentSource();
 		$SourceForm = $Source->getFieldSet($Request);
+
+		$SessionRequest = $Request;
+		if (!$SessionRequest instanceof ISessionRequest)
+			throw new \Exception("Session required");
+
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if(!$Account instanceof AdministratorAccount)
+			throw new RequestException("Administrator account required");
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),

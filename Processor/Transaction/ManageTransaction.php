@@ -9,14 +9,19 @@ namespace Processor\Transaction;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
+use CPath\Data\Map\CallbackSequenceMap;
+use CPath\Data\Map\ISequenceMapper;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
+use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\Map\MapRenderer;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
@@ -26,6 +31,7 @@ use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Profit\DB\ProfitEntry;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
 
@@ -63,13 +69,36 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 		$Invoice = $TransactionEntry->getInvoice();
 		$Product = $Invoice->getProduct();
 		$Wallet = $Invoice->getWallet();
+
+
+		$accounts = array();
+		$merchantProfit = $Product->calculateProfit($TransactionEntry->getStatus(), $accounts);
+		$accounts[$Product->getAccountID()] = $merchantProfit;
+
+		$ProfitTBody = new HTMLSequenceTableBody(
+			new CallbackSequenceMap(
+				function(ISequenceMapper $Map) use ($accounts) {
+					foreach($accounts as $accountID => $profit) {
+						$Map->mapNext(array(
+							'account' => $accountID,
+							'profit' => $profit,
+						));
+					}
+				}
+			)
+		);
+
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 			new HTMLHeaderScript(__DIR__ . '/assets/transaction.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/transaction.css'),
 
-			new HTMLElement('fieldset',
+			new HTMLElement('fieldset', 'fieldset-transaction-manage',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
+
+				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden',
+					new RequiredValidation()
+				),
 
 				new HTMLElement('label', null, "Status<br/>",
 					$SelectStatus = new HTMLSelectField(self::PARAM_TRANSACTION_STATUS, TransactionEntry::$StatusOptions,
@@ -77,23 +106,44 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 					)
 				),
 
-				"<br/><br/>Transaction ID:<br/>",
-				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden',
-					new RequiredValidation()
-				),
-
+				"<br/><br/>",
 				new HTMLButton('submit', 'Update', 'submit')
 			),
 
-			$Wallet->getFieldSet($Request)
-				->setAttribute('disabled', 'disabled'),
+			new HTMLElement('fieldset', 'fieldset-transaction-info',
+				new HTMLElement('legend', 'legend-transaction-info', 'Transaction Information'),
+
+				new MapRenderer($TransactionEntry)
+			),
+
+			new HTMLElement('fieldset', 'fieldset-product-profit',
+				new HTMLElement('legend', 'legend-product-profit', 'Profit Information'),
+
+				new HTMLTable(
+					$ProfitTBody
+				)
+			),
+
+			"<br/>",
+
 			new HTMLElement('fieldset', 'fieldset-product-container',
-				new HTMLElement('legend', 'legend-product', 'Product'),
+				new HTMLElement('legend', 'legend-product', 'Order Information'),
+
+				$Wallet->getFieldSet($Request)
+					->setAttribute('disabled', 'disabled'),
+
+				$Product->getOrderFieldSet($Request)
+					->setAttribute('disabled', 'disabled'),
+
 				$Product->getConfigFieldSet($Request)
 					->setAttribute('disabled', 'disabled'),
-				"<br/>",
-				$Product->getOrderFieldSet($Request)
-					->setAttribute('disabled', 'disabled')
+
+				$Product->getFeesFieldSet($Request)
+					->setAttribute('disabled', 'disabled'),
+				"<br/><br/>",
+
+				new HTMLButton('submit', 'Update', 'submit')
+//				"<br/>",
 			),
 			"<br/>"
 		);
@@ -106,6 +156,8 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 		$status = $Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
 
 		$TransactionEntry->update($Request, $status);
+
+		ProfitEntry::update($Request, $TransactionEntry->getID());
 
 		return new RedirectResponse(ManageTransaction::getRequestURL($TransactionEntry->getID()), "Transaction updated successfully. Redirecting...", 5);
 

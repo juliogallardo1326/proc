@@ -9,6 +9,8 @@ namespace Processor\Wallet\Type;
 
 class MasterCardWallet extends AbstractCreditCardWallet
 {
+	const ID_FLAG = 0x20;
+
 	const TYPE_NAME = 'mastercard';
 	const TYPE_DESCRIPTION = 'MasterCard Credit Card';
 

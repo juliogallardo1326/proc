@@ -16,7 +16,6 @@ use CPath\Data\Schema\TableSchema;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
 use Processor\DB\ProcessorDB;
-use Processor\PaymentSource\DB\PaymentSourceEntry;
 use Processor\OrderForm\OrderForm;
 use Processor\Product\Types\AbstractProductType;
 
@@ -55,7 +54,7 @@ class ProductEntry implements IBuildable, IKeyMap
 	 * @select
 	 * @insert
 	 */
-	protected $payment_source_id;
+//	protected $payment_source_id;
 
 	/**
 	 * @column TINYINT
@@ -72,14 +71,6 @@ class ProductEntry implements IBuildable, IKeyMap
 	protected $created;
 
 	/**
-	 * @column  NUMERIC(15,2)
-	 * @select
-	 * @update
-	 * @insert
-	 */
-	protected $profit;
-
-	/**
 	 * @column TEXT
 	 * @select
 	 * @insert
@@ -91,9 +82,13 @@ class ProductEntry implements IBuildable, IKeyMap
 		return $this->id;
 	}
 
-	public function getPaymentSourceID() {
-		return $this->payment_source_id;
+	public function getAccountID() {
+		return $this->account_id;
 	}
+
+//	public function getPaymentSourceID() {
+//		return $this->payment_source_id;
+//	}
 
 //	public function getTitle() {
 //		return $this->title;
@@ -111,10 +106,6 @@ class ProductEntry implements IBuildable, IKeyMap
 		return array_search($this->getStatus(), self::$StatusOptions);
 	}
 
-	public function getProfit() {
-		return $this->profit ?: '0.00';
-	}
-
 	/**
 	 * @return AbstractProductType
 	 */
@@ -124,11 +115,13 @@ class ProductEntry implements IBuildable, IKeyMap
 		return $this->product;
 	}
 
-	function update($Request, $Product, $sourceID=null, $status=null) {
+	function update($Request, AbstractProductType $Product, $status=null) {
+		$Product->setProductID($this->getID());
+		$Product->setAccountID($this->getAccountID());
 		$update = array(
 			ProductTable::COLUMN_PRODUCT => serialize($Product),
 		);
-		$sourceID === null ?: $update[ProductTable::COLUMN_PAYMENT_SOURCE_ID] = $sourceID;
+//		$sourceID === null ?: $update[ProductTable::COLUMN_PAYMENT_SOURCE_ID] = $sourceID;
 		$status === null ?: $update[ProductTable::COLUMN_STATUS] = $status;
 		$update = self::table()->update($update)
 			->where(ProductTable::COLUMN_ID, $this->getID())
@@ -136,22 +129,6 @@ class ProductEntry implements IBuildable, IKeyMap
 		if(!$update)
 			throw new \InvalidArgumentException("Could not update " . __CLASS__);
 	}
-
-
-	public function addProfit($Request, $profit) {
-		if(!is_numeric($profit))
-			throw new \InvalidArgumentException("Invalid Profit: " . $profit);
-		$this->profit += $profit;
-		$update = array(
-			ProductTable::COLUMN_PROFIT => $this->profit,
-		);
-		$update = self::table()->update($update)
-			->where(ProductTable::COLUMN_ID, $this->getID())
-			->execute($Request);
-		if(!$update)
-			throw new \InvalidArgumentException("Could not update " . __CLASS__);
-	}
-
 
 	/**
 	 * Map data to the key map
@@ -161,31 +138,33 @@ class ProductEntry implements IBuildable, IKeyMap
 	 * @return void
 	 */
 	function mapKeys(IKeyMapper $Map) {
-		$SourceEntry = PaymentSourceEntry::get($this->payment_source_id);
-		$Source = $SourceEntry->getPaymentSource();
+//		$SourceEntry = PaymentSourceEntry::get($this->payment_source_id);
+//		$Source = $SourceEntry->getPaymentSource();
 		$Product = $this->getProduct();
 		$Map->map('product', $Product->getProductTitle(), $this->getID());
 		$Map->map('type', $Product->getTypeName());
-		$Map->map('total', $Product->getTotalCost() . ' ' . $Source->getCurrency());
+		$Map->map('total', $Product->getTotalCost()); //  . ' ' . $Source->getCurrency()
 //		$Map->map('currency', $Source->getCurrency());
 		$Map->map('account-id', $this->account_id);
-		$Map->map('payment-source', $Source->getDescription(), $this->payment_source_id);
+//		$Map->map('payment-source', $Source->getDescription(), $this->payment_source_id);
 		$Map->map('description', $Product->getTypeDescription());
 //		$Map->map('currency', $Source->getCurrency());
-		$Map->map('profit', $this->getProfit() . ' ' . $Source->getCurrency());
+//		$Map->map('profit', $this->getProfit() . ' ' . $Source->getCurrency());
 		$Map->map('fees', $Product->exportFeesToString());
 		$Map->map('test-url', OrderForm::getRequestURL($this->getID()));
 	}
 
 	// Static
 
-	static function create(IRequest $Request, AbstractProductType $Product, $accountID, $sourceID, $status=0) {
+	static function create(IRequest $Request, AbstractProductType $Product, $accountID, $status=0) {
 		$id = strtoupper(uniqid(self::ID_PREFIX));
 
+		$Product->setProductID($id);
+		$Product->setAccountID($accountID);
 		$inserted = self::table()->insert(array(
 			ProductTable::COLUMN_ID => $id,
 			ProductTable::COLUMN_ACCOUNT_ID => $accountID,
-			ProductTable::COLUMN_PAYMENT_SOURCE_ID=> $sourceID,
+//			ProductTable::COLUMN_PAYMENT_SOURCE_ID=> $sourceID,
 			ProductTable::COLUMN_STATUS => $status,
 			ProductTable::COLUMN_PRODUCT => serialize($Product),
 		))

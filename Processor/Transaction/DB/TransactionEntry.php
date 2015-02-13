@@ -17,7 +17,6 @@ use CPath\Request\IRequest;
 use Processor\DB\ProcessorDB;
 use Processor\Invoice\Types\AbstractInvoice;
 use Processor\PaymentSource\DB\PaymentSourceEntry;
-use Processor\Product\DB\ProductEntry;
 
 /**
  * Class TransactionEntry

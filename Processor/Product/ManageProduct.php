@@ -18,19 +18,24 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
+use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
+use Processor\Account\Types\MerchantAccount;
+use Processor\OrderForm\OrderForm;
 use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\Product\DB\ProductEntry;
 use Processor\SiteMap;
-use Processor\OrderForm\OrderForm;
 
 class ManageProduct implements IExecutable, IBuildable, IRoutable
 {
@@ -47,7 +52,6 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 	const PARAM_PRODUCT_STATUS = 'product-status';
 	const PARAM_ID = 'id';
 	const PARAM_SUBMIT = 'submit';
-	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 
 	private $id;
 
@@ -65,7 +69,27 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$SessionRequest = $Request;
+		if (!$SessionRequest instanceof ISessionRequest)
+			throw new \Exception("Session required");
+
 		$ProductEntry = ProductEntry::get($this->id);
+
+		$setRates = false;
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if ($Account instanceof MerchantAccount) {
+			if($Account->getID() !== $ProductEntry->getAccountID())
+				throw new RequestException("Product does not belong to merchant");
+
+		} else if ($Account instanceof AdministratorAccount) {
+			$setRates = true;
+
+		} else {
+			throw new RequestException("Only merchants may create a new Product");
+
+		}
+
+
 		$Product = $ProductEntry->getProduct();
 
 		$sourceOptions = array("Choose a Payment Product" => null);
@@ -80,18 +104,21 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderScript(__DIR__ . '/assets/product.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/product.css'),
 
+			new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
+			new HTMLInputField(self::PARAM_PRODUCT_TYPE, $Product->getTypeName(), 'hidden'),
 
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-order-page', "Try Order Page"),
 
 				new HTMLAnchor(OrderForm::getRequestURL($this->getProductID()), "Order Page")
 			),
-			
-			new HTMLElement('fieldset',
-				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
-				new HTMLInputField(self::PARAM_PRODUCT_TYPE, $Product->getTypeName(), 'hidden'),
+			$Product->getConfigFieldSet($Request),
+
+			$FeesFieldSet = $Product->getFeesFieldSet($Request),
+
+			new HTMLElement('fieldset', 'inline',
+				new HTMLElement('legend', 'legend-submit', "Manage Product"),
 
 				new HTMLElement('label', null, "Status<br/>",
 					$SelectStatus = new HTMLSelectField(self::PARAM_PRODUCT_STATUS, ProductEntry::$StatusOptions,
@@ -99,37 +126,34 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 					)
 				),
 
-				"<br/><br/>",
-				new HTMLElement('label', null, "Choose a Payment Source<br/>",
-					$SelectSource = new HTMLSelectField(self::PARAM_PAYMENT_SOURCE_TYPE, $sourceOptions,
-						new RequiredValidation()
-					)
-				),
+				"<br/><br/>Update<br/>",
+				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update')
+			),
 
-				"<br/><br/>",
-				$Product->getConfigFieldSet($Request),
+			new HTMLElement('fieldset', 'inline',
+				new HTMLElement('legend', 'legend-submit', "Delete Product"),
 
-				"<br/><br/>",
-				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update'),
 				new HTMLButton(self::PARAM_SUBMIT, 'Delete', 'delete')
 			),
 			"<br/>"
 		);
 
+		if(!$setRates)
+			$FeesFieldSet->setAttribute('disabled', 'disabled');
+
 		$SelectStatus->setInputValue($ProductEntry->getStatus());
-		$SelectSource->setInputValue($ProductEntry->getPaymentSourceID());
 
 		if(!$Request instanceof IFormRequest)
 			return $Form;
 
 		$submit = $Request[self::PARAM_SUBMIT];
-		$sourceID = $Request[self::PARAM_PAYMENT_SOURCE_TYPE];
 
 		switch($submit) {
 			case 'update':
 				$status = $Request[self::PARAM_PRODUCT_STATUS];
 				$Product->validateConfigRequest($Request, $Form);
-				$ProductEntry->update($Request, $Product, $sourceID, $status);
+				$Product->validateFeesRequest($Request, $Form);
+				$ProductEntry->update($Request, $Product, $status);
 				return new RedirectResponse(ManageProduct::getRequestURL($this->getProductID()), "Product updated successfully. Redirecting...", 5);
 
 			case 'delete':

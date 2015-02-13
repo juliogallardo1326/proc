@@ -169,8 +169,7 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 				return true;
 
 			case 'status':
-				if($value)
-					echo "<span class='status'>", $arg1 ?: $value, "</span>";
+				echo "<span class='status'>", $arg1 ?: $value, "</span>";
 				return true;
 
 			case 'amount':
@@ -221,20 +220,12 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 				echo "<a href='{$href}'>Order Page</a>";
 				return true;
 
+			case 'account':
 			case 'account-id':
 				$href = $this->domain . ltrim(ManageAccount::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
 				return true;
 
-			case 'account':
-				if($arg1) {
-					$href = $this->domain . ltrim(ManageAccount::getRequestURL($arg1), '/');
-					echo "<a href='{$href}'>", $value, "</a>";
-				} else {
-					echo $value;
-				}
-				return true;
-//
 //			case 'product':
 //				if($value instanceof ProductEntry) {
 //					$Product = $value->getProduct();

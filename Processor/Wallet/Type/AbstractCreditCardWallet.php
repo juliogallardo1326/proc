@@ -18,6 +18,7 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Request\IRequest;
+use CPath\Request\Validation\EmailValidation;
 use CPath\Request\Validation\RequiredValidation;
 use Processor\Framework\Validation\CreditCardValidation;
 
@@ -512,7 +513,8 @@ abstract class AbstractCreditCardWallet extends AbstractWallet
 				new HTMLInputField(self::PARAM_BILLING_EMAIL, $this->email,
 					new Attributes('placeholder', '"sam@bell.com"'),
 					new Attributes('size', 10),
-					new RequiredValidation()
+					new RequiredValidation(),
+					new EmailValidation()
 				)
 			),
 

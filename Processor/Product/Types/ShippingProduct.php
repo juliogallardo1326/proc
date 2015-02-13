@@ -18,9 +18,6 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
-use Processor\Account\DB\AccountEntry;
-use Processor\Account\DB\AccountTable;
-use Processor\Account\Types\AbstractAccountType;
 use Processor\Invoice\Types\ShippingInvoice;
 use Processor\Wallet\Type\AbstractWallet;
 

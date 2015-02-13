@@ -16,6 +16,7 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
@@ -26,6 +27,8 @@ use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
 use Processor\PaymentSource\DB\PaymentSourceEntry;
 use Processor\PaymentSource\Sources\AbstractPaymentSource;
 use Processor\SiteMap;
@@ -55,6 +58,10 @@ class CreatePaymentSource implements IExecutable, IBuildable, IRoutable
 		$SessionRequest = $Request;
 		if (!$SessionRequest instanceof ISessionRequest)
 			throw new \Exception("Session required");
+
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if(!$Account instanceof AdministratorAccount)
+			throw new RequestException("Administrator account required");
 
 		$sourceOptions = array("Choose a Payment Source" => null);
 		/** @var AbstractPaymentSource[] $SourceTypes */

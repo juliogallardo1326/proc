@@ -19,6 +19,8 @@ use Processor\Wallet\DB\WalletTable;
 
 abstract class AbstractWallet implements IRequestValidation, IKeyMap
 {
+	const ID_FLAG = null;
+
 	const TYPE_NAME = null;
 	const TYPE_DESCRIPTION = null;
 
@@ -33,7 +35,6 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 	 * @return String
 	 */
 	abstract function getWalletHash();
-
 
 	abstract function getTitle();
 
@@ -119,4 +120,5 @@ abstract class AbstractWallet implements IRequestValidation, IKeyMap
 		foreach(json_decode($serialized, true) as $name => $value)
 			$this->$name = $value;
 	}
+
 }

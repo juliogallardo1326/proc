@@ -13,14 +13,14 @@ use CPath\Data\Map\IKeyMapper;
 use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
+use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\Text\IRenderText;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\DB\AccountTable;
-use Processor\Account\Types\AbstractAccountType;
-use Processor\Product\DB\ProductEntry;
+use Processor\Transaction\DB\TransactionEntry;
 use Processor\Wallet\Type\AbstractWallet;
 
 abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderText
@@ -36,9 +36,13 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 	const PARAM_PRODUCT_TOTAL_COST = 'product-total-cost';
 	const PARAM_PRODUCT_FEE = 'product-fee';
 	const PARAM_PRODUCT_TYPE = 'product-type';
+	const PARAM_PAYMENT_WALLET_TYPES = 'payment-wallet-types';
 
+	public $id;
+	public $account_id;
 	public $title;
 	public $total;
+	public $wallet_flags;
 	public $fees = null;
 
 	/**
@@ -107,14 +111,42 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 		return static::TYPE_DESCRIPTION;
 	}
 
-	public function profitAddApproval(IRequest $Request, $product_id) {
-		$profit = $this->calculateProfit();
-		$ProductEntry = ProductEntry::get($product_id);
-		$ProductEntry->addProfit($Request, $profit);
+	/**
+	 * Get Product ID
+	 * @return String
+	 */
+	function getProductID() { return $this->id; }
+
+	public function setProductID($id) {
+		if(!$id)
+			throw new \InvalidArgumentException("Invalid ID");
+		$this->id = $id;
 	}
 
-	public function profitRefundTransaction($product_id) {
+	/**
+	 * Get Account ID
+	 * @return String
+	 */
+	function getAccountID() { return $this->account_id; }
 
+	public function setAccountID($id) {
+		if(!$id)
+			throw new \InvalidArgumentException("Invalid Account ID");
+		$this->account_id = $id;
+	}
+
+	/**
+	 * Return a list of wallet types available to this product
+	 * @return AbstractWallet[]
+	 */
+	public function getWalletTypes() {
+		$WalletTypes = array();
+		foreach(AbstractWallet::loadAllWalletTypes() as $WalletType) {
+			if($WalletType::ID_FLAG & $this->wallet_flags) {
+				$WalletTypes[] = $WalletType;
+			}
+		}
+		return $WalletTypes;
 	}
 
 	protected function setRate($accountID, $percentage) {
@@ -129,14 +161,36 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 		return $this;
 	}
 
-
-	function getConfigFieldSet() {
+	function getFeesFieldSet() {
 		$Table = new AccountTable();
 		$Query = $Table
 			->select()
 			->limit(5);
 
-		$FieldSet = new HTMLElement('fieldset', self::CLS_FIELDSET_CONFIG,
+		$FieldsetFees = new HTMLElement('fieldset', 'fieldset-fees inline',
+			new HTMLElement('legend', 'legend-fees', "Product Rates and Fees")
+		);
+
+		while($AccountEntry = $Query->fetch()) {
+			/** @var AccountEntry $AccountEntry */
+			$Account = $AccountEntry->getAccount();
+			$accountID = $AccountEntry->getID();
+			$FieldsetFees->addAll(
+				new HTMLElement('label', 'label-' . self::PARAM_PRODUCT_FEE, $Account->getAccountName() . "<br/>",
+					new HTMLInputField(self::PARAM_PRODUCT_FEE . '[' . $accountID . ']', $this->fees[$accountID],
+						new Attributes('placeholder', 'Set fee "9.99" or rate "%1.50"'),
+						new RequiredValidation()
+					)
+				),
+				"<br/><br/>"
+			);
+		}
+		return $FieldsetFees;
+	}
+
+	function getConfigFieldSet() {
+
+		$FieldSet = new HTMLElement('fieldset', self::CLS_FIELDSET_CONFIG . ' inline',
 			new Attributes('data-' . static::PARAM_PRODUCT_TYPE, $this->getTypeName()),
 
 			new HTMLElement('legend', 'legend-shipping', "Configure Product"),
@@ -157,26 +211,21 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 			),
 
 			"<br/><br/>",
-			$FieldsetFees = new HTMLElement('fieldset', 'fieldset-fees',
-				new HTMLElement('legend', 'legend-fees', "Set Product Rates and Fees")
+			new HTMLElement('label', null, "Choose Wallet Types(s)<br/>",
+				$SourceSelect = new HTMLSelectField(self::PARAM_PAYMENT_WALLET_TYPES . '[]',
+					new Attributes('multiple', 'multiple')
+//					new RequiredValidation()
+				)
 			)
+
 		);
 
-		while($AccountEntry = $Query->fetch()) {
-			/** @var AccountEntry $AccountEntry */
-			$Account = $AccountEntry->getAccount();
-			$accountID = $AccountEntry->getID();
-			$FieldsetFees->addAll(
-				new HTMLElement('label', 'label-' . self::PARAM_PRODUCT_FEE, $Account->getAccountName() . "<br/>",
-					new HTMLInputField(self::PARAM_PRODUCT_FEE . '[' . $accountID . ']', $this->fees[$accountID],
-						new Attributes('placeholder', 'Set fee "9.99" or rate "%1.50"'),
-						new RequiredValidation()
-					)
-				),
-				"<br/><br/>"
-			);
+		foreach(AbstractWallet::loadAllWalletTypes() as $WalletType) {
+			$SourceSelect->addOption($WalletType::ID_FLAG, $WalletType->getDescription());
+			if($WalletType::ID_FLAG & $this->wallet_flags) {
+				$SourceSelect->select($WalletType::ID_FLAG);
+			}
 		}
-
 		return $FieldSet;
 	}
 
@@ -196,7 +245,30 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 
 		$this->title = $Request[self::PARAM_PRODUCT_TITLE];
 		$this->total = $Request[self::PARAM_PRODUCT_TOTAL_COST];
+		$this->wallet_flags = array_sum((array)$Request[self::PARAM_PAYMENT_WALLET_TYPES]);
+	}
+
+	/**
+	 * Validate the request
+	 * @param IRequest $Request
+	 * @param HTMLForm $ThrowForm
+	 * @throws \CPath\Request\Validation\Exceptions\ValidationException
+	 * @return array|void optionally returns an associative array of modified field names and values
+	 */
+	function validateFeesRequest(IRequest $Request, HTMLForm $ThrowForm=null) {
+		$Form = new HTMLForm('POST',
+			$this->getFeesFieldSet($Request)
+		);
+		$Form->setFormValues($Request);
+		$Form->validateRequest($Request, $ThrowForm);
+
 		$this->fees = $Request[self::PARAM_PRODUCT_FEE];
+		foreach($Request[self::PARAM_PRODUCT_FEE] as $accountID => $fee) {
+			$fee = preg_replace('/[^0-9.%]/', '', $fee) ?: '0.00';
+			if(strpos($fee, '.') === false)
+				$fee .= '.00';
+			$this->fees[$accountID] = $fee;
+		}
 	}
 
 	public function exportFeesToString() {
@@ -210,16 +282,36 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 
 	/**
 	 * Determine the amount (if any) an account is owed from transaction fees
+	 * @param $status
 	 * @param array $accounts
 	 * @throws \Exception
 	 * @return String
 	 */
-	function calculateProfit(&$accounts = array()) {
-		$profit = $this->getTotalCost();
+	function calculateProfit($status, &$accounts = array()) {
+		switch($status) {
+			case TransactionEntry::STATUS_APPROVED:
+				$profit = $this->getTotalCost();
+				break;
+
+			default:
+				$profit = '0.00';
+				break;
+		}
 		if(!is_numeric($profit))
 			throw new \Exception("Invalid total cost: " . $profit);
 
-		foreach($this->fees as $accountID => $fee) {
+		foreach((array)$this->fees as $accountID => $fee) {
+			$fees = explode(',', $fee);
+			switch($status) {
+				case TransactionEntry::STATUS_APPROVED:
+					$fee = $fees[0];
+					break;
+
+				default:
+					$fee = isset($fees[1]) ? $fees[1] : '0.00';
+					break;
+			}
+
 			if(strpos($fee, '%') !== false) {
 				$percent = str_replace('%', '', $fee);
 				if(!is_numeric($percent))
@@ -234,27 +326,27 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 			$profit -= $calculatedFee;
 		}
 
-		if($profit <= 0)
-			throw new \Exception("Invalid Profit: " . $profit);
-		return $profit;
+//		if($profit <= 0)
+//			throw new \Exception("Invalid Profit: " . $profit);
+		return sprintf('%.2f', $profit);
 	}
 
-	/**
-	 * Determine the amount (if any) an account is owed from transaction fees
-	 * @param $accountID
-	 * @throws \Exception
-	 * @return String
-	 */
-	function calculateProfitForAccount($accountID) {
-		if(empty($this->fees[$accountID]))
-			throw new \InvalidArgumentException("Account does not have fees associated with it: " . $accountID);
-		$accounts = array();
-		$this->calculateProfit($accounts);
-		if(!isset($accounts[$accountID]))
-			throw new \InvalidArgumentException("Account does not have profit: " . $accountID);
-
-		return $accounts[$accountID];
-	}
+//	/**
+//	 * Determine the amount (if any) an account is owed from transaction fees
+//	 * @param $accountID
+//	 * @throws \Exception
+//	 * @return String
+//	 */
+//	function calculateProfitForAccount($accountID) {
+//		if(empty($this->fees[$accountID]))
+//			throw new \InvalidArgumentException("Account does not have fees associated with it: " . $accountID);
+//		$accounts = array();
+//		$this->calculateProfit(, $accounts);
+//		if(!isset($accounts[$accountID]))
+//			throw new \InvalidArgumentException("Account does not have profit: " . $accountID);
+//
+//		return $accounts[$accountID];
+//	}
 
 	/**
 	 * (PHP 5 &gt;= 5.1.0)<br/>

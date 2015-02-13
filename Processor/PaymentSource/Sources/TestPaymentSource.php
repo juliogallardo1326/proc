@@ -14,7 +14,11 @@ use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
+use CPath\Response\IResponse;
+use CPath\Response\Response;
 use Processor\Transaction\Currency;
+use Processor\Transaction\DB\TransactionEntry;
+use Processor\Wallet\Type\AbstractWallet;
 
 class TestPaymentSource extends AbstractPaymentSource
 {
@@ -108,4 +112,24 @@ class TestPaymentSource extends AbstractPaymentSource
 		$Map->map('created', $this->created);
 		$Map->map('currency', $this->getCurrency());
 	}
+
+	/**
+	 * Return a list of wallet types available to this product
+	 * @param AbstractWallet $Wallet
+	 * @return IResponse
+	 */
+	function executeWalletTransaction(AbstractWallet $Wallet) {
+		return new Response("SUCCESS", TransactionEntry::STATUS_APPROVED);
+	}
+
+	/**
+	 * Returns true if this wallet is supported
+	 * @param $ChosenWallet
+	 * @return bool
+	 */
+	function supportsWalletType($ChosenWallet) {
+		return true;
+	}
+
+
 }

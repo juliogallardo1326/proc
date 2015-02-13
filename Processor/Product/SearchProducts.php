@@ -15,11 +15,16 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
+use CPath\Request\Session\ISessionRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
+use Processor\Account\Types\MerchantAccount;
 use Processor\Product\DB\ProductEntry;
 use Processor\Product\DB\ProductTable;
 use Processor\SiteMap;
@@ -40,10 +45,26 @@ class SearchProducts implements IExecutable, IBuildable, IRoutable
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$SessionRequest = $Request;
+		if (!$SessionRequest instanceof ISessionRequest)
+			throw new \Exception("Session required");
+
 		$Table = new ProductTable();
 		$Query = $Table
 			->select()
 			->limit(50);
+
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if($Account instanceof AdministratorAccount) {
+
+		} else if ($Account instanceof MerchantAccount) {
+			$Query->where(ProductTable::COLUMN_ACCOUNT_ID, $Account->getID());
+
+		} else {
+			$Query->where(ProductTable::COLUMN_ACCOUNT_ID, -1);
+
+		}
+
 
 		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_PRODUCT_SEARCH);
 

@@ -21,10 +21,10 @@ class ShippingInvoice extends AbstractInvoice implements IRenderText
 	public $order;
 
 	/** @var ShippingInvoiceItem[] */
-	private $items;
+	public $items;
 
-	private $Product;
-	private $Wallet;
+	public $Product;
+	public $Wallet;
 
 	function __construct(ShippingProduct $Product, AbstractWallet $Wallet) {
 		$this->Product = $Product;

@@ -16,18 +16,20 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
-use CPath\Render\HTML\HTMLResponseBody;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
+use CPath\Request\Validation\Exceptions\ValidationException;
 use CPath\Request\Validation\RequiredValidation;
 use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\PaymentSource\DB\PaymentSourceEntry;
 use Processor\Product\DB\ProductEntry;
+use Processor\Profit\DB\ProfitEntry;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
 use Processor\Transaction\ManageTransaction;
@@ -45,7 +47,7 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 
 	const PARAM_PRODUCT_ID = 'id';
 	const PARAM_SUBMIT = 'submit';
-	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
+//	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 	const PARAM_WALLET_ID = 'wallet-id';
 
 	private $id;
@@ -54,10 +56,9 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 		$this->id = $productID;
 	}
 
-	private function getProductID() {
+	function getProductID() {
 		return $this->id;
 	}
-
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -91,7 +92,7 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 			$walletOptions[$Wallet->getTitle() . ' - ' . $Wallet->getDescription()] = $key;
 		}
 
-		foreach (AbstractWallet::loadAllWalletTypes() as $Wallet) {
+		foreach ($Product->getWalletTypes() as $Wallet) {
 			$key = $Wallet->getTypeName();
 			$WalletTypes[$key] = $Wallet;
 			$FieldSet = $Wallet->getFieldSet($Request);
@@ -102,7 +103,7 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 		}
 
 //		$walletTypes = Config::$AvailableWalletTypes;
-		$Form = new HTMLForm(self::FORM_METHOD, self::FORM_ACTION, self::FORM_NAME,
+		$Form = new HTMLForm(self::FORM_METHOD, self::getRequestURL($this->id), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 			new HTMLHeaderScript(__DIR__ . '/assets/order-form.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/order-form.css'),
@@ -127,7 +128,9 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 
 				new HTMLElement('fieldset', 'fieldset-transaction-details',
 					new HTMLElement('legend', 'legend-transaction-details', 'Transaction Details'),
-					$Product->getTypeDescription()
+					$Product->getTypeDescription(),
+					"<br/>",
+					$Product->getOrderFieldSet($Request)
 				),
 
 				"<br/><br/>",
@@ -143,33 +146,59 @@ class OrderForm implements IExecutable, IBuildable, IRoutable
 			return $Form;
 
 		$Form->setFormValues($Request);
+		$Form->validateRequest($Request);
 
 
 		$walletType = $Form->validateField($Request, self::PARAM_WALLET_ID);
 		$ChosenWallet = $WalletTypes[$walletType];
 		$ChosenWallet->validateRequest($Request, $Form);
 
-		$productID = $Form->validateField($Request, self::PARAM_PRODUCT_ID);
+		$productID = $this->getProductID();
+		//$Form->validateField($Request, self::PARAM_PRODUCT_ID);
 		$ProductEntry = ProductEntry::get($productID);
 		$Product = $ProductEntry->getProduct();
 		$Invoice = $Product->createNewInvoice($Request, $ChosenWallet);
 
-		$paymentSourceID = $ProductEntry->getPaymentSourceID();
 
-		$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
+		$responses = array();
+		foreach(PaymentSourceEntry::getActiveSources() as $PaymentSourceEntry) {
+			$PaymentSource = $PaymentSourceEntry->getPaymentSource();
+			if($PaymentSource->supportsWalletType($ChosenWallet)) {
+				$Response = $PaymentSource->executeWalletTransaction($ChosenWallet);
+				$responses[] = $Response->getMessage();
+				$paymentSourceID = $PaymentSourceEntry->getID();
+				$walletID = WalletEntry::createOrUpdate($Request, $ChosenWallet);
 
-		if(true) {
-			$status = TransactionEntry::STATUS_APPROVED;
-			$Product->profitAddApproval($Request, $productID);
-			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
-			return new RedirectResponse(ManageTransaction::getRequestURL($id), "Purchase was successful. Redirecting...", 5);
+				if($Response->getCode() === TransactionEntry::STATUS_APPROVED) {
+					$status = TransactionEntry::STATUS_APPROVED;
+					$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+					ProfitEntry::update($Request, $id);
+					return new RedirectResponse(ManageTransaction::getRequestURL($id), "Transaction created successfully. Redirecting...", 5);
 
-		} else {
-			$status = TransactionEntry::STATUS_DECLINED;
-			$Product->profitAddDecline($Request, $productID);
-			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
-			return new RedirectResponse(ManageTransaction::getRequestURL($id), "Purchase was successful. Redirecting...", 5);
+				} else {
+					$status = TransactionEntry::STATUS_DECLINED;
+					$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+					ProfitEntry::update($Request, $id);
+				}
+			}
 		}
+
+		throw new ValidationException($Form, "Transaction declined: \n\t" . implode("\n\t", $responses));
+//
+//
+//		if(true) {
+//			$status = TransactionEntry::STATUS_APPROVED;
+//
+//			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+//			ProfitEntry::update($Request, $id);
+//			return new RedirectResponse(ManageTransaction::getRequestURL($id), "Purchase was successful. Redirecting...", 5);
+//
+//		} else {
+//			$status = TransactionEntry::STATUS_DECLINED;
+//			$id = TransactionEntry::create($Request, $Invoice, $status, $walletID, $productID, $paymentSourceID);
+//			ProfitEntry::update($Request, $id);
+//			return new RequestException("Transaction has declined");
+//		}
 
 	}
 

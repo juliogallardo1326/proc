@@ -132,7 +132,7 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/search-transaction.css'),
 
 			new HTMLElement('fieldset', 'fieldset-search fieldset-filter-search',
-				new HTMLElement('legend', 'legend-filter-email', self::TITLE),
+				new HTMLElement('legend', 'legend-filter-search', self::TITLE),
 
 				new HTMLElement('fieldset', 'fieldset-filter-stats-results',
 					new HTMLElement('legend', 'legend-filter-stats-results', 'Stats'),

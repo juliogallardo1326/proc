@@ -1,8 +1,11 @@
 fieldset.fieldset-transaction,
 fieldset.fieldset-choose-wallet,
 fieldset.fieldset-create-transaction,
+fieldset.fieldset-transaction-info,
+fieldset.fieldset-transaction-manage,
 fieldset.fieldset-product-config,
 fieldset.fieldset-product-container,
+fieldset.fieldset-product-profit,
 fieldset.fieldset-product {
     display: inline-block;
 }
@@ -10,4 +13,15 @@ fieldset.fieldset-product {
 form[name=create-transaction] fieldset.fieldset-wallet[disabled],
 form[name=create-transaction] fieldset.fieldset-product[disabled] {
     display: none;
+}
+
+fieldset.fieldset-filter {
+    display: inline-block;
+}
+
+span.total,
+span.amount
+{
+    /*color: #000066;*/
+    font-weight: bold;
 }

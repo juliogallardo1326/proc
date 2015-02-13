@@ -15,7 +15,9 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Request\IRequest;
+use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\RequiredValidation;
+use Processor\Account\DB\AccountEntry;
 use Processor\Account\Exceptions\InvalidAccountPassword;
 
 abstract class AbstractAccountType implements \Serializable, IKeyMap
@@ -24,10 +26,25 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 	const PARAM_ACCOUNT_TYPE = 'account-type';
 	const PARAM_ACCOUNT_NAME = 'account-name';
 	const PARAM_ACCOUNT_PASSWORD = 'account-password';
+	const PARAM_ACCOUNT_EMAIL = 'account-email';
+	const PASS_BLANK = '****';
 
+	public $id;
 	public $email;
 	public $name;
 	public $pass;
+
+	/**
+	 * Get Account Name
+	 * @return String
+	 */
+	function getID() { return $this->id; }
+
+	public function setID($id) {
+		if(!$id)
+			throw new \InvalidArgumentException("Invalid ID");
+		$this->id = $id;
+	}
 
 	/**
 	 * Get Account Name
@@ -43,30 +60,23 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 
 	abstract function getTypeName();
 
-	function tryPassword($password) {
-		if (crypt($password, $this->pass) !== $this->pass)
+
+	function assertPassword($password) {
+		if (crypt($password, $this->pass) !== $this->pass) {
 			throw new InvalidAccountPassword("Invalid password");
+		}
 	}
 
 	/**
-	 * @param IRequest $Request
-	 * @param bool $withConfirmField
 	 * @return HTMLElement
 	 */
-	function getFieldSet(IRequest $Request, $withConfirmField=true) {
+	function getFieldSet() {
 		return new HTMLElement('fieldset', self::CLS_FIELDSET_ACCOUNT,
 			new Attributes('data-' . static::PARAM_ACCOUNT_TYPE, $this->getTypeName()),
 
 			new HTMLElement('legend', 'legend-shipping', ucfirst($this->getTypeName()) . " Account"),
 
-			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_NAME, "Email<br/>",
-				new HTMLInputField(self::PARAM_ACCOUNT_NAME, $this->email,
-					new Attributes('placeholder', '"my@email.com"'),
-					new RequiredValidation()
-				)
-			),
 
-			"<br/><br/>",
 			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_NAME, "Name<br/>",
 				new HTMLInputField(self::PARAM_ACCOUNT_NAME, $this->name,
 					new Attributes('placeholder', '"myuser"'),
@@ -75,9 +85,17 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 			),
 
 			"<br/><br/>",
-			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_PASSWORD, "Password<br/>",
-				new HTMLInputField(self::PARAM_ACCOUNT_PASSWORD, $this->pass ? '****' : null, 'password',
+			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_EMAIL, "Email<br/>",
+				new HTMLInputField(self::PARAM_ACCOUNT_EMAIL, $this->email,
+					new Attributes('placeholder', '"my@email.com"'),
 					new RequiredValidation()
+				)
+			),
+
+			"<br/><br/>",
+			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_PASSWORD, "Password<br/>",
+				new HTMLInputField(self::PARAM_ACCOUNT_PASSWORD, null, 'password'
+//					new RequiredValidation()
 				)
 			)
 		);
@@ -96,16 +114,13 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 		);
 		$Form->validateRequest($Request, $ThrowForm);
 
-		if(!empty($Request[self::PARAM_ACCOUNT_PASSWORD])) {
+		$pass = $Request[self::PARAM_ACCOUNT_PASSWORD];
+		if($pass && $pass !== self::PASS_BLANK) {
 			$salt = uniqid('', true);
 			$this->pass = crypt($Request[self::PARAM_ACCOUNT_PASSWORD], $salt);
 		}
-		if(!empty($Request[self::PARAM_ACCOUNT_NAME]))
-			$this->name = $Request[self::PARAM_ACCOUNT_NAME];
-	}
-
-	public function __construct() {
-
+		$this->name = $Request[self::PARAM_ACCOUNT_NAME];
+		$this->email = $Request[self::PARAM_ACCOUNT_EMAIL];
 	}
 
 	/**
@@ -148,7 +163,40 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 		$Map->map('type', $this->getTypeName());
 	}
 
+	public function startSession(ISessionRequest $SessionRequest) {
+		$SessionRequest->startSession();
+		$Session = &$SessionRequest->getSession();
+		$Session[AccountEntry::SESSION_KEY] = serialize($this);
+		$SessionRequest->endSession();
+//		$Account = self::loadFromSession($SessionRequest);
+	}
+
 	// Static
+
+	static function loadFromSession(ISessionRequest $SessionRequest) {
+		if(!$SessionRequest->isStarted())
+			$SessionRequest->startSession();
+		$Session = $SessionRequest->getSession();
+
+		/** @var AbstractAccountType $Account */
+		$Account = unserialize($Session[AccountEntry::SESSION_KEY]);
+		if(!$Account) {
+			$SessionRequest->destroySession();
+		}
+		$SessionRequest->endSession();
+
+		return $Account;
+	}
+
+	static function hasActiveSession(ISessionRequest $SessionRequest) {
+		if(!$SessionRequest->isStarted())
+			$SessionRequest->startSession();
+		$Session = $SessionRequest->getSession();
+
+		$active = !empty($Session[AccountEntry::SESSION_KEY]);
+		$SessionRequest->endSession();
+		return $active;
+	}
 
 	/**
 	 * @return AbstractAccountType[]

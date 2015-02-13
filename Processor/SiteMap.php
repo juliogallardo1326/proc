@@ -36,6 +36,13 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Account\CreateAccount
 			$Map->route('ANY /create/account/', 'Processor\\Account\\CreateAccount') ||
 			$Map->route('ANY /accounts', 'Processor\\Account\\CreateAccount', 256, 'Accounts') ||
+			$Map->route('ANY /register', 'Processor\\Account\\CreateAccount', 288, 'Register') ||
+
+			// @group Processor\Account\Login
+			$Map->route('ANY /login/', 'Processor\\Account\\Login', 288, 'Login') ||
+
+			// @group Processor\Account\Logout
+			$Map->route('ANY /logout/', 'Processor\\Account\\Logout', 272, 'Logout') ||
 
 			// @group Processor\Account\ManageAccount
 			$Map->route('ANY /a/:id', 'Processor\\Account\\ManageAccount') ||
@@ -45,14 +52,6 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Account\SearchAccounts
 			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
 			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts') ||
-
-			// @group Processor\Applications\MerchantApplication
-			$Map->route('ANY /applications/merchant', 'Processor\\Applications\\MerchantApplication') ||
-			$Map->route('ANY /apply', 'Processor\\Applications\\MerchantApplication', 256, 'Apply Now') ||
-
-			// @group Processor\Applications\ResellerApplication
-			$Map->route('ANY /applications/reseller', 'Processor\\Applications\\ResellerApplication') ||
-			$Map->route('ANY /reseller', 'Processor\\Applications\\ResellerApplication', 256, 'Reseller') ||
 
 			// @group Processor\Integration\Integrate
 			$Map->route('ANY /integrate', 'Processor\\Integration\\Integrate', 256, 'Integration') ||
@@ -97,6 +96,10 @@ class SiteMap implements IRouteMap, IBuildable
 			// @group Processor\Product\SearchProducts
 			$Map->route('ANY /products', 'Processor\\Product\\SearchProducts') ||
 			$Map->route('ANY /search/products', 'Processor\\Product\\SearchProducts') ||
+
+			// @group Processor\Profit\SearchProfit
+			$Map->route('ANY /profit', 'Processor\\Profit\\SearchProfit', 256, 'Profit') ||
+			$Map->route('ANY /search/profit', 'Processor\\Profit\\SearchProfit') ||
 
 			// @group Processor\Report\ReportRoute
 			$Map->route('ANY /reports', 'Processor\\Report\\ReportRoute', 256, 'Reports') ||
@@ -155,6 +158,7 @@ class SiteMap implements IRouteMap, IBuildable
 
 			// @group __blank_template
 			$Map->route('ANY /order/:id', 'Processor\\Render\\BlankTemplate') ||
+			$Map->route('ANY /order', 'Processor\\Render\\BlankTemplate') ||
 
 			// @group __default_template
 			$Map->route('ANY *', 'Processor\\Render\\DefaultTemplate') ||

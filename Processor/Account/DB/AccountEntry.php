@@ -24,11 +24,14 @@ use Processor\DB\ProcessorDB;
  */
 class AccountEntry implements IBuildable, IKeyMap
 {
+	const STATUS_NEEDS_APPROVAL = 0x00;
 	const STATUS_ACTIVE = 0x01;
 	const STATUS_INACTIVE = 0x02;
 	const ID_PREFIX = 'A';
+	const SESSION_KEY = 'session_account';
 
 	static $StatusOptions = array(
+		"Needs Approval" => self::STATUS_NEEDS_APPROVAL,
 		"Active" => self::STATUS_ACTIVE,
 		"Inactive" => self::STATUS_INACTIVE,
 	);
@@ -110,6 +113,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	}
 
 	public function update($Request, AbstractAccountType $Account, $status) {
+		$Account->setID($this->getID());
 		$update = array(
 			AccountTable::COLUMN_ACCOUNT => serialize($Account),
 		);
@@ -140,6 +144,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	static function create(IRequest $Request, AbstractAccountType $Account) {
 		$id = strtoupper(uniqid(self::ID_PREFIX));
 
+		$Account->setID($id);
 		$inserted = self::table()->insert(array(
 			AccountTable::COLUMN_ID => $id,
 			AccountTable::COLUMN_STATUS => 0,

@@ -16,6 +16,7 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
@@ -26,7 +27,8 @@ use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\PaymentSource\DB\PaymentSourceTable;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\MerchantAccount;
 use Processor\Product\DB\ProductEntry;
 use Processor\Product\Types\AbstractProductType;
 use Processor\SiteMap;
@@ -46,7 +48,7 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 
 	const PARAM_PRODUCT_TYPE = 'product-type';
 	const PARAM_PRODUCT_STATUS = 'product-status';
-	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
+//	const PARAM_PAYMENT_SOURCE_TYPE = 'payment-source-type';
 	const PARAM_PRODUCT_TOTAL_COST = 'product-total-cost';
 
 	/**
@@ -60,12 +62,9 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 		if (!$SessionRequest instanceof ISessionRequest)
 			throw new \Exception("Session required");
 
-		$sourceOptions = array("Choose a Payment Source" => null);
-		$PaymentSourceTable = new PaymentSourceTable();
-		foreach($PaymentSourceTable->fetchAll(1) as $PaymentSourceEntry) {
-			$PaymentSource = $PaymentSourceEntry->getPaymentSource();
-			$sourceOptions[$PaymentSource->getCurrency() . ' - ' . $PaymentSource->getTitle()] = $PaymentSourceEntry->getID();
-		}
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if (!$Account instanceof MerchantAccount)
+			throw new RequestException("Only merchants may create a new Product");
 
 		$productOptions = array("Choose a Product Type" => null);
 		/** @var AbstractProductType[] $ProductTypes */
@@ -77,6 +76,11 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 			$FieldSet = $ProductType->getConfigFieldSet($Request);
 			$FieldSet->setAttribute('disabled', 'disabled');
 			$ProductForms[] = $FieldSet;
+
+//			$FieldSet = $ProductType->getRatesFieldSet($Request);
+//			$FieldSet->setAttribute('disabled', 'disabled');
+//			$ProductForms[] = $FieldSet;
+
 			$productOptions[$ProductType->getTypeDescription()] = $ProductType->getTypeName();
 		}
 
@@ -100,14 +104,14 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 //						new Attributes('placeholder', '"9.99"'),
 //						new RequiredValidation()
 //					)
+////				),
+//
+//				"<br/><br/>",
+//				new HTMLElement('label', null, "Choose a Payment Source<br/>",
+//					new HTMLSelectField(self::PARAM_PAYMENT_SOURCE_TYPE, $sourceOptions,
+//						new RequiredValidation()
+//					)
 //				),
-
-				"<br/><br/>",
-				new HTMLElement('label', null, "Choose a Payment Source<br/>",
-					new HTMLSelectField(self::PARAM_PAYMENT_SOURCE_TYPE, $sourceOptions,
-						new RequiredValidation()
-					)
-				),
 
 				"<br/><br/>",
 				new HTMLElement('label', null, "Choose a Product Type<br/>",
@@ -131,12 +135,15 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 		$status = $Form->validateField($Request, self::PARAM_PRODUCT_STATUS);
 
 		$productType = $Form->validateField($Request, self::PARAM_PRODUCT_TYPE);
-		$sourceID = $Form->validateField($Request, self::PARAM_PAYMENT_SOURCE_TYPE);
+//		$sourceID = $Form->validateField($Request, self::PARAM_PAYMENT_SOURCE_TYPE);
 		$ChosenProduct = $ProductTypes[$productType];
 		$ChosenProduct->validateConfigRequest($Request, $Form);
 
 		$accountID = 'default';
-		$id = ProductEntry::create($Request, $ChosenProduct, $accountID, $sourceID, $status);
+		if($Account)
+			$accountID = $Account->getID();
+
+		$id = ProductEntry::create($Request, $ChosenProduct, $accountID, $status);
 
 		return new RedirectResponse(ManageProduct::getRequestURL($id), "Product created successfully. Redirecting...", 5);
 	}
@@ -158,7 +165,9 @@ class CreateProduct implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new ExecutableRenderer(new static(), true);
+		$Render = new ExecutableRenderer(new static(), true);
+		$Render->execute($Request);
+		return $Render;
 	}
 
 	/**
