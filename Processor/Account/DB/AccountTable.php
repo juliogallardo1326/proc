@@ -1,11 +1,11 @@
 <?php
 namespace Processor\Account\DB;
 
-use CPath\Data\Schema\IReadableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOPrimaryKeyTable as AbstractBase;
-use CPath\Data\Schema\TableSchema;
-use Processor\Account\DB\AccountEntry as Entry;
 use Processor\DB\ProcessorDB as DB;
+use Processor\Account\DB\AccountEntry as Entry;
+use CPath\Data\Schema\TableSchema;
+use CPath\Data\Schema\IReadableSchema;
 
 /**
  * Class AccountTable
@@ -48,6 +48,7 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @column VARCHAR(64) NOT NULL
 	 * @select
 	 * @insert
+	 * @unique
 	 */
 	const COLUMN_EMAIL = 'email';
 	/**
@@ -55,6 +56,7 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @column VARCHAR(64) NOT NULL
 	 * @select
 	 * @insert
+	 * @unique
 	 */
 	const COLUMN_NAME = 'name';
 	/**
@@ -65,6 +67,18 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @update
 	 */
 	const COLUMN_ACCOUNT = 'account';
+	/**
+
+	 * @index UNIQUE
+	 * @columns email
+	 */
+	const ACCOUNT_EMAIL_UNIQUE = 'account_email_unique';
+	/**
+
+	 * @index UNIQUE
+	 * @columns name
+	 */
+	const ACCOUNT_NAME_UNIQUE = 'account_name_unique';
 
 	function insertRow($status = null, $created = null, $email = null, $name = null, $account = null) { 
 		return $this->insert(get_defined_vars());

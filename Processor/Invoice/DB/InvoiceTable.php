@@ -1,11 +1,11 @@
 <?php
 namespace Processor\Invoice\DB;
 
-use CPath\Data\Schema\IReadableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOPrimaryKeyTable as AbstractBase;
-use CPath\Data\Schema\TableSchema;
 use Processor\DB\ProcessorDB as DB;
 use Processor\Invoice\DB\InvoiceEntry as Entry;
+use CPath\Data\Schema\TableSchema;
+use CPath\Data\Schema\IReadableSchema;
 
 /**
  * Class InvoiceTable

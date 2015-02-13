@@ -101,9 +101,6 @@ class SiteMap implements IRouteMap, IBuildable
 			$Map->route('ANY /profit', 'Processor\\Profit\\SearchProfit', 256, 'Profit') ||
 			$Map->route('ANY /search/profit', 'Processor\\Profit\\SearchProfit') ||
 
-			// @group Processor\Report\ReportRoute
-			$Map->route('ANY /reports', 'Processor\\Report\\ReportRoute', 256, 'Reports') ||
-
 			// @group Processor\Report\RiskReport
 			$Map->route('ANY /report/risk', 'Processor\\Report\\RiskReport') ||
 

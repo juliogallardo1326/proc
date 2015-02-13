@@ -1,11 +1,11 @@
 <?php
 namespace Processor\Subscription\DB;
 
-use CPath\Data\Schema\IReadableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOPrimaryKeyTable as AbstractBase;
-use CPath\Data\Schema\TableSchema;
 use Processor\DB\ProcessorDB as DB;
 use Processor\Subscription\DB\SubscriptionEntry as Entry;
+use CPath\Data\Schema\TableSchema;
+use CPath\Data\Schema\IReadableSchema;
 
 /**
  * Class SubscriptionTable

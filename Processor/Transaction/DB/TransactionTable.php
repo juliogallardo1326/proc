@@ -1,11 +1,11 @@
 <?php
 namespace Processor\Transaction\DB;
 
-use CPath\Data\Schema\IReadableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOPrimaryKeyTable as AbstractBase;
-use CPath\Data\Schema\TableSchema;
 use Processor\DB\ProcessorDB as DB;
 use Processor\Transaction\DB\TransactionEntry as Entry;
+use CPath\Data\Schema\TableSchema;
+use CPath\Data\Schema\IReadableSchema;
 
 /**
  * Class TransactionTable
@@ -44,7 +44,7 @@ class TransactionTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_CREATED = 'created';
 	/**
 
-	 * @column VARCHAR(16)
+	 * @column NUMERIC(15,2)
 	 * @select
 	 * @insert
 	 */
