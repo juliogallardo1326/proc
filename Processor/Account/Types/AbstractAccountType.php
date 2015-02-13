@@ -208,6 +208,7 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 			new ResellerAccount(),
 			new AdministratorAccount(),
 			new ProcessorAccount(),
+			new CustomerServiceAccount(),
 		);
 	}
 }
