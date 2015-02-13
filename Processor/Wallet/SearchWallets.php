@@ -12,9 +12,11 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\HTML\Pagination\HTMLPagination;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Response\IResponse;
@@ -33,6 +35,8 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	const FORM_NAME = 'search-wallets';
 	const CLS_TABLE_WALLET_SEARCH = 'search-wallets';
 
+	const PARAM_PAGE = 'page';
+
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
@@ -40,11 +44,22 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 	 */
 	function execute(IRequest $Request) {
 		$Table = new WalletTable();
-		$Query = $Table
-			->select()
-			->limit(50);
 
-		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_WALLET_SEARCH);
+		$page = 0;
+		$total = null;
+		$row_count = 5;
+		if(isset($Request[self::PARAM_PAGE]))
+			$page = $Request[self::PARAM_PAGE];
+		$offset = $page * $row_count;
+
+		$Pagination = new HTMLPagination($row_count, $page, $total);
+
+		$SearchQuery = $Table
+			->select()
+			->limit("{$row_count} OFFSET {$offset}");
+
+		$SearchTable = new HTMLPDOQueryTable($SearchQuery);
+		$SearchTable->validateRequest($Request);
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
@@ -56,9 +71,10 @@ class SearchWallets implements IExecutable, IBuildable, IRoutable
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				new HTMLTable(
-					$TBody
-				),
+				$SearchTable,
+				$Pagination,
+
+				"<br/><br/>",
 				new HTMLButton('submit', 'Search', 'submit')
 			)
 		);

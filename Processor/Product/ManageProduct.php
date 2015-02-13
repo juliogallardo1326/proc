@@ -66,12 +66,13 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
+	 * @throws RequestException
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
 		$SessionRequest = $Request;
 		if (!$SessionRequest instanceof ISessionRequest)
-			throw new \Exception("Session required");
+			throw new RequestException("Session required");
 
 		$ProductEntry = ProductEntry::get($this->id);
 

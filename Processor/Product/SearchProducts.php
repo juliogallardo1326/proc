@@ -15,7 +15,6 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
-use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
@@ -25,7 +24,6 @@ use CPath\Route\RouteBuilder;
 use Processor\Account\Types\AbstractAccountType;
 use Processor\Account\Types\AdministratorAccount;
 use Processor\Account\Types\MerchantAccount;
-use Processor\Product\DB\ProductEntry;
 use Processor\Product\DB\ProductTable;
 use Processor\SiteMap;
 

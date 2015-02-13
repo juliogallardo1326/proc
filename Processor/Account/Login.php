@@ -88,7 +88,7 @@ class Login implements IExecutable, IBuildable, IRoutable
 
 		$Form->validateRequest($Request);
 
-		$AccountEntry = AccountEntry::get($Request[self::PARAM_ACCOUNT_NAME]);
+		$AccountEntry = AccountEntry::search($Request[self::PARAM_ACCOUNT_NAME]);
 		$Account = $AccountEntry->getAccount();
 		$Account->assertPassword($Request[self::PARAM_ACCOUNT_PASSWORD]);
 

@@ -62,7 +62,7 @@ class TransactionEntry implements IBuildable, IKeyMap
 	protected $created;
 
 	/**
-	 * @column VARCHAR(16)
+	 * @column NUMERIC(15,2)
 	 * @select
 	 * @insert
 	 */
@@ -136,6 +136,10 @@ class TransactionEntry implements IBuildable, IKeyMap
 
 	public function getWalletID() {
 		return $this->wallet_id;
+	}
+
+	public function getAmount() {
+		return $this->amount;
 	}
 
 	/**
@@ -236,18 +240,17 @@ class TransactionEntry implements IBuildable, IKeyMap
 		$Invoice = $this->getInvoice();
 		$Product = $Invoice->getProduct();
 
-		$Map->map('transaction-id', $this->getID());
-		$Map->map('wallet-id', $this->wallet_id);
-		$Map->map('product-id', $this->product_id); // , $Product->getTitle());
+		$Map->map('id', $this->getID());
+		$Map->map('wallet', $this->getWalletID());
+		$Map->map('email', $Invoice->getWallet()->getEmail());
+		$Map->map('product', $this->getProductID(), $Product->getProductTitle());
 		$Map->map('created', $this->getCreatedTimestamp());
 		$Map->map('status', $this->getStatusText());
-		$Map->map('amount', $this->amount);
-		$Map->map('email', $Invoice->getWallet()->getEmail());
+		$Map->map('amount', $this->getAmount());
+		$Map->map('currency', $Source->getCurrency());
 
-		$Map->map('product', $Product->getProductTitle());
 //		$Map->map('description', $Product->getTypeDescription());
 
-		$Map->map('currency', $Source->getCurrency());
 //		$Map->map('payment-source', $Source->getTitle()); //todo: flags for mapping headers?
 
 //		$Map->map('product', $ProductEntry);

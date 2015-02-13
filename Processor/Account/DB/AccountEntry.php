@@ -57,18 +57,20 @@ class AccountEntry implements IBuildable, IKeyMap
 	protected $created;
 
 	/**
-	 * @column VARCHAR(64)
+	 * @column VARCHAR(64) NOT NULL
 	 * @select
 	 * @insert
+	 * @unique
 	 */
-//	protected $email;
+	protected $email;
 
 	/**
-	 * @column VARCHAR(64)
+	 * @column VARCHAR(64) NOT NULL
 	 * @select
-	 * @update
+	 * @insert
+	 * @unique
 	 */
-//	protected $password;
+	protected $name;
 
 	/**
 	 * @column TEXT
@@ -77,6 +79,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @update
 	 */
 	protected $account;
+
 
 	/**
 	 * @column VARCHAR(64)
@@ -101,6 +104,14 @@ class AccountEntry implements IBuildable, IKeyMap
 
 	public function getCreatedTimestamp() {
 		return $this->created;
+	}
+
+	public function getEmail() {
+		return $this->email;
+	}
+
+	public function getName() {
+		return $this->name;
 	}
 
 	/**
@@ -147,6 +158,8 @@ class AccountEntry implements IBuildable, IKeyMap
 		$Account->setID($id);
 		$inserted = self::table()->insert(array(
 			AccountTable::COLUMN_ID => $id,
+			AccountTable::COLUMN_NAME => $Account->getAccountName(),
+			AccountTable::COLUMN_EMAIL => $Account->getAccountEmail(),
 			AccountTable::COLUMN_STATUS => 0,
 			AccountTable::COLUMN_CREATED => time(),
 			AccountTable::COLUMN_ACCOUNT => serialize($Account),
@@ -186,6 +199,14 @@ class AccountEntry implements IBuildable, IKeyMap
 	 */
 	static function get($id) {
 		return self::table()->fetchOne(AccountTable::COLUMN_ID, $id);
+	}
+
+	static function search($search) {
+		return self::table()->select()
+			->where(AccountTable::COLUMN_ID, $search)
+			->orWhere(AccountTable::COLUMN_EMAIL, $search)
+			->orWhere(AccountTable::COLUMN_NAME, $search)
+			->fetch();
 	}
 
 	/**

@@ -9,23 +9,30 @@ namespace Processor\Transaction;
 
 use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
-use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
-use CPath\Render\HTML\Element\Form\HTMLSelectField;
+use CPath\Render\HTML\Element\Form\HTMLSubmit;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
+use CPath\Render\HTML\Element\Table\HTMLPDOQueryTableBody;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\HTML\Pagination\HTMLPagination;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\IRequest;
+use CPath\Request\Session\ISessionRequest;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
-use Processor\PaymentSource\DB\PaymentSourceEntry;
+use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
+use Processor\Account\Types\MerchantAccount;
 use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\PaymentSource\Sources\AbstractPaymentSource;
+use Processor\Product\DB\ProductTable;
 use Processor\SiteMap;
 use Processor\Transaction\DB\TransactionEntry;
 use Processor\Transaction\DB\TransactionTable;
@@ -52,47 +59,84 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 	const PARAM_SORT_PRODUCT_ID = 'sort-product-id';
 	const PARAM_SORT_PAYMENT_SOURCE_ID = 'sort-payment-source-id';
 	const PARAM_SORT_CREATE_DATE = 'sort-create-date';
+	const PARAM_PAGE = 'page';
 
 	/**
 	 * Execute a command and return a response. Does not render
 	 * @param IRequest $Request
+	 * @throws RequestException
 	 * @return IResponse the execution response
 	 */
 	function execute(IRequest $Request) {
+		$SessionRequest = $Request;
+		if (!$SessionRequest instanceof ISessionRequest)
+			throw new RequestException("Session required");
+
+		$page = 0;
+		$total = null;
+		$row_count = 5;
+		if(isset($Request[self::PARAM_PAGE]))
+			$page = $Request[self::PARAM_PAGE];
+		$offset = $page * $row_count;
+
+		$Pagination = new HTMLPagination($row_count, $page, $total);
+
 		$Table = new TransactionTable();
 		$SearchQuery = $Table
 			->select()
-			->limit(50);
+			->limit("{$row_count} OFFSET {$offset}");
 
-		$SearchQuery->orderBy(TransactionTable::COLUMN_CREATED, "DESC");
+//		$SearchQuery->orderBy(TransactionTable::COLUMN_CREATED, "DESC");
 
-		$SearchTBody = new HTMLSequenceTableBody($SearchQuery, self::CLS_TABLE_TRANSACTION_SEARCH);
+		$SearchTable = new HTMLPDOQueryTable($SearchQuery);
+		$SearchTable->addColumn('id', "transaction");
+		$SearchTable->addColumn('product', "product");
+		$SearchTable->addColumn('wallet', "wallet");
+
+		$SearchTable->addColumn('created', "created");
+		$SearchTable->addColumn('status', "status");
+		$SearchTable->addColumn('amount', "amount");
+		$SearchTable->addColumn('email', "email");
+		$SearchTable->addColumn('product', "product");
+		$SearchTable->addColumn('currency', "currency");
+
+		$SearchTable->addSearchColumn(TransactionTable::COLUMN_ID, "transaction");
+		$SearchTable->addSearchColumn(TransactionTable::COLUMN_WALLET_ID, "wallet");
+		$SearchTable->addSearchColumn(TransactionTable::COLUMN_PRODUCT_ID, "product");
+
+		$SearchTable->addSortColumn(TransactionTable::COLUMN_CREATED, "created");
+		$SearchTable->addSortColumn(TransactionTable::COLUMN_STATUS, "status");
+		$SearchTable->addSortColumn(TransactionTable::COLUMN_AMOUNT, "amount");
+
+		$SearchTable->validateRequest($Request);
 
 
 		$StatsQuery = $Table
-			->select(TransactionTable::COLUMN_PAYMENT_SOURCE_ID, PaymentSourceTable::COLUMN_SOURCE,
-				"(Select " . PaymentSourceTable::COLUMN_SOURCE
-				. " FROM " . PaymentSourceTable::TABLE_NAME
-				. " WHERE " . PaymentSourceTable::COLUMN_ID . '=' . TransactionTable::COLUMN_PAYMENT_SOURCE_ID
-				. ")")
-			->select(TransactionTable::COLUMN_PRODUCT_ID, "Product")
+			->select(TransactionTable::COLUMN_AMOUNT, 'count', 'COUNT(%s)')
+			->select(TransactionTable::COLUMN_AMOUNT, 'total', 'SUM(%s)')
+
 			->select(TransactionTable::COLUMN_STATUS, 'approves', 'SUM(%s = ' . TransactionEntry::STATUS_APPROVED . ')')
-			->select(TransactionTable::COLUMN_STATUS, 'approve_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_APPROVED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+			->select(TransactionTable::COLUMN_STATUS, 'approves_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_APPROVED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
 
 			->select(TransactionTable::COLUMN_STATUS, 'pending', 'SUM(%s = ' . TransactionEntry::STATUS_PENDING . ')')
 			->select(TransactionTable::COLUMN_STATUS, 'pending_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_PENDING . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
 
 			->select(TransactionTable::COLUMN_STATUS, 'declines', 'SUM(%s = ' . TransactionEntry::STATUS_DECLINED . ')')
-			->select(TransactionTable::COLUMN_STATUS, 'decline_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_DECLINED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+			->select(TransactionTable::COLUMN_STATUS, 'declines_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_DECLINED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
 
 			->select(TransactionTable::COLUMN_STATUS, 'refunds', 'SUM(%s = ' . TransactionEntry::STATUS_REFUNDED . ')')
-			->select(TransactionTable::COLUMN_STATUS, 'refund_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_REFUNDED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+			->select(TransactionTable::COLUMN_STATUS, 'refunds_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_REFUNDED . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
 
 			->select(TransactionTable::COLUMN_STATUS, 'chargebacks', 'SUM(%s = ' . TransactionEntry::STATUS_CHARGE_BACK . ')')
-			->select(TransactionTable::COLUMN_STATUS, 'chargeback_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_CHARGE_BACK . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
+			->select(TransactionTable::COLUMN_STATUS, 'chargebacks_total', 'SUM(IF(%s = ' . TransactionEntry::STATUS_CHARGE_BACK . ', ' . TransactionTable::COLUMN_AMOUNT . ', 0))')
 
-			->select(TransactionTable::COLUMN_AMOUNT, 'count', 'COUNT(%s)')
-			->select(TransactionTable::COLUMN_AMOUNT, 'total', 'SUM(%s)')
+			->select(TransactionTable::COLUMN_PAYMENT_SOURCE_ID, PaymentSourceTable::COLUMN_SOURCE,
+				"(Select " . PaymentSourceTable::COLUMN_SOURCE
+				. " FROM " . PaymentSourceTable::TABLE_NAME
+				. " WHERE " . PaymentSourceTable::COLUMN_ID . '=' . TransactionTable::COLUMN_PAYMENT_SOURCE_ID
+				. ")")
+
+			->select(TransactionTable::COLUMN_PRODUCT_ID, "Product")
 
 			->groupBy(TransactionTable::COLUMN_PAYMENT_SOURCE_ID . ', ' . TransactionTable::COLUMN_PRODUCT_ID)
 			->limit(50)
@@ -100,31 +144,61 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 				/** @var AbstractPaymentSource $Source */
 				$Source = unserialize($row[PaymentSourceTable::COLUMN_SOURCE]);
 				unset($row[PaymentSourceTable::COLUMN_SOURCE]);
-				$row['total'] = $row['total'] . ' ' . $Source->getCurrency() . ' (' . $row['count'] . ')';
-				unset($row['count']);
 
-				if($row['approves'])
-					$row['approves'] = '(' . $row['approves'] . ') <span class="total">' . $row['approve_total'] . '</span> ' . $Source->getCurrency();
-				unset($row['approve_total']);
+				$cur = $Source->getCurrency();
 
-				if($row['pending'])
-					$row['pending'] = '(' . $row['pending'] . ') <span class="total">' . $row['pending_total'] . '</span> ' . $Source->getCurrency();
-				unset($row['pending_total']);
+				$row['total '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['count'], $row['total']);
 
-				if($row['declines'])
-					$row['declines'] = '(' . $row['declines'] . ') <span class="total">' . $row['decline_total'] . '</span> ' . $Source->getCurrency();
-				unset($row['decline_total']);
+				$row['approves '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['approves'], $row['approves_total']);
 
-				if($row['refunds'])
-					$row['refunds'] = '(' . $row['refunds'] . ') <span class="total">' . $row['refund_total'] . '</span> ' . $Source->getCurrency();
-				unset($row['refund_total']);
+				$row['pending '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['pending'], $row['pending_total']);
 
-				if($row['chargebacks'])
-					$row['chargebacks'] = '(' . $row['chargebacks'] . ') <span class="total">' . $row['chargeback_total'] . '</span> ' . $Source->getCurrency();
-				unset($row['chargeback_total']);
+				$row['declines '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['declines'], $row['declines_total']);
+
+				$row['refunds '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['refunds'], $row['refunds_total']);
+
+				$row['chargebacks '] = vsprintf('(%0d) <span class="total">%1.2f</span>', $row) . ' ' . $cur;
+				unset($row['chargebacks'], $row['chargebacks_total']);
+
 			});
 
+		$StatsTHead = new HTMLPDOQueryTableBody($StatsQuery);
 		$StatsTBody = new HTMLSequenceTableBody($StatsQuery, self::CLS_TABLE_TRANSACTION_SEARCH);
+
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if ($Account instanceof MerchantAccount) {
+			$SearchQuery->where(TransactionTable::COLUMN_PRODUCT_ID, $Account->getID(),
+				"IN (Select " . ProductTable::COLUMN_ID
+				. "\n\tFROM " . ProductTable::TABLE_NAME
+				. "\n\tWHERE " . ProductTable::COLUMN_ACCOUNT_ID . " = ?)"
+			);
+			$StatsQuery->where(TransactionTable::COLUMN_PRODUCT_ID, $Account->getID(),
+				"IN (Select " . ProductTable::COLUMN_ID
+				. "\n\tFROM " . ProductTable::TABLE_NAME
+				. "\n\tWHERE " . ProductTable::COLUMN_ACCOUNT_ID . " = ?)"
+			);
+
+		} else if ($Account instanceof AdministratorAccount) {
+
+
+//		} else if ($Account instanceof ProcessorAccount) {
+//			$SearchQuery->where(TransactionTable::COLUMN_PAYMENT_SOURCE_ID, $Account->getID(),
+//				"IN (Select " . PaymentSourceTable::COLUMN_ID
+//				. "\n\tFROM " . PaymentSourceTable::TABLE_NAME
+//				. "\n\tWHERE " . PaymentSourceTable::C. " = ?)"
+//			);
+
+
+		} else {
+			$SearchQuery->where(TransactionTable::COLUMN_ID, '-1');
+
+		}
+
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
@@ -137,82 +211,26 @@ class SearchTransactions implements IExecutable, IBuildable, IRoutable
 				new HTMLElement('fieldset', 'fieldset-filter-stats-results',
 					new HTMLElement('legend', 'legend-filter-stats-results', 'Stats'),
 
+
 					new HTMLTable(
+						$StatsTHead,
 						$StatsTBody
 					)
 				),
 
+				"<br/>",
 				new HTMLElement('fieldset', 'fieldset-filter-search-results',
 					new HTMLElement('legend', 'legend-filter-search-results', 'Search Results'),
 
-					new HTMLTable(
-						$SearchTBody
-					)
+					$SearchTable,
+					$Pagination
 				),
 
-				$OptionsFieldSet = new HTMLElement('fieldset', 'fieldset-options fieldset-filter-options',
-					new HTMLElement('legend', 'legend-filter-options', "Search Options")
-				),
 				"<br/>",
-				new HTMLButton(null, 'Search')
+				new HTMLSubmit(null, 'Search')
 			),
 			"<br/>"
 		);
-
-		/** @var HTMLSelectField[] $SelectSorts */
-		$SelectSorts = array();
-		/** @var HTMLSelectField[] $SelectFilters */
-		$SelectFilters = array();
-		foreach(
-			array(
-		        'Email' => TransactionTable::COLUMN_WALLET_ID,
-		        'Product' => TransactionTable::COLUMN_PRODUCT_ID,
-		        'Source' => TransactionTable::COLUMN_PAYMENT_SOURCE_ID,
-		        'Status' => TransactionTable::COLUMN_STATUS,
-//		        'Date' => TransactionTable::COLUMN_CREATED,
-			) as $desc => $column) {
-			$OptionsFieldSet->addContent(
-				new HTMLElement('fieldset', 'fieldset-filter fieldset-filter-' . $column,
-					new HTMLElement('legend', 'legend-filter-' . $column, 'By ' . $desc),
-					$SelectFilters[$column] = new HTMLSelectField('filter-' . $column,
-						array(
-							'Filter By ' . $desc => null,
-						)),
-					"<br/>",
-					$SelectSorts[$column] = new HTMLSelectField('sort-' . $column,
-						array(
-							'Sort By ' . $desc => null,
-							'Ascending' => 'ASC',
-							'Descending' => 'DESC',
-						)
-					)
-				)
-			);
-
-			if(!empty($Request['filter-' . $column])) {
-				$SearchQuery->where($column, $Request['filter-' . $column]);
-				$StatsQuery->where($column, $Request['filter-' . $column]);
-			}
-
-			if(!empty($Request['sort-' . $column])) {
-				$SearchQuery->orderBy($column,  $Request['sort-' . $column]);
-//				$StatsQuery->orderBy($column, $Request['sort-' . $column]);
-			}
-		}
-
-		$SourceCache = array();
-		$SearchQuery->addRowCallback(function(TransactionEntry $Entry) use ($Form, $Request, &$SourceCache, $SelectFilters) {
-			$SelectFilters[TransactionTable::COLUMN_WALLET_ID]->addOption($Entry->getWalletID(), $Entry->getInvoice()->getWallet()->getEmail());
-			$SelectFilters[TransactionTable::COLUMN_PRODUCT_ID]->addOption($Entry->getProductID(), $Entry->getInvoice()->getProduct()->getProductTitle());
-			$SelectFilters[TransactionTable::COLUMN_STATUS]->addOption($Entry->getStatus(), $Entry->getStatusText());
-			$sourceID = $Entry->getPaymentSourceID();
-			$Source = isset($SourceCache[$sourceID])
-				? $SourceCache[$sourceID]
-				: $SourceCache[$sourceID] = PaymentSourceEntry::get($sourceID);
-			$SelectFilters[TransactionTable::COLUMN_PAYMENT_SOURCE_ID]->addOption($Entry->getPaymentSourceID(), $Source->getPaymentSource()->getDescription());
-//			$FilterWallet->addOption($Entry->getWalletID(), $Entry->getInvoice()->getWallet()->getTitle());
-			$Form->setFormValues($Request);
-		});
 
 		$Form->setFormValues($Request);
 

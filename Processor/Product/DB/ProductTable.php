@@ -1,11 +1,11 @@
 <?php
 namespace Processor\Product\DB;
 
+use CPath\Data\Schema\IReadableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOPrimaryKeyTable as AbstractBase;
+use CPath\Data\Schema\TableSchema;
 use Processor\DB\ProcessorDB as DB;
 use Processor\Product\DB\ProductEntry as Entry;
-use CPath\Data\Schema\TableSchema;
-use CPath\Data\Schema\IReadableSchema;
 
 /**
  * Class ProductTable

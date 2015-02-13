@@ -16,6 +16,7 @@ use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
+use CPath\Request\Validation\EmailValidation;
 use CPath\Request\Validation\RequiredValidation;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\Exceptions\InvalidAccountPassword;
@@ -88,7 +89,7 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 			new HTMLElement('label', 'label-' . self::PARAM_ACCOUNT_EMAIL, "Email<br/>",
 				new HTMLInputField(self::PARAM_ACCOUNT_EMAIL, $this->email,
 					new Attributes('placeholder', '"my@email.com"'),
-					new RequiredValidation()
+					new EmailValidation()
 				)
 			),
 

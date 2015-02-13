@@ -177,37 +177,22 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 					echo "<span class='amount'>", $value, "</span>";
 				return true;
 
+			case 'payment-source':
 			case 'payment-source-id':
 				$href = $this->domain . ltrim(ManagePaymentSource::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
 				return true;
 
-			case 'payment-source':
-				if($arg1) {
-					$href = $this->domain . ltrim(ManagePaymentSource::getRequestURL($arg1), '/');
-					echo "<a href='{$href}'>", $value, "</a>";
-				} else {
-					echo $value;
-				}
-				return true;
-
+			case 'transaction':
 			case 'transaction-id':
 				$href = $this->domain . ltrim(ManageTransaction::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
 				return true;
 
+			case 'product':
 			case 'product-id':
 				$href = $this->domain . ltrim(ManageProduct::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
-				return true;
-
-			case 'product':
-				if($arg1) {
-					$href = $this->domain . ltrim(ManageProduct::getRequestURL($arg1), '/');
-					echo "<a href='{$href}'>", $value, "</a>";
-				} else {
-					echo $value;
-				}
 				return true;
 
 			case 'test-url':
@@ -225,16 +210,6 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 				$href = $this->domain . ltrim(ManageAccount::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";
 				return true;
-
-//			case 'product':
-//				if($value instanceof ProductEntry) {
-//					$Product = $value->getProduct();
-//					$href = $this->domain . ltrim(ManageProduct::getRequestURL($value->getID()), '/');
-//					echo "<a href='{$href}'>", $Product->getTitle(), "</a>";
-//
-//					return true;
-//				}
-//				break;
 
 			case 'wallet-id':
 				$href = $this->domain . ltrim(ManageWallet::getRequestURL($value), '/');

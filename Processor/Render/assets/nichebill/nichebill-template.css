@@ -99,3 +99,13 @@ section, div.section {
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
 }
+
+
+/** Tables **/
+
+thead th,
+tbody th,
+tr:hover {
+    background: #567;
+    color: #CCC;
+}
