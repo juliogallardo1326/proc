@@ -141,11 +141,11 @@ class ProductEntry implements IBuildable, IKeyMap
 //		$SourceEntry = PaymentSourceEntry::get($this->payment_source_id);
 //		$Source = $SourceEntry->getPaymentSource();
 		$Product = $this->getProduct();
-		$Map->map('product', $Product->getProductTitle(), $this->getID());
+		$Map->map('product', $this->getID(), $Product->getProductTitle());
 		$Map->map('type', $Product->getTypeName());
 		$Map->map('total', $Product->getTotalCost()); //  . ' ' . $Source->getCurrency()
 //		$Map->map('currency', $Source->getCurrency());
-		$Map->map('account-id', $this->account_id);
+		$Map->map('account', $this->account_id);
 //		$Map->map('payment-source', $Source->getDescription(), $this->payment_source_id);
 		$Map->map('description', $Product->getTypeDescription());
 //		$Map->map('currency', $Source->getCurrency());

@@ -39,6 +39,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	/**
 	 * @column VARCHAR(64) PRIMARY KEY
 	 * @select
+	 * @search
 	 */
 	protected $id;
 
@@ -46,6 +47,8 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @column TINYINT
 	 * @select
 	 * @insert
+	 * @index
+	 * @search
 	 */
 	protected $status;
 
@@ -61,6 +64,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @select
 	 * @insert
 	 * @unique
+	 * @search
 	 */
 	protected $email;
 
@@ -69,6 +73,7 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @select
 	 * @insert
 	 * @unique
+	 * @search
 	 */
 	protected $name;
 
@@ -79,12 +84,6 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @update
 	 */
 	protected $account;
-
-
-	/**
-	 * @column VARCHAR(64)
-	 */
-//	protected $password_salt;
 
 	public function getID() {
 		return $this->id;
@@ -144,10 +143,14 @@ class AccountEntry implements IBuildable, IKeyMap
 	 * @return void
 	 */
 	function mapKeys(IKeyMapper $Map) {
-		$Map->map('account-id', $this->getID());
+		$Map->map('account', $this->getID());
+//		$Map->map('name', $this->getName());
+//		$Map->map('email', $this->getEmail());
 		$this->getAccount()->mapKeys($Map);
+
 		$Map->map('created', $this->getCreatedTimestamp());
 		$Map->map('status', $this->getStatus(), $this->getStatusText());
+
 	}
 
 	// Static

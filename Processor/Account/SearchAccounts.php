@@ -31,7 +31,7 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 
 	const FORM_ACTION = '/accounts';
 	const FORM_ACTION2 = '/search/accounts';
-	const FORM_METHOD = 'POST';
+	const FORM_METHOD = 'GET';
 	const FORM_NAME = __CLASS__;
 	const CLS_TABLE_ACCOUNT_SEARCH = 'search-account';
 
@@ -59,6 +59,11 @@ class SearchAccounts implements IExecutable, IBuildable, IRoutable
 			->limit("{$row_count} OFFSET {$offset}");
 
 		$SearchTable = new HTMLPDOQueryTable($SearchQuery);
+		$SearchTable->addSearchColumn(AccountTable::COLUMN_ID, 'account');
+		$SearchTable->addSearchColumn(AccountTable::COLUMN_STATUS, 'status');
+		$SearchTable->addSearchColumn(AccountTable::COLUMN_NAME, 'name');
+		$SearchTable->addSearchColumn(AccountTable::COLUMN_EMAIL, 'email');
+
 		$SearchTable->validateRequest($Request);
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,

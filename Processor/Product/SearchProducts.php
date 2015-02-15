@@ -12,6 +12,7 @@ use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLMetaTag;
@@ -48,23 +49,37 @@ class SearchProducts implements IExecutable, IBuildable, IRoutable
 			throw new \Exception("Session required");
 
 		$Table = new ProductTable();
-		$Query = $Table
+		$StatsQuery = $Table
 			->select()
 			->limit(50);
+
+		$StatsTable = new HTMLPDOQueryTable($StatsQuery);
+		$StatsTable->addColumn('product');
+		$StatsTable->addColumn('type');
+		$StatsTable->addColumn('total');
+		$StatsTable->addColumn('account');
+		$StatsTable->addColumn('description');
+		$StatsTable->addColumn('fees');
+		$StatsTable->addColumn('test-url');
+
+		$StatsTable->addSearchColumn(ProductTable::COLUMN_ID, "product");
+		$StatsTable->addSearchColumn(ProductTable::COLUMN_ACCOUNT_ID, "account");
+
+		$StatsTable->addSortColumn(ProductTable::COLUMN_ID, "product");
+		$StatsTable->addSortColumn(ProductTable::COLUMN_ACCOUNT_ID, "account");
+
+		$StatsTable->validateRequest($Request);
 
 		$Account = AbstractAccountType::loadFromSession($SessionRequest);
 		if($Account instanceof AdministratorAccount) {
 
 		} else if ($Account instanceof MerchantAccount) {
-			$Query->where(ProductTable::COLUMN_ACCOUNT_ID, $Account->getID());
+			$StatsQuery->where(ProductTable::COLUMN_ACCOUNT_ID, $Account->getID());
 
 		} else {
-			$Query->where(ProductTable::COLUMN_ACCOUNT_ID, -1);
+			$StatsQuery->where(ProductTable::COLUMN_ACCOUNT_ID, -1);
 
 		}
-
-
-		$TBody = new HTMLSequenceTableBody($Query, self::CLS_TABLE_PRODUCT_SEARCH);
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
@@ -76,9 +91,7 @@ class SearchProducts implements IExecutable, IBuildable, IRoutable
 			new HTMLElement('fieldset',
 				new HTMLElement('legend', 'legend-submit', self::TITLE),
 
-				new HTMLTable(
-					$TBody
-				),
+				$StatsTable,
 				new HTMLButton('submit', 'Submit', 'submit')
 			),
 			"<br/>"

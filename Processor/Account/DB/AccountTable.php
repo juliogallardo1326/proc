@@ -22,11 +22,13 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	const SELECT_COLUMNS = 'id, status, created, email, name, account';
 	const UPDATE_COLUMNS = 'account';
 	const INSERT_COLUMNS = 'status, created, email, name, account';
+	const SEARCH_COLUMNS = 'id, status, email, name';
 	const PRIMARY_COLUMN = 'id';
 	/**
 
 	 * @column VARCHAR(64) PRIMARY KEY
 	 * @select
+	 * @search
 	 */
 	const COLUMN_ID = 'id';
 	/**
@@ -34,6 +36,8 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @column TINYINT
 	 * @select
 	 * @insert
+	 * @index
+	 * @search
 	 */
 	const COLUMN_STATUS = 'status';
 	/**
@@ -49,6 +53,7 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @select
 	 * @insert
 	 * @unique
+	 * @search
 	 */
 	const COLUMN_EMAIL = 'email';
 	/**
@@ -57,6 +62,7 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @select
 	 * @insert
 	 * @unique
+	 * @search
 	 */
 	const COLUMN_NAME = 'name';
 	/**
@@ -67,6 +73,12 @@ class AccountTable extends AbstractBase implements IReadableSchema {
 	 * @update
 	 */
 	const COLUMN_ACCOUNT = 'account';
+	/**
+
+	 * @index 
+	 * @columns status
+	 */
+	const ACCOUNT_STATUS_INDEX = 'account_status_index';
 	/**
 
 	 * @index UNIQUE

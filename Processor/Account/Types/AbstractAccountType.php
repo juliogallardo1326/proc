@@ -161,6 +161,7 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 	 */
 	function mapKeys(IKeyMapper $Map) {
 		$Map->map('name', $this->getAccountName());
+		$Map->map('email', $this->getAccountEmail());
 		$Map->map('type', $this->getTypeName());
 	}
 

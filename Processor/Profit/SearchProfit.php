@@ -69,9 +69,9 @@ class SearchProfit implements IExecutable, IBuildable, IRoutable
 			->limit(50);
 
 		$StatsTable = new HTMLPDOQueryTable($StatsQuery);
-		$StatsTable->addColumn('account', "account");
-		$StatsTable->addColumn('profit', "profit");
-		$StatsTable->addColumn('count', "count");
+		$StatsTable->addColumn('account');
+		$StatsTable->addColumn('profit');
+		$StatsTable->addColumn('count');
 
 		$StatsTable->addSearchColumn(ProfitTable::COLUMN_ACCOUNT_ID, "account");
 
