@@ -13,6 +13,7 @@ use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
+use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
@@ -60,126 +61,37 @@ class SearchProfit implements IExecutable, IBuildable, IRoutable
 
 		$StatsQuery = $Table
 			->select(ProfitTable::COLUMN_ACCOUNT_ID, 'account')
-//		, AccountTable::COLUMN_ACCOUNT,
-//				"(Select " . AccountTable::COLUMN_ACCOUNT
-//				. " FROM " . AccountTable::TABLE_NAME
-//				. " WHERE " . AccountTable::COLUMN_ID . '=' . ProfitTable::COLUMN_ACCOUNT_ID
-//				. ")")
 
 			->select(ProfitTable::COLUMN_PROFIT, 'profit', 'SUM(%s)')
 			->select(ProfitTable::COLUMN_PROFIT, 'count', 'COUNT(%s)')
 
 			->groupBy(ProfitTable::COLUMN_ACCOUNT_ID)
 			->limit(50);
-//			->addRowCallback(function(&$row) {
-//				/** @var AbstractPaymentSource $Source */
-//				$Source = unserialize($row[PaymentSourceTable::COLUMN_SOURCE]);
-//				unset($row[PaymentSourceTable::COLUMN_SOURCE]);
-//				$row['total'] = $row['total'] . ' ' . $Source->getCurrency() . ' (' . $row['count'] . ')';
-//				unset($row['count']);
-//
-//				if($row['approves'])
-//					$row['approves'] = '(' . $row['approves'] . ') <span class="total">' . $row['approve_total'] . '</span> ' . $Source->getCurrency();
-//				unset($row['approve_total']);
-//
-//				if($row['pending'])
-//					$row['pending'] = '(' . $row['pending'] . ') <span class="total">' . $row['pending_total'] . '</span> ' . $Source->getCurrency();
-//				unset($row['pending_total']);
-//
-//				if($row['declines'])
-//					$row['declines'] = '(' . $row['declines'] . ') <span class="total">' . $row['decline_total'] . '</span> ' . $Source->getCurrency();
-//				unset($row['decline_total']);
-//
-//				if($row['refunds'])
-//					$row['refunds'] = '(' . $row['refunds'] . ') <span class="total">' . $row['refund_total'] . '</span> ' . $Source->getCurrency();
-//				unset($row['refund_total']);
-//
-//				if($row['chargebacks'])
-//					$row['chargebacks'] = '(' . $row['chargebacks'] . ') <span class="total">' . $row['chargeback_total'] . '</span> ' . $Source->getCurrency();
-//				unset($row['chargeback_total']);
-//			});
 
-		$StatsTBody = new HTMLSequenceTableBody($StatsQuery, self::CLS_TABLE_PROFIT_SEARCH);
+		$StatsTable = new HTMLPDOQueryTable($StatsQuery);
+		$StatsTable->addColumn('account', "account");
+		$StatsTable->addColumn('profit', "profit");
+		$StatsTable->addColumn('count', "count");
+
+		$StatsTable->addSearchColumn(ProfitTable::COLUMN_ACCOUNT_ID, "account");
+
+		$StatsTable->validateRequest($Request);
 
 		$Form = new HTMLForm(self::FORM_METHOD, $Request->getPath(), self::FORM_NAME,
 			new HTMLMetaTag(HTMLMetaTag::META_TITLE, self::TITLE),
 //			new HTMLHeaderScript(__DIR__ . '/assets/search-profit.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/search-profit.css'),
 
-			new HTMLElement('fieldset', 'fieldset-search fieldset-filter-search',
+			new HTMLElement('fieldset', 'fieldset-search fieldset-filter-search inline',
 				new HTMLElement('legend', 'legend-filter-search', self::TITLE),
 
-				new HTMLElement('fieldset', 'fieldset-filter-stats-results',
-					new HTMLElement('legend', 'legend-filter-stats-results', 'Stats'),
-
-					new HTMLTable(
-						$StatsTBody
-					)
-				),
-
-				$OptionsFieldSet = new HTMLElement('fieldset', 'fieldset-options fieldset-filter-options',
-					new HTMLElement('legend', 'legend-filter-options', "Search Options")
-				),
+				$StatsTable,
 				"<br/>",
-				new HTMLButton(null, 'Search')
+				new HTMLButton(null, 'Report')
 			),
 			"<br/>"
 		);
 
-		/** @var HTMLSelectField[] $SelectSorts */
-		$SelectSorts = array();
-		/** @var HTMLSelectField[] $SelectFilters */
-		$SelectFilters = array();
-		foreach(
-			array(
-				'Account' => ProfitTable::COLUMN_ACCOUNT_ID,
-				'Profit' => ProfitTable::COLUMN_PROFIT,
-		        'Product' => TransactionTable::COLUMN_PRODUCT_ID,
-		        'Source' => TransactionTable::COLUMN_PAYMENT_SOURCE_ID,
-		        'Status' => TransactionTable::COLUMN_STATUS,
-		        'Date' => TransactionTable::COLUMN_CREATED,
-			) as $desc => $column) {
-			$OptionsFieldSet->addContent(
-				new HTMLElement('fieldset', 'fieldset-filter fieldset-filter-' . $column . ' inline',
-					new HTMLElement('legend', 'legend-filter-' . $column, 'By ' . $desc),
-					$SelectFilters[$column] = new HTMLSelectField('filter-' . $column,
-						array(
-							'Filter By ' . $desc => null,
-						)),
-					"<br/>",
-					$SelectSorts[$column] = new HTMLSelectField('sort-' . $column,
-						array(
-							'Sort By ' . $desc => null,
-							'Ascending' => 'ASC',
-							'Descending' => 'DESC',
-						)
-					)
-				)
-			);
-
-			if(!empty($Request['filter-' . $column])) {
-				$StatsQuery->where($column, $Request['filter-' . $column]);
-			}
-
-			if(!empty($Request['sort-' . $column])) {
-//				$SearchQuery->orderBy($column,  $Request['sort-' . $column]);
-//				$StatsQuery->orderBy($column, $Request['sort-' . $column]);
-			}
-		}
-
-		$SourceCache = array();
-//		$SearchQuery->addRowCallback(function(TransactionEntry $Entry) use ($Form, $Request, &$SourceCache, $SelectFilters) {
-//			$SelectFilters[TransactionTable::COLUMN_WALLET_ID]->addOption($Entry->getWalletID(), $Entry->getInvoice()->getWallet()->getEmail());
-//			$SelectFilters[TransactionTable::COLUMN_PRODUCT_ID]->addOption($Entry->getProductID(), $Entry->getInvoice()->getProduct()->getProductTitle());
-//			$SelectFilters[TransactionTable::COLUMN_STATUS]->addOption($Entry->getStatus(), $Entry->getStatusText());
-//			$sourceID = $Entry->getPaymentSourceID();
-//			$Source = isset($SourceCache[$sourceID])
-//				? $SourceCache[$sourceID]
-//				: $SourceCache[$sourceID] = PaymentSourceEntry::get($sourceID);
-//			$SelectFilters[TransactionTable::COLUMN_PAYMENT_SOURCE_ID]->addOption($Entry->getPaymentSourceID(), $Source->getPaymentSource()->getDescription());
-////			$FilterWallet->addOption($Entry->getWalletID(), $Entry->getInvoice()->getWallet()->getTitle());
-//			$Form->setFormValues($Request);
-//		});
 
 		$Form->setFormValues($Request);
 

@@ -20,7 +20,7 @@ class TransactionTable extends AbstractBase implements IReadableSchema {
 	const TABLE_NAME = 'transaction';
 	const FETCH_CLASS = 'Processor\\Transaction\\DB\\TransactionEntry';
 	const SELECT_COLUMNS = 'id, status, created, amount, wallet_id, payment_source_id, product_id, invoice';
-	const INSERT_COLUMNS = 'status, created, amount, wallet_id, payment_source_id, product_id, invoice';
+	const INSERT_COLUMNS = 'status, created, amount, wallet_id, payment_source_id, product_id, invoice, log';
 	const PRIMARY_COLUMN = 'id';
 	/**
 
@@ -82,6 +82,12 @@ class TransactionTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_INVOICE = 'invoice';
 	/**
 
+	 * @column TEXT
+	 * @insert
+	 */
+	const COLUMN_LOG = 'log';
+	/**
+
 	 * @index 
 	 * @columns wallet_id
 	 */
@@ -99,7 +105,7 @@ class TransactionTable extends AbstractBase implements IReadableSchema {
 	 */
 	const TRANSACTION_PRODUCT_ID_INDEX = 'transaction_product_id_index';
 
-	function insertRow($status = null, $created = null, $amount = null, $wallet_id = null, $payment_source_id = null, $product_id = null, $invoice = null) { 
+	function insertRow($status = null, $created = null, $amount = null, $wallet_id = null, $payment_source_id = null, $product_id = null, $invoice = null, $log = null) { 
 		return $this->insert(get_defined_vars());
 	}
 

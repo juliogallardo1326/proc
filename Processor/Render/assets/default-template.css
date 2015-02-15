@@ -97,10 +97,10 @@ form input[type="range"] {
     /*box-shadow: inset 1em 1em 1em #ddd;*/
 }
 
-form textarea {
-    height: 150pt;
-    width: 450pt;
-}
+/*form textarea {*/
+    /*height: 150pt;*/
+    /*width: 450pt;*/
+/*}*/
 
 /** Focus container **/
 

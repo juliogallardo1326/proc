@@ -15,6 +15,7 @@ use PDO;
 use Processor\Account\DB\AccountTable;
 use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\Product\DB\ProductTable;
+use Processor\Profit\DB\ProfitTable;
 use Processor\Subscription\DB\SubscriptionTable;
 use Processor\Transaction\DB\TransactionTable;
 use Processor\Wallet\DB\WalletTable;
@@ -62,6 +63,7 @@ class ProcessorDB extends \PDO implements IReadableSchema, IRepairableSchema
 				new WalletTable(),
 				new AccountTable(),
 				new ProductTable(),
+				new ProfitTable(),
 				new PaymentSourceTable(),
 			) as $Table) {
 			/** @var AbstractPDOTable $Table */

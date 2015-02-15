@@ -106,6 +106,12 @@ class TransactionEntry implements IBuildable, IKeyMap
 	 */
 	protected $invoice;
 
+	/**
+	 * @column TEXT
+	 * @insert
+	 */
+	protected $log;
+
 	public function getID() {
 		return $this->id;
 	}
@@ -140,6 +146,23 @@ class TransactionEntry implements IBuildable, IKeyMap
 
 	public function getAmount() {
 		return $this->amount;
+	}
+
+	public function fetchLog() {
+		return $this
+			->table()
+			->select(TransactionTable::COLUMN_LOG)
+			->where(TransactionTable::COLUMN_ID, $this->getID())
+			->fetchColumn(0);
+	}
+
+	public function appendLog($logEntryContent) {
+		$logEntryContent = date('D, d M Y H:i:s') . "\n"
+			. $logEntryContent
+			. "\n\n";
+		$this->table()
+			->update(TransactionTable::COLUMN_LOG, $logEntryContent, '%1$s = concat(ifnull(%1$s , ""), ?)')
+			->where(TransactionTable::COLUMN_ID, $this->getID());
 	}
 
 	/**

@@ -11,10 +11,12 @@ use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
 use CPath\Data\Map\CallbackSequenceMap;
 use CPath\Data\Map\ISequenceMapper;
+use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
+use CPath\Render\HTML\Element\Form\HTMLTextAreaField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
 use CPath\Render\HTML\Element\Table\HTMLTable;
@@ -48,6 +50,8 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 
 	const PARAM_ID = 'id';
 	const PARAM_TRANSACTION_STATUS = 'transaction-status';
+	const PARAM_LOG = 'transaction-log';
+	const PARAM_SUBMIT = 'submit';
 
 	private $id;
 
@@ -66,6 +70,8 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 	 */
 	function execute(IRequest $Request) {
 		$TransactionEntry = TransactionEntry::get($this->getTransactionID());
+		$transactionLog = $TransactionEntry->fetchLog();
+
 		$Invoice = $TransactionEntry->getInvoice();
 		$Product = $Invoice->getProduct();
 		$Wallet = $Invoice->getWallet();
@@ -93,30 +99,13 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderScript(__DIR__ . '/assets/transaction.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/transaction.css'),
 
-			new HTMLElement('fieldset', 'fieldset-transaction-manage',
-				new HTMLElement('legend', 'legend-submit', self::TITLE),
-
-				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden',
-					new RequiredValidation()
-				),
-
-				new HTMLElement('label', null, "Status<br/>",
-					$SelectStatus = new HTMLSelectField(self::PARAM_TRANSACTION_STATUS, TransactionEntry::$StatusOptions,
-						new RequiredValidation()
-					)
-				),
-
-				"<br/><br/>",
-				new HTMLButton('submit', 'Update', 'submit')
-			),
-
-			new HTMLElement('fieldset', 'fieldset-transaction-info',
+			new HTMLElement('fieldset', 'fieldset-transaction-info inline',
 				new HTMLElement('legend', 'legend-transaction-info', 'Transaction Information'),
 
 				new MapRenderer($TransactionEntry)
 			),
 
-			new HTMLElement('fieldset', 'fieldset-product-profit',
+			new HTMLElement('fieldset', 'fieldset-product-profit inline',
 				new HTMLElement('legend', 'legend-product-profit', 'Profit Information'),
 
 				new HTMLTable(
@@ -126,7 +115,7 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 
 			"<br/>",
 
-			new HTMLElement('fieldset', 'fieldset-product-container',
+			new HTMLElement('fieldset', 'fieldset-product-container inline',
 				new HTMLElement('legend', 'legend-product', 'Order Information'),
 
 				$Wallet->getFieldSet($Request)
@@ -145,6 +134,41 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 				new HTMLButton('submit', 'Update', 'submit')
 //				"<br/>",
 			),
+			"<br/>",
+
+			new HTMLElement('fieldset', 'fieldset-transaction-log inline',
+				new HTMLElement('legend', 'legend-transaction-log', 'Transaction Log'),
+
+				new HTMLTextAreaField(self::PARAM_LOG . '_disabled', $transactionLog,
+					new Attributes('rows', 10, 'cols', 100),
+					new Attributes('disabled', 'disabled')
+				),
+				"<br/>",
+				new HTMLTextAreaField(self::PARAM_LOG,
+					new Attributes('rows', 3, 'cols', 100)
+				),
+
+				"<br/>",
+				new HTMLButton(self::PARAM_SUBMIT, 'Append', 'append-log')
+			),
+
+			new HTMLElement('fieldset', 'fieldset-transaction-manage inline',
+				new HTMLElement('legend', 'legend-submit', self::TITLE),
+
+				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden',
+					new RequiredValidation()
+				),
+
+				new HTMLElement('label', null, "Status<br/>",
+					$SelectStatus = new HTMLSelectField(self::PARAM_TRANSACTION_STATUS, TransactionEntry::$StatusOptions,
+						new RequiredValidation()
+					)
+				),
+
+				"<br/><br/>",
+				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'submit')
+			),
+
 			"<br/>"
 		);
 
@@ -153,13 +177,22 @@ class ManageTransaction implements IExecutable, IBuildable, IRoutable
 		if(!$Request instanceof IFormRequest)
 			return $Form;
 
-		$status = $Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
+		switch($Request[self::PARAM_SUBMIT]) {
+			case 'submit':
+				$status = $Form->validateField($Request, self::PARAM_TRANSACTION_STATUS);
+				$TransactionEntry->update($Request, $status);
+				ProfitEntry::update($Request, $TransactionEntry->getID());
+				return new RedirectResponse(ManageTransaction::getRequestURL($TransactionEntry->getID()), "Transaction updated successfully. Redirecting...", 5);
 
-		$TransactionEntry->update($Request, $status);
+			case 'append-log':
+				$appendLog = $Request[self::PARAM_LOG];
+				$TransactionEntry->appendLog($appendLog);
+				return new RedirectResponse(ManageTransaction::getRequestURL($TransactionEntry->getID()), "Log appended successfully. Redirecting...", 5);
 
-		ProfitEntry::update($Request, $TransactionEntry->getID());
+			default:
+				throw new \InvalidArgumentException("Invalid Submit");
+		}
 
-		return new RedirectResponse(ManageTransaction::getRequestURL($TransactionEntry->getID()), "Transaction updated successfully. Redirecting...", 5);
 
 	}
 
