@@ -45,9 +45,9 @@ class SiteMap implements IRouteMap, IBuildable
 			$Map->route('ANY /logout/', 'Processor\\Account\\Logout', 272, 'Logout') ||
 
 			// @group Processor\Account\ManageAccount
-			$Map->route('ANY /a/:id', 'Processor\\Account\\ManageAccount', 32) ||
-			$Map->route('ANY /account/:id', 'Processor\\Account\\ManageAccount', 32) ||
-			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount', 32) ||
+			$Map->route('ANY /a/:id', 'Processor\\Account\\ManageAccount') ||
+			$Map->route('ANY /account/:id', 'Processor\\Account\\ManageAccount') ||
+			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount') ||
 
 			// @group Processor\Account\SearchAccounts
 			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
