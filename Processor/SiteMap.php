@@ -50,8 +50,8 @@ class SiteMap implements IRouteMap, IBuildable
 			$Map->route('ANY /manage/account/:id', 'Processor\\Account\\ManageAccount', 32) ||
 
 			// @group Processor\Account\SearchAccounts
-			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts', 32) ||
-			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts', 32) ||
+			$Map->route('ANY /accounts', 'Processor\\Account\\SearchAccounts') ||
+			$Map->route('ANY /search/accounts', 'Processor\\Account\\SearchAccounts') ||
 
 			// @group Processor\Integration\Integrate
 			$Map->route('ANY /integrate', 'Processor\\Integration\\Integrate', 272, 'Integration') ||
