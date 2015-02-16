@@ -7,9 +7,9 @@ set_error_handler(function($errno, $errstr, $errfile, $errline, $errcontext) {
 		case E_USER_WARNING:
 		case E_USER_ERROR:
 		default:
-			if (!headers_sent()) {
-				header("HTTP/1.1 400 " . preg_replace('/[\n]/', '|', $errstr));
-			}
+//			if (!headers_sent()) {
+//				header("HTTP/1.1 400 " . preg_replace('/[\n]/', '|', $errstr));
+//			}
 			break;
 	}
 	if(!headers_sent()) {

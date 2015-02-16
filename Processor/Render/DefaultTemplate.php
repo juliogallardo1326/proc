@@ -117,7 +117,6 @@ class DefaultTemplate extends HTMLContainer implements IRoutable, IBuildable {
 			$Template->mNavBar->addContent(new HTMLRouteNavigator($RouteRenderer));
 		}
 
-
 		if ($Object instanceof IResponseHeaders) {
 			$Object->sendHeaders($Request);
 
@@ -206,6 +205,7 @@ class CustomHTMLValueRenderer implements IHTMLValueRenderer {
 				return true;
 
 			case 'account':
+			case 'affiliate':
 			case 'account-id':
 				$href = $this->domain . ltrim(ManageAccount::getRequestURL($value), '/');
 				echo "<a href='{$href}'>", $arg1 ?: $value, "</a>";

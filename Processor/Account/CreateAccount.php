@@ -16,6 +16,7 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
 use CPath\Request\Form\IFormRequest;
@@ -26,8 +27,12 @@ use CPath\Response\Common\RedirectResponse;
 use CPath\Response\IResponse;
 use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
+use Processor\Account\DB\AccountAffiliationEntry;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\Types\AbstractAccountType;
+use Processor\Account\Types\AdministratorAccount;
+use Processor\Account\Types\MerchantAccount;
+use Processor\Account\Types\ResellerAccount;
 use Processor\SiteMap;
 
 class CreateAccount implements IExecutable, IBuildable, IRoutable
@@ -57,6 +62,17 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 		$SessionRequest = $Request;
 		if (!$SessionRequest instanceof ISessionRequest)
 			throw new \Exception("Session required");
+
+
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		if ($Account instanceof ResellerAccount) {
+
+		} else if ($Account instanceof AdministratorAccount) {
+
+		} else {
+			throw new RequestException("Only merchants may create a new Product");
+
+		}
 
 		$accountOptions = array("Choose a Account Type" => null);
 		/** @var AbstractAccountType[] $AccountTypes */
@@ -111,6 +127,8 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 		$ChosenAccount->validateRequest($Request, $Form);
 
 		$id = AccountEntry::create($Request, $ChosenAccount);
+
+		AccountAffiliationEntry::setAffiliate($Request, $Account->getID(), $id, AccountAffiliationEntry::TYPE_RESELLER);
 
 		return new RedirectResponse(ManageAccount::getRequestURL($id), "Account created successfully. Redirecting...", 5);
 	}

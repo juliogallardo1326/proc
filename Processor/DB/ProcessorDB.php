@@ -12,6 +12,7 @@ use CPath\Data\Schema\IRepairableSchema;
 use CPath\Data\Schema\IWritableSchema;
 use CPath\Data\Schema\PDO\AbstractPDOTable;
 use PDO;
+use Processor\Account\DB\AccountAffiliationTable;
 use Processor\Account\DB\AccountTable;
 use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\Product\DB\ProductTable;
@@ -65,6 +66,7 @@ class ProcessorDB extends \PDO implements IReadableSchema, IRepairableSchema
 				new ProductTable(),
 				new ProfitTable(),
 				new PaymentSourceTable(),
+				new AccountAffiliationTable(),
 			) as $Table) {
 			/** @var AbstractPDOTable $Table */
 			$Table->writeSchema($DB);
