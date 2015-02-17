@@ -22,7 +22,7 @@ class AccountAffiliationTable extends AbstractBase implements IReadableSchema {
 	const SEARCH_COLUMNS = 'account, affiliate, type';
 	/**
 
-	 * @column VARCHAR(64)
+	 * @column VARCHAR(64) NOT NULL
 	 * @unique --name unique_affiliation
 	 * @select
 	 * @search
@@ -30,7 +30,7 @@ class AccountAffiliationTable extends AbstractBase implements IReadableSchema {
 	const COLUMN_ACCOUNT = 'account';
 	/**
 
-	 * @column VARCHAR(64)
+	 * @column VARCHAR(64) NOT NULL
 	 * @unique --name unique_affiliation
 	 * @select
 	 * @search

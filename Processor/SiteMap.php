@@ -33,6 +33,9 @@ class SiteMap implements IRouteMap, IBuildable
      */
     function mapRoutes(IRouteMapper $Map) {
 		return
+			// @group Processor\Account\AccountHome
+			$Map->route('ANY /home', 'Processor\\Account\\AccountHome', 272, 'My Account') ||
+
 			// @group Processor\Account\CreateAccount
 			$Map->route('ANY /create/account/', 'Processor\\Account\\CreateAccount') ||
 			$Map->route('ANY /accounts', 'Processor\\Account\\CreateAccount', 272, 'Accounts') ||

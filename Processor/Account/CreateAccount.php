@@ -31,7 +31,6 @@ use Processor\Account\DB\AccountAffiliationEntry;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\Types\AbstractAccountType;
 use Processor\Account\Types\AdministratorAccount;
-use Processor\Account\Types\MerchantAccount;
 use Processor\Account\Types\ResellerAccount;
 use Processor\SiteMap;
 
@@ -82,6 +81,7 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 		foreach (Types\AbstractAccountType::loadAllAccountTypes() as $AccountType) {
 			$AccountTypes[$AccountType->getTypeName()] = $AccountType;
 			$FieldSet = $AccountType->getFieldSet($Request);
+			$FieldSet->addClass($AccountType::CLS_FIELDSET_CHOOSE_ACCOUNT);
 			$FieldSet->setAttribute('disabled', 'disabled');
 			$AccountForms[] = $FieldSet;
 			$accountOptions[ucfirst($AccountType->getTypeName())] = $AccountType->getTypeName();

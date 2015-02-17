@@ -14,7 +14,6 @@ use CPath\Data\Schema\PDO\PDOTableClassWriter;
 use CPath\Data\Schema\PDO\PDOTableWriter;
 use CPath\Data\Schema\TableSchema;
 use CPath\Request\IRequest;
-use Processor\Account\Types\AbstractAccountType;
 use Processor\DB\ProcessorDB;
 
 
@@ -27,18 +26,22 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 	const TYPE_NONE =               0x000;
 	const TYPE_REQUEST_AFFILIATE =  0x001;
 	const TYPE_REQUEST_RESELLER =   0x002;
+	const TYPE_REQUEST_PROCESSOR =  0x004;
 
 	const TYPE_AFFILIATE =          0x010;
-	const TYPE_RESELLER =           0x030;
+	const TYPE_RESELLER =           0x020;
+	const TYPE_PROCESSOR =          0x040;
 
 	static $TypeOptions = array(
 		"No affiliation" => self::TYPE_NONE,
 
 		"Reseller Requested" => self::TYPE_REQUEST_RESELLER,
 		"Affiliate Requested" => self::TYPE_REQUEST_AFFILIATE,
+		"Processor Requested" => self::TYPE_REQUEST_AFFILIATE,
 
 		"Reseller" => self::TYPE_RESELLER,
 		"Affiliate" => self::TYPE_AFFILIATE,
+		"Processor" => self::TYPE_PROCESSOR,
 	);
 
 	/**
@@ -73,12 +76,16 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 	 */
 	protected $created;
 
+
 	public function isReseller() {
-		return (int)$this->type && self::TYPE_RESELLER;
+		return (int)$this->type & self::TYPE_RESELLER;
 	}
 
 	public function isAffiliate() {
-		return (int)$this->type && self::TYPE_AFFILIATE;
+		return (int)$this->type & self::TYPE_AFFILIATE;
+	}
+	public function isAwaitingApproval() {
+		return (int)$this->type & (self::TYPE_REQUEST_AFFILIATE | self::TYPE_REQUEST_RESELLER | self::TYPE_REQUEST_PROCESSOR);
 	}
 
 	public function getAccountID() { return $this->account; }
@@ -119,17 +126,45 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 		return $Query;
 	}
 
-//	static function queryAffiliateAccounts($affiliateID, $typeFilter = null) {
-//		$Query = self::table()
-//			->where(AccountAffiliationTable::COLUMN_AFFILIATE, $affiliateID);
-//		if($typeFilter !== null)
-//			$Query->where(AccountAffiliationTable::COLUMN_TYPE, $typeFilter, '&?');
-//		return $Query;
-//	}
+	static function approveAffiliation(IRequest $Request, $accountID, $affiliateID) {
+		/** @var AccountAffiliationEntry $Affiliation */
+		$Affiliation = self::table()
+			->select()
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT, $accountID)
+			->where(AccountAffiliationTable::COLUMN_AFFILIATE, $affiliateID)
+			->fetchOne();
+
+		switch($Affiliation->getType()) {
+			case AccountAffiliationEntry::TYPE_REQUEST_RESELLER:
+				$type = AccountAffiliationEntry::TYPE_RESELLER;
+				break;
+
+			case AccountAffiliationEntry::TYPE_REQUEST_AFFILIATE:
+				$type = AccountAffiliationEntry::TYPE_AFFILIATE;
+				break;
+
+			case AccountAffiliationEntry::TYPE_REQUEST_PROCESSOR:
+				$type = AccountAffiliationEntry::TYPE_PROCESSOR;
+				break;
+
+			default:
+				throw new \InvalidArgumentException("No pending authorization found");
+		}
+
+		$update = self::table()
+			->update(AccountAffiliationTable::COLUMN_TYPE, $type)
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT, $accountID)
+			->where(AccountAffiliationTable::COLUMN_AFFILIATE, $affiliateID)
+			->execute($Request);
+
+		if(!$update)
+			throw new \Exception("Affiliation update failed");
+	}
+
 
 	static function setAffiliate(IRequest $Request, $accountID, $affiliateID, $type = self::TYPE_AFFILIATE, $orUpdate=false) {
-		$Account = AccountEntry::get($accountID);
-		$Affiliate = AccountEntry::get($affiliateID);
+		AccountEntry::get($accountID);
+		AccountEntry::get($affiliateID);
 		$Table = self::table();
 		$Insert = $Table->insert(
 			AccountAffiliationTable::COLUMN_ACCOUNT,
@@ -168,4 +203,5 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 		$DBWriter = new PDOTableWriter($DB);
 		$Schema->writeSchema($DBWriter);
 	}
+
 }

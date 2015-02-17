@@ -18,6 +18,7 @@ use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\Map\MapRenderer;
 use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
@@ -33,36 +34,22 @@ use Processor\Account\DB\AccountAffiliationEntry;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\Types\AbstractAccountType;
 use Processor\Account\Types\AdministratorAccount;
+use Processor\PaymentSource\DB\PaymentSourceTable;
 use Processor\SiteMap;
 
-class ManageAccount implements IExecutable, IBuildable, IRoutable
+class AccountHome implements IExecutable, IBuildable, IRoutable
 {
-	const TITLE = 'Manage Account';
+	const TITLE = 'Account Home';
 
-	const FORM_FORMAT = '/a/%s';
-	const FORM_ACTION = '/a/:id';
-	const FORM_ACTION2 = '/account/:id';
-	const FORM_ACTION3 = '/manage/account/:id';
+	const FORM_ACTION = '/home';
 	const FORM_METHOD = 'POST';
 	const FORM_NAME = __CLASS__;
 
-	const PARAM_ACCOUNT_TYPE = 'account-type';
 	const PARAM_ACCOUNT_STATUS = 'account-status';
-	const PARAM_ID = 'id';
 	const PARAM_SUBMIT = 'submit';
 	const PARAM_AFFILIATE_TYPE = 'affiliate-type';
 	const PARAM_AFFILIATE_ID = 'affiliate-id';
 	const PARAM_APPROVE_AFFILIATE_ID = 'approve-affiliate-id';
-
-	private $id;
-
-	public function __construct($accountID) {
-		$this->id = $accountID;
-	}
-
-	private function getAccountID() {
-		return $this->id;
-	}
 
 	/**
 	 * Execute a command and return a response. Does not render
@@ -77,8 +64,8 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 		if (!$SessionRequest instanceof ISessionRequest)
 			throw new \Exception("Session required");
 
-		$AccountEntry = AccountEntry::get($this->id);
-		$Account = $AccountEntry->getAccount();
+		$Account = AbstractAccountType::loadFromSession($SessionRequest);
+		$AccountEntry = AccountEntry::get($Account->getID());
 
 		$AffiliateQuery = AccountAffiliationEntry::queryAccountAffiliates($Account->getID());
 		$AffiliateListTable = new HTMLPDOQueryTable($AffiliateQuery);
@@ -90,24 +77,19 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 			new HTMLHeaderScript(__DIR__ . '/assets/account.js'),
 			new HTMLHeaderStyleSheet(__DIR__ . '/assets/account.css'),
 
+			new HTMLElement('fieldset', 'fieldset-info inline',
+				new HTMLElement('legend', 'legend-info', self::TITLE),
+
+				new MapRenderer($AccountEntry)
+			),
+
 			new HTMLElement('fieldset', 'fieldset-manage inline',
-				new HTMLElement('legend', 'legend-manage', self::TITLE),
-
-				new HTMLInputField(self::PARAM_ID, $this->id, 'hidden'),
-				new HTMLInputField(self::PARAM_ACCOUNT_TYPE, $Account->getTypeName(), 'hidden'),
-
-				new HTMLElement('label', null, "Status<br/>",
-					$SelectStatus = new HTMLSelectField(self::PARAM_ACCOUNT_STATUS, AccountEntry::$StatusOptions,
-						new RequiredValidation()
-					)
-				),
+				new HTMLElement('legend', 'legend-manage', "Manage Account"),
+				$Account->getFieldSet($Request)
+					->addClass('inline'),
 
 				"<br/><br/>",
-				$Account->getFieldSet($Request),
-
-				"<br/><br/>",
-				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update'),
-				new HTMLButton(self::PARAM_SUBMIT, 'Delete', 'delete')
+				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update')
 			),
 
 			new HTMLElement('fieldset', 'fieldset-affiliates inline',
@@ -132,6 +114,7 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 				new HTMLElement('legend', 'legend-affiliate-list', "Affiliates"),
 				$AffiliateListTable
 			),
+
 			new HTMLElement('fieldset', 'fieldset-affiliate-approve inline',
 				new HTMLElement('legend', 'legend-affiliate-approve', "Approve Affiliates"),
 
@@ -146,20 +129,9 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 
 		);
 
-		$SelectStatus->setInputValue($AccountEntry->getStatus());
-
-
-		$Account = AbstractAccountType::loadFromSession($SessionRequest);
-		if ($Account instanceof AdministratorAccount) {
-			$TypeSelect->setOptions(AccountAffiliationEntry::$TypeOptions);
-		}
-
 		$AffiliateQuery->addRowCallback(
 			function(AccountAffiliationEntry $Affiliation) use ($Account, $ApproveSelect) {
-				if(
-					$Affiliation->getType() & $Affiliation::TYPE_REQUEST_RESELLER
-					&& $Affiliation->getAffiliateID() === $Account->getID()
-				) {
+				if($Affiliation->isAwaitingApproval()) {
 					$ApproveSelect->addOption($Affiliation->getAffiliateID(),
 						"Approve '" . $Affiliation->getTypeText() . "' - " . $Affiliation->getAffiliateID()
 					);
@@ -176,23 +148,19 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 			case 'update':
 				$status = $Form->validateField($Request, self::PARAM_ACCOUNT_STATUS);
 				$AccountEntry->update($Request, $Account, $status);
-				return new RedirectResponse(ManageAccount::getRequestURL($this->getAccountID()), "Account updated successfully. Redirecting...", 5);
-
-			case 'delete':
-				AccountEntry::delete($Request, $this->getAccountID());
-				return new RedirectResponse(SearchAccounts::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(AccountHome::getRequestURL(), "Account updated successfully. Redirecting...", 5);
 
 			case 'approve':
 				$affiliateID = $Form->validateField($Request, self::PARAM_APPROVE_AFFILIATE_ID);
-				AccountAffiliationEntry::approveAffiliation($Request, $this->getAccountID(), $affiliateID);
-				return new RedirectResponse(SearchAccounts::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
+				AccountAffiliationEntry::approveAffiliation($Request, $Account->getID(), $affiliateID);
+				return new RedirectResponse(AccountHome::getRequestURL(), "Account deleted successfully. Redirecting...", 5);
 
 			case 'request':
 				$affiliateID = $Form->validateField($Request, self::PARAM_AFFILIATE_ID);
 				$type = $Form->validateField($Request, self::PARAM_AFFILIATE_TYPE);
 
-				AccountAffiliationEntry::setAffiliate($Request, $this->getAccountID(), $affiliateID, $type);
-				return new RedirectResponse(ManageAccount::getRequestURL($this->getAccountID()), "Affiliation requested successfully. Redirecting...", 5);
+				AccountAffiliationEntry::setAffiliate($Request, $Account->getID(), $affiliateID, $type);
+				return new RedirectResponse(AccountHome::getRequestURL(), "Affiliation requested successfully. Redirecting...", 5);
 		}
 
 		throw new \InvalidArgumentException($submit);
@@ -200,8 +168,8 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 
 	// Static
 
-	public static function getRequestURL($id) {
-		return sprintf(self::FORM_FORMAT, $id);
+	public static function getRequestURL() {
+		return self::FORM_ACTION;
 	}
 
 	/**
@@ -215,7 +183,7 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 	 * If an object is returned, it is passed along to the next handler
 	 */
 	static function routeRequestStatic(IRequest $Request, Array &$Previous = array(), $_arg = null) {
-		return new ExecutableRenderer(new static($Request[self::PARAM_ID]), true);
+		return new ExecutableRenderer(new static(), true);
 	}
 
 	/**
@@ -228,8 +196,9 @@ class ManageAccount implements IExecutable, IBuildable, IRoutable
 	static function handleBuildStatic(IBuildRequest $Request) {
 		$RouteBuilder = new RouteBuilder($Request, new SiteMap());
 
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__);
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION2, __CLASS__);
-		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION3, __CLASS__);
+		$RouteBuilder->writeRoute('ANY ' . self::FORM_ACTION, __CLASS__,
+			IRequest::MATCH_SESSION_ONLY
+			| IRequest::NAVIGATION_ROUTE,
+			"My Account");
 	}
 }

@@ -11,11 +11,8 @@ use CPath\Build\IBuildable;
 use CPath\Build\IBuildRequest;
 use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
-use CPath\Render\HTML\Element\Form\HTMLSelectField;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
-use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
-use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Request\Executable\ExecutableRenderer;
@@ -26,7 +23,6 @@ use CPath\Route\IRoutable;
 use CPath\Route\RouteBuilder;
 use Processor\Profit\DB\ProfitTable;
 use Processor\SiteMap;
-use Processor\Transaction\DB\TransactionTable;
 
 class SearchProfit implements IExecutable, IBuildable, IRoutable
 {

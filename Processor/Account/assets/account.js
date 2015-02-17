@@ -7,11 +7,11 @@
  */
 (function(){
     var PARAM_ACCOUNT_TYPE = 'account-type';
-    var CLS_FIELDSET_ACCOUNT = 'fieldset-account';
+    var CLS_FIELDSET_CHOOSE_ACCOUNT = 'fieldset-choose-account';
 
     var ready = function() {
 
-        jQuery('form:has(fieldset.' + CLS_FIELDSET_ACCOUNT + ')').each(function(i, form) {
+        jQuery('form:has(fieldset.' + CLS_FIELDSET_CHOOSE_ACCOUNT + ')').each(function(i, form) {
             if (typeof form.accountInit !== 'undefined')
                 return;
             form.accountInit = true;
@@ -20,7 +20,7 @@
             console.info("Account Form Found: ", Form);
             Form.on('input', function(e) {
                 var accountType = Form.find('*[name=' + PARAM_ACCOUNT_TYPE + ']').val();
-                var WalletFieldSets = Form.find('.' + CLS_FIELDSET_ACCOUNT);
+                var WalletFieldSets = Form.find('.' + CLS_FIELDSET_CHOOSE_ACCOUNT);
                 if(accountType) {
                     var WalletFieldSet = WalletFieldSets.filter('[data-' + PARAM_ACCOUNT_TYPE + '=' + accountType + ']');
                     WalletFieldSets = WalletFieldSets.not(WalletFieldSet);

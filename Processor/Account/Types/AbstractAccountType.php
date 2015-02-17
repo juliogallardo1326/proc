@@ -23,7 +23,7 @@ use Processor\Account\Exceptions\InvalidAccountPassword;
 
 abstract class AbstractAccountType implements \Serializable, IKeyMap
 {
-	const CLS_FIELDSET_ACCOUNT = 'fieldset-account';
+	const CLS_FIELDSET_CHOOSE_ACCOUNT = 'fieldset-choose-account';
 	const PARAM_ACCOUNT_TYPE = 'account-type';
 	const PARAM_ACCOUNT_NAME = 'account-name';
 	const PARAM_ACCOUNT_PASSWORD = 'account-password';
@@ -72,7 +72,7 @@ abstract class AbstractAccountType implements \Serializable, IKeyMap
 	 * @return HTMLElement
 	 */
 	function getFieldSet() {
-		return new HTMLElement('fieldset', self::CLS_FIELDSET_ACCOUNT,
+		return new HTMLElement('fieldset', // self::CLS_FIELDSET_CHOOSE_ACCOUNT,
 			new Attributes('data-' . static::PARAM_ACCOUNT_TYPE, $this->getTypeName()),
 
 			new HTMLElement('legend', 'legend-shipping', ucfirst($this->getTypeName()) . " Account"),

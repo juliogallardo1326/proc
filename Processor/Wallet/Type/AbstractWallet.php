@@ -13,7 +13,6 @@ use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Request\IRequest;
 use CPath\Request\Session\ISessionRequest;
 use CPath\Request\Validation\IRequestValidation;
-use Processor\Config;
 use Processor\Wallet\DB\WalletEntry;
 use Processor\Wallet\DB\WalletTable;
 

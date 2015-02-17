@@ -13,8 +13,6 @@ use CPath\Render\HTML\Element\Form\HTMLButton;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Element\Table\HTMLPDOQueryTable;
-use CPath\Render\HTML\Element\Table\HTMLSequenceTableBody;
-use CPath\Render\HTML\Element\Table\HTMLTable;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLMetaTag;
 use CPath\Render\HTML\Pagination\HTMLPagination;
