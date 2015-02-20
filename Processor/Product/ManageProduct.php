@@ -18,6 +18,7 @@ use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\HTML\Header\HTMLHeaderScript;
 use CPath\Render\HTML\Header\HTMLHeaderStyleSheet;
 use CPath\Render\HTML\Header\HTMLMetaTag;
+use CPath\Render\Map\MapRenderer;
 use CPath\Request\Exceptions\RequestException;
 use CPath\Request\Executable\ExecutableRenderer;
 use CPath\Request\Executable\IExecutable;
@@ -114,20 +115,26 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 				new HTMLAnchor(OrderForm::getRequestURL($this->getProductID()), "Order Page")
 			),
 
-			$Product->getConfigFieldSet($Request),
+			new HTMLElement('fieldset', 'fieldset-info inline',
+				new HTMLElement('legend', 'legend-info', "Product Info"),
 
-			$FeesFieldSet = $Product->getFeesFieldSet($Request),
+				new MapRenderer($ProductEntry)
+			),
 
-			new HTMLElement('fieldset', 'inline',
-				new HTMLElement('legend', 'legend-submit', "Manage Product"),
+			new HTMLElement('fieldset', 'fieldset-config inline',
+				new HTMLElement('legend', 'legend-config', self::TITLE),
+				$Product->getConfigFieldSet($Request),
 
-				new HTMLElement('label', null, "Status<br/>",
+				$FeesFieldSet = $Product->getFeesFieldSet($Request),
+
+				new HTMLElement('fieldset', 'fieldset-status inline',
+					new HTMLElement('legend', 'legend-status', "Status"),
 					$SelectStatus = new HTMLSelectField(self::PARAM_PRODUCT_STATUS, ProductEntry::$StatusOptions,
 						new RequiredValidation()
 					)
 				),
 
-				"<br/><br/>Update<br/>",
+				"<br/><br/>",
 				new HTMLButton(self::PARAM_SUBMIT, 'Update', 'update')
 			),
 
@@ -155,11 +162,11 @@ class ManageProduct implements IExecutable, IBuildable, IRoutable
 				$Product->validateConfigRequest($Request, $Form);
 				$Product->validateFeesRequest($Request, $Form);
 				$ProductEntry->update($Request, $Product, $status);
-				return new RedirectResponse(ManageProduct::getRequestURL($this->getProductID()), "Product updated successfully. Redirecting...", 5);
+				return new RedirectResponse(ManageProduct::getRequestURL($this->getProductID()), "Product updated successfully. Redirecting...", 2);
 
 			case 'delete':
 				ProductEntry::delete($Request, $this->getProductID());
-				return new RedirectResponse(SearchProducts::getRequestURL(), "Product deleted successfully. Redirecting...", 5);
+				return new RedirectResponse(SearchProducts::getRequestURL(), "Product deleted successfully. Redirecting...", 8);
 		}
 
 		throw new \InvalidArgumentException($submit);

@@ -27,7 +27,7 @@ class AccountAffiliationTable extends AbstractBase implements IReadableSchema {
 	 * @select
 	 * @search
 	 */
-	const COLUMN_ACCOUNT = 'account';
+	const COLUMN_ACCOUNT_ID = 'account_id';
 	/**
 
 	 * @column VARCHAR(64) NOT NULL
@@ -35,7 +35,7 @@ class AccountAffiliationTable extends AbstractBase implements IReadableSchema {
 	 * @select
 	 * @search
 	 */
-	const COLUMN_AFFILIATE = 'affiliate';
+	const COLUMN_AFFILIATE_ID = 'affiliate_id';
 	/**
 
 	 * @column TINYINT

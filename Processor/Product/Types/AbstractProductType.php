@@ -14,12 +14,17 @@ use CPath\Render\HTML\Attribute\Attributes;
 use CPath\Render\HTML\Element\Form\HTMLForm;
 use CPath\Render\HTML\Element\Form\HTMLInputField;
 use CPath\Render\HTML\Element\Form\HTMLSelectField;
+use CPath\Render\HTML\Element\HTMLAnchor;
 use CPath\Render\HTML\Element\HTMLElement;
 use CPath\Render\Text\IRenderText;
 use CPath\Request\IRequest;
 use CPath\Request\Validation\RequiredValidation;
+use Processor\Account\DB\AccountAffiliationEntry;
+use Processor\Account\DB\AccountAffiliationTable;
 use Processor\Account\DB\AccountEntry;
 use Processor\Account\DB\AccountTable;
+use Processor\Account\ManageAccount;
+use Processor\Product\DB\ProductEntry;
 use Processor\Transaction\DB\TransactionEntry;
 use Processor\Wallet\Type\AbstractWallet;
 
@@ -164,19 +169,24 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 	function getFeesFieldSet() {
 		$Table = new AccountTable();
 		$Query = $Table
-			->select()
-			->limit(5);
+			->select(AccountTable::COLUMN_ID)
+			->select(AccountTable::COLUMN_NAME)
+			->select(AccountAffiliationTable::COLUMN_TYPE)
+			->join(AccountAffiliationTable::TABLE_NAME, $Table::COLUMN_ID, AccountAffiliationTable::COLUMN_AFFILIATE_ID)
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT_ID, $this->getAccountID());
 
 		$FieldsetFees = new HTMLElement('fieldset', 'fieldset-fees inline',
-			new HTMLElement('legend', 'legend-fees', "Product Rates and Fees")
+			new HTMLElement('legend', 'legend-fees', "Product Rates and Fees"),
+			new HTMLAnchor(ManageAccount::getRequestURL($this->getAccountID()), "Add Affiliates"),
+
+			"<br/><br/>"
 		);
 
-		while($AccountEntry = $Query->fetch()) {
-			/** @var AccountEntry $AccountEntry */
-			$Account = $AccountEntry->getAccount();
-			$accountID = $AccountEntry->getID();
+		while($row = $Query->fetch()) {
+			list($accountID, $accountName, $accountType) = array_values($row);
+			$accountTypeText = array_search($accountType, AccountAffiliationEntry::$TypeOptions);
 			$FieldsetFees->addAll(
-				new HTMLElement('label', 'label-' . self::PARAM_PRODUCT_FEE, $Account->getAccountName() . "<br/>",
+				new HTMLElement('label', 'label-' . self::PARAM_PRODUCT_FEE, "{$accountName} - {$accountTypeText}<br/>",
 					new HTMLInputField(self::PARAM_PRODUCT_FEE . '[' . $accountID . ']', $this->fees[$accountID],
 						new Attributes('placeholder', 'Set fee "9.99" or rate "%1.50"'),
 						new RequiredValidation()
@@ -264,10 +274,15 @@ abstract class AbstractProductType implements \Serializable, IKeyMap, IRenderTex
 
 		$this->fees = $Request[self::PARAM_PRODUCT_FEE];
 		foreach($Request[self::PARAM_PRODUCT_FEE] as $accountID => $fee) {
-			$fee = preg_replace('/[^0-9.%]/', '', $fee) ?: '0.00';
-			if(strpos($fee, '.') === false)
-				$fee .= '.00';
-			$this->fees[$accountID] = $fee;
+			$fees = explode(';', $fee);
+			foreach($fees as &$f) {
+				$f = preg_replace('/[^0-9;.%]/', '', $f);
+				if(!$f)
+					$f = null;
+				else if(strpos($fee, '.') === false)
+					$f .= '.00';
+			}
+			$this->fees[$accountID] = implode('; ', $fees) ?: '0.00';
 		}
 	}
 

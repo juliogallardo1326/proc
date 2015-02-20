@@ -50,7 +50,7 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 	 * @select
 	 * @search
 	 */
-	protected $account;
+	protected $account_id;
 
 	/**
 	 * @column VARCHAR(64) NOT NULL
@@ -58,7 +58,7 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 	 * @select
 	 * @search
 	 */
-	protected $affiliate;
+	protected $affiliate_id;
 
 	/**
 	 * @column TINYINT
@@ -88,8 +88,8 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 		return (int)$this->type & (self::TYPE_REQUEST_AFFILIATE | self::TYPE_REQUEST_RESELLER | self::TYPE_REQUEST_PROCESSOR);
 	}
 
-	public function getAccountID() { return $this->account; }
-	public function getAffiliateID() { return $this->affiliate; }
+	public function getAccountID() { return $this->account_id; }
+	public function getAffiliateID() { return $this->affiliate_id; }
 
 	public function getCreatedTimestamp() { return $this->created; }
 
@@ -120,7 +120,7 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 
 	static function queryAccountAffiliates($accountID, $typeFilter = null) {
 		$Query = self::table()
-			->where(AccountAffiliationTable::COLUMN_ACCOUNT, $accountID);
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT_ID, $accountID);
 		if($typeFilter !== null)
 			$Query->where(AccountAffiliationTable::COLUMN_TYPE, $typeFilter, '&?');
 		return $Query;
@@ -130,8 +130,8 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 		/** @var AccountAffiliationEntry $Affiliation */
 		$Affiliation = self::table()
 			->select()
-			->where(AccountAffiliationTable::COLUMN_ACCOUNT, $accountID)
-			->where(AccountAffiliationTable::COLUMN_AFFILIATE, $affiliateID)
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT_ID, $accountID)
+			->where(AccountAffiliationTable::COLUMN_AFFILIATE_ID, $affiliateID)
 			->fetchOne();
 
 		switch($Affiliation->getType()) {
@@ -153,8 +153,8 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 
 		$update = self::table()
 			->update(AccountAffiliationTable::COLUMN_TYPE, $type)
-			->where(AccountAffiliationTable::COLUMN_ACCOUNT, $accountID)
-			->where(AccountAffiliationTable::COLUMN_AFFILIATE, $affiliateID)
+			->where(AccountAffiliationTable::COLUMN_ACCOUNT_ID, $accountID)
+			->where(AccountAffiliationTable::COLUMN_AFFILIATE_ID, $affiliateID)
 			->execute($Request);
 
 		if(!$update)
@@ -167,8 +167,8 @@ class AccountAffiliationEntry implements IBuildable, IKeyMap
 		AccountEntry::get($affiliateID);
 		$Table = self::table();
 		$Insert = $Table->insert(
-			AccountAffiliationTable::COLUMN_ACCOUNT,
-			AccountAffiliationTable::COLUMN_AFFILIATE,
+			AccountAffiliationTable::COLUMN_ACCOUNT_ID,
+			AccountAffiliationTable::COLUMN_AFFILIATE_ID,
 			AccountAffiliationTable::COLUMN_TYPE
 		)->values(
 			$accountID,

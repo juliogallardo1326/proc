@@ -69,7 +69,7 @@ class CreateAccount implements IExecutable, IBuildable, IRoutable
 		} else if ($Account instanceof AdministratorAccount) {
 
 		} else {
-			throw new RequestException("Only merchants may create a new Product");
+			throw new RequestException("Only resellers may create a new Account");
 
 		}
 
